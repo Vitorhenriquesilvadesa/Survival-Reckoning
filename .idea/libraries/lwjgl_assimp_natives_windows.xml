@@ -1,0 +1,27 @@
+<component name="libraryTable">
+  <library name="lwjgl-assimp-natives-windows">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../../MyLibs/lwjgl/lwjgl-assimp-natives-windows.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../MyLibs/lwjgl/lwjgl-assimp.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../MyLibs/lwjgl/lwjgl-glfw-natives-windows.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../MyLibs/lwjgl/lwjgl-glfw.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../MyLibs/lwjgl/lwjgl-natives-windows.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../MyLibs/lwjgl/lwjgl-openal-natives-windows.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../MyLibs/lwjgl/lwjgl-openal.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../MyLibs/lwjgl/lwjgl-opengl-natives-windows.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../MyLibs/lwjgl/lwjgl-opengl.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../MyLibs/lwjgl/lwjgl-stb-natives-windows.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../MyLibs/lwjgl/lwjgl-stb.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../MyLibs/lwjgl/lwjgl.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/../../MyLibs/lwjgl/lwjgl-assimp-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../MyLibs/lwjgl/lwjgl-glfw-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../MyLibs/lwjgl/lwjgl-openal-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../MyLibs/lwjgl/lwjgl-opengl-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../MyLibs/lwjgl/lwjgl-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../MyLibs/lwjgl/lwjgl-stb-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
