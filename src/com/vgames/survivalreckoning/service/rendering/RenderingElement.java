@@ -1,5 +1,5 @@
 package com.vgames.survivalreckoning.service.rendering;
 
-public interface RenderingComponent {
+public interface RenderingElement {
     void render();
 }

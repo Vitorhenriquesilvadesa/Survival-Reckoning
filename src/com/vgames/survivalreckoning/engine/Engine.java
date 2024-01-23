@@ -1,6 +1,7 @@
 package com.vgames.survivalreckoning.engine;
 
 
+import com.vgames.survivalreckoning.game.Game;
 import com.vgames.survivalreckoning.service.general.ApplicationService;
 import com.vgames.survivalreckoning.design_patterns.Singleton;
 import com.vgames.survivalreckoning.log.*;
@@ -20,12 +21,15 @@ public class Engine extends Logger {
     private static final Singleton<Engine> engineSingleton = new Singleton<>(Engine.class);
     private final Map<ServiceType, ApplicationService> services;
     private boolean successfulInitialization;
+    private Game game;
 
-    public static void init() {
-        getInstance().successfulInitialization = true;
-        getInstance().initializeServices();
-        getInstance().initializationLog();
-        getInstance().setEventFlags();
+    public void init() {
+        successfulInitialization = true;
+        initializeServices();
+        initializationLog();
+        setEventFlags();
+        game = new Game();
+        game.start();
     }
 
     public Engine() {
@@ -33,8 +37,9 @@ public class Engine extends Logger {
     }
 
     public void shutdown() {
+        breakLine();
         for(ApplicationService service : engineSingleton.getInstance().services.values()) {
-            info("Shutdown the " + service.getClass().getSimpleName() +
+            warn("Shutdown the " + service.getClass().getSimpleName() +
                     " ".repeat(12 - service.getClass().getSimpleName().length()) + " service.");
             service.shutdown();
         }
@@ -52,8 +57,6 @@ public class Engine extends Logger {
                 engineSingleton.getInstance().successfulInitialization = false;
             }
         }
-
-        breakLine();
     }
 
     private void registerServices() {
@@ -81,9 +84,12 @@ public class Engine extends Logger {
 
     private void initializationLog() {
         if(getInstance().successfulInitialization) {
+            breakLine();
             info("Successful to initialize services.");
+            breakLine();
         } else {
-            error("Failed to initialize services.", new RuntimeException());
+            shutdown();
+            critical("Failed to initialize services.", new RuntimeException());
         }
     }
 
@@ -100,5 +106,14 @@ public class Engine extends Logger {
 
     public static Engine getInstance() {
         return engineSingleton.getInstance();
+    }
+
+    public void update() {
+        updateServices();
+        updateGame();
+    }
+
+    private void updateGame() {
+        game.update();
     }
 }

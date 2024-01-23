@@ -13,6 +13,7 @@ import com.vgames.survivalreckoning.service.event.actions.Event;
 public class GraphicsAPI extends Logger implements ApplicationService, EventListener {
 
     private GraphicContext graphicsContext;
+    private Renderer renderer;
 
     @Override
     public boolean init() {
@@ -21,14 +22,14 @@ public class GraphicsAPI extends Logger implements ApplicationService, EventList
         return true;
     }
 
-    private void setCallbacks() {
-        this.graphicsContext.setCallbacks();
-    }
-
     @Override
     public void update() {
         graphicsContext.render();
         graphicsContext.update();
+    }
+
+    public void pushObjectInRenderingPool(RenderingElement object) {
+        renderer.addObjectToQueue(object);
     }
 
     @Override

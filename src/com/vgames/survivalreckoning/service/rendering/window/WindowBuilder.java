@@ -1,4 +1,4 @@
-package com.vgames.survivalreckoning.service.rendering;
+package com.vgames.survivalreckoning.service.rendering.window;
 
 public class WindowBuilder {
 

@@ -1,13 +1,14 @@
-package com.vgames.survivalreckoning.service.rendering;
+package com.vgames.survivalreckoning.service.rendering.window;
 
 
 import com.vgames.survivalreckoning.service.event.UpdatableComponent;
+import com.vgames.survivalreckoning.service.rendering.RenderingElement;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL.*;
 import static org.lwjgl.opengl.GL45.*;
 
-public class Window implements RenderingComponent, UpdatableComponent {
+public class Window implements RenderingElement, UpdatableComponent {
 
     private int width;
     private int height;

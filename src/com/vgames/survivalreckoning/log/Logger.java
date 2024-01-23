@@ -1,5 +1,6 @@
 package com.vgames.survivalreckoning.log;
 
+import com.vgames.survivalreckoning.log.annotation.LogAlias;
 import com.vgames.survivalreckoning.log.annotation.LogInfo;
 import com.vgames.survivalreckoning.log.annotation.NotDebugLog;
 
@@ -22,7 +23,12 @@ public abstract class Logger {
     private boolean isDebugging;
 
     protected Logger() {
-        this.name = getClass().getSimpleName();
+        if(getClass().isAnnotationPresent(LogAlias.class)) {
+            String alias = getClass().getDeclaredAnnotation(LogAlias.class).alias();
+            this.name = alias.isEmpty() ? getClass().getSimpleName() : alias;
+        } else {
+            this.name = getClass().getSimpleName();
+        }
         this.dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
         defineProperties(getClass());
@@ -105,15 +111,17 @@ public abstract class Logger {
         logException(throwable);
     }
 
-    protected void critical(String message, Throwable throwable) {
+    protected void critical(String message, RuntimeException exception) {
         printMessage(CRITICAL, message, COLOR_CRITICAL);
-        logException(throwable);
+        throwException(exception);
+    }
+
+    private void throwException(RuntimeException exception) {
+        throw exception;
     }
 
     protected void breakLine() {
-        if (isDebugging) {
-            printMessage(INFO, "___________________________________________________________________", COLOR_INFO);
-        }
+        System.out.println();
     }
 
     private void logException(Throwable throwable) {

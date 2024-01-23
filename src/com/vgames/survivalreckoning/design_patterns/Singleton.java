@@ -1,7 +1,6 @@
 package com.vgames.survivalreckoning.design_patterns;
 
 import com.vgames.survivalreckoning.design_patterns.exception.SingletonDeclarationClassViolationException;
-
 import java.lang.reflect.InvocationTargetException;
 
 public class Singleton<T> {

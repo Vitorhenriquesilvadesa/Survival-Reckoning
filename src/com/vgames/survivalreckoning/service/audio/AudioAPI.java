@@ -5,6 +5,9 @@ import com.vgames.survivalreckoning.log.LogLevel;
 import com.vgames.survivalreckoning.log.Logger;
 import com.vgames.survivalreckoning.log.annotation.LogInfo;
 
+import org.lwjgl.openal.AL10;
+import org.lwjgl.openal.AL;
+
 @LogInfo(level = LogLevel.INFO)
 public class AudioAPI extends Logger implements ApplicationService {
 

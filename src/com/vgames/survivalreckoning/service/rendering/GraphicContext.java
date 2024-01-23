@@ -6,10 +6,12 @@ import com.vgames.survivalreckoning.service.event.actions.*;
 import com.vgames.survivalreckoning.service.event.exception.UnknownKeyActionException;
 import com.vgames.survivalreckoning.service.event.exception.UnknownMouseActionException;
 import com.vgames.survivalreckoning.service.exception.ServiceInitializationException;
+import com.vgames.survivalreckoning.service.rendering.window.Window;
+import com.vgames.survivalreckoning.service.rendering.window.WindowBuilder;
 
 import static org.lwjgl.glfw.GLFW.*;
 
-public class GraphicContext implements RenderingComponent, UpdatableComponent {
+public class GraphicContext implements RenderingElement, UpdatableComponent {
 
     private final Window window;
     private final long nativeWindow;
@@ -94,12 +96,12 @@ public class GraphicContext implements RenderingComponent, UpdatableComponent {
 
         switch(action) {
             case GLFW_PRESS, GLFW_REPEAT: {
-                Engine.getInstance().fromService(GraphicsAPI.class).onEvent(new KeyPressedEvent(key));
+                Engine.fromService(GraphicsAPI.class).onEvent(new KeyPressedEvent(key));
                 return;
             }
 
             case GLFW_RELEASE: {
-                Engine.getInstance().fromService(GraphicsAPI.class).onEvent(new KeyReleasedEvent(key));
+                Engine.fromService(GraphicsAPI.class).onEvent(new KeyReleasedEvent(key));
                 return;
             }
 
