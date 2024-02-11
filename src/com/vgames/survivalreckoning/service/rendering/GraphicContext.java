@@ -5,7 +5,7 @@ import com.vgames.survivalreckoning.service.event.UpdatableComponent;
 import com.vgames.survivalreckoning.service.event.actions.*;
 import com.vgames.survivalreckoning.service.event.exception.UnknownKeyActionException;
 import com.vgames.survivalreckoning.service.event.exception.UnknownMouseActionException;
-import com.vgames.survivalreckoning.service.exception.ServiceInitializationException;
+import com.vgames.survivalreckoning.service.general.exception.ServiceInitializationException;
 import com.vgames.survivalreckoning.service.rendering.window.Window;
 import com.vgames.survivalreckoning.service.rendering.window.WindowBuilder;
 
@@ -62,6 +62,8 @@ public class GraphicContext implements RenderingElement, UpdatableComponent {
     }
 
     public void windowSizeCallback(long window, int width, int height) {
+        this.window.setWidth(width);
+        this.window.setHeight(height);
         Engine.fromService(GraphicsAPI.class).onEvent(new WindowResizeEvent(width, height));
     }
 

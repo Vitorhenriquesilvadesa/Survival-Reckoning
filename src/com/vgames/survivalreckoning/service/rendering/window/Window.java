@@ -3,6 +3,7 @@ package com.vgames.survivalreckoning.service.rendering.window;
 
 import com.vgames.survivalreckoning.service.event.UpdatableComponent;
 import com.vgames.survivalreckoning.service.rendering.RenderingElement;
+import com.vgames.survivalreckoning.util.math.Vector2;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL.*;
@@ -48,11 +49,11 @@ public class Window implements RenderingElement, UpdatableComponent {
     @Override
     public void render() {
         clear();
-        swapBuffers();
     }
 
     @Override
     public void update() {
+        swapBuffers();
         pollEvents();
     }
 
@@ -66,6 +67,10 @@ public class Window implements RenderingElement, UpdatableComponent {
 
     public int getHeight() {
         return height;
+    }
+
+    public Vector2 getResolution() {
+        return new Vector2(this.width, this.height);
     }
 
     public void setHeight(int height) {
