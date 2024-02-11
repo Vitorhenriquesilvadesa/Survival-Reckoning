@@ -1,7 +1,7 @@
-package com.vgames.survivalreckoning.service.exception;
+package com.vgames.survivalreckoning.service.general.exception;
 
 import com.vgames.survivalreckoning.service.general.ApplicationService;
-import com.vgames.survivalreckoning.service.provider.ServiceType;
+import com.vgames.survivalreckoning.service.general.provider.ServiceType;
 
 public class UnknownServiceException extends RuntimeException {
 

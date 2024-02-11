@@ -1,6 +1,6 @@
 package com.vgames.survivalreckoning.service.input.exception;
 
-import com.vgames.survivalreckoning.service.provider.DeviceType;
+import com.vgames.survivalreckoning.service.general.provider.DeviceType;
 
 public class DisconnectedDeviceException extends RuntimeException {
     public DisconnectedDeviceException(DeviceType deviceType) {

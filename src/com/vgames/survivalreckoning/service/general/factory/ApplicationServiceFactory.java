@@ -1,16 +1,16 @@
-package com.vgames.survivalreckoning.service.factory;
+package com.vgames.survivalreckoning.service.general.factory;
 
 import com.vgames.survivalreckoning.service.audio.AudioAPI;
 import com.vgames.survivalreckoning.service.general.ApplicationService;
 import com.vgames.survivalreckoning.service.event.EventAPI;
 import com.vgames.survivalreckoning.service.input.InputAPI;
-import com.vgames.survivalreckoning.service.provider.ServiceType;
+import com.vgames.survivalreckoning.service.general.provider.ServiceType;
 import com.vgames.survivalreckoning.service.rendering.GraphicsAPI;
-import com.vgames.survivalreckoning.service.exception.UnknownServiceException;
+import com.vgames.survivalreckoning.service.general.exception.UnknownServiceException;
 
-public class InitializationServiceFactory {
+public class ApplicationServiceFactory {
 
-    public InitializationServiceFactory() {
+    public ApplicationServiceFactory() {
     }
 
     public ApplicationService createService(ServiceType type) {

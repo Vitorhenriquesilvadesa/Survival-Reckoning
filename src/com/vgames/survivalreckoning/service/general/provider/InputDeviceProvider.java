@@ -1,7 +1,7 @@
-package com.vgames.survivalreckoning.service.provider;
+package com.vgames.survivalreckoning.service.general.provider;
 
 import com.vgames.survivalreckoning.design_patterns.Singleton;
-import com.vgames.survivalreckoning.service.factory.InputDeviceFactory;
+import com.vgames.survivalreckoning.service.general.factory.InputDeviceFactory;
 import com.vgames.survivalreckoning.service.input.device.InputDevice;
 
 public class InputDeviceProvider {

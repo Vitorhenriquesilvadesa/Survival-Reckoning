@@ -1,4 +1,4 @@
-package com.vgames.survivalreckoning.service.exception;
+package com.vgames.survivalreckoning.service.general.exception;
 
 import com.vgames.survivalreckoning.service.general.ApplicationService;
 

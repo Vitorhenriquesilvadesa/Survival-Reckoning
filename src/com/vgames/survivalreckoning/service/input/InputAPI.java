@@ -6,8 +6,8 @@ import com.vgames.survivalreckoning.service.event.EventListener;
 import com.vgames.survivalreckoning.service.event.actions.Event;
 import com.vgames.survivalreckoning.service.input.exception.DisconnectedDeviceException;
 import com.vgames.survivalreckoning.service.input.device.InputDevice;
-import com.vgames.survivalreckoning.service.provider.DeviceType;
-import com.vgames.survivalreckoning.service.provider.InputDeviceProvider;
+import com.vgames.survivalreckoning.service.general.provider.DeviceType;
+import com.vgames.survivalreckoning.service.general.provider.InputDeviceProvider;
 import com.vgames.survivalreckoning.service.rendering.GraphicsAPI;
 
 import java.util.HashMap;

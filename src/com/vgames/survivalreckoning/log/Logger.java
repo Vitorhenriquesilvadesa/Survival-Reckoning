@@ -1,9 +1,13 @@
 package com.vgames.survivalreckoning.log;
 
+import com.vgames.survivalreckoning.log.annotation.GenerateCriticalFile;
 import com.vgames.survivalreckoning.log.annotation.LogAlias;
 import com.vgames.survivalreckoning.log.annotation.LogInfo;
 import com.vgames.survivalreckoning.log.annotation.NotDebugLog;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -21,10 +25,11 @@ public abstract class Logger {
     private LogLevel logLevel;
     private boolean isVerboseException;
     private boolean isDebugging;
+    private boolean generateCriticalFile;
 
     protected Logger() {
         if(getClass().isAnnotationPresent(LogAlias.class)) {
-            String alias = getClass().getDeclaredAnnotation(LogAlias.class).alias();
+            String alias = getClass().getDeclaredAnnotation(LogAlias.class).value();
             this.name = alias.isEmpty() ? getClass().getSimpleName() : alias;
         } else {
             this.name = getClass().getSimpleName();
@@ -42,6 +47,12 @@ public abstract class Logger {
         } else {
             this.logLevel = LogLevel.INFO;
             this.isVerboseException = true;
+        }
+
+        if(klass.isAnnotationPresent(GenerateCriticalFile.class)) {
+            this.generateCriticalFile = true;
+        } else {
+            this.generateCriticalFile = false;
         }
 
         this.isDebugging = !klass.isAnnotationPresent(NotDebugLog.class) && globalDebugDefinition;
@@ -113,6 +124,10 @@ public abstract class Logger {
 
     protected void critical(String message, RuntimeException exception) {
         printMessage(CRITICAL, message, COLOR_CRITICAL);
+
+        if(this.generateCriticalFile) {
+            generateCriticalFile(exception, message);
+        }
         throwException(exception);
     }
 
@@ -130,5 +145,32 @@ public abstract class Logger {
 
     protected LogLevel getLogLevel() {
         return this.logLevel;
+    }
+
+    private void generateCriticalFile(RuntimeException exception, String message) {
+        if (generateCriticalFile) {
+            try (PrintWriter writer = new PrintWriter(new FileWriter(getFormattedTimestamp().replaceAll(" ", "_").replaceAll(":", "-") + ".log"))) {
+                writer.println("Critical Error:");
+                writer.println("Timestamp: " + getFormattedTimestamp());
+                writer.println("Message: " + message);
+                writer.println("Stack Trace:");
+                exception.printStackTrace(writer);
+                writer.println("\nAdditional Details:");
+                writer.println("Exception Type: " + exception.getClass().getName());
+                writer.println("Exception Message: " + exception.getMessage());
+                writer.println("Exception Cause: " + (exception.getCause() != null ? exception.getCause().toString() : "N/A"));
+                writer.println("Exception Source: " + getExceptionSource(exception));
+            } catch (IOException e) {
+                error(message, e);
+            }
+        }
+    }
+
+    private String getExceptionSource(Exception exception) {
+        StackTraceElement[] elements = exception.getStackTrace();
+        if (elements.length > 0) {
+            return elements[0].toString();
+        }
+        return "Unknown";
     }
 }
