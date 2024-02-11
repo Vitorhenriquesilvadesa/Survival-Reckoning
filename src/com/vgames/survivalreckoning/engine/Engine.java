@@ -6,9 +6,9 @@ import com.vgames.survivalreckoning.service.general.ApplicationService;
 import com.vgames.survivalreckoning.design_patterns.Singleton;
 import com.vgames.survivalreckoning.log.*;
 import com.vgames.survivalreckoning.log.annotation.*;
-import com.vgames.survivalreckoning.service.provider.ApplicationServiceProvider;
-import com.vgames.survivalreckoning.service.provider.ServiceType;
-import com.vgames.survivalreckoning.service.exception.UnknownServiceException;
+import com.vgames.survivalreckoning.service.general.provider.ApplicationServiceProvider;
+import com.vgames.survivalreckoning.service.general.provider.ServiceType;
+import com.vgames.survivalreckoning.service.general.exception.UnknownServiceException;
 import com.vgames.survivalreckoning.service.event.EventAPI;
 import com.vgames.survivalreckoning.service.event.EventFlag;
 import com.vgames.survivalreckoning.service.rendering.GraphicsAPI;
@@ -17,6 +17,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 @LogInfo(level = LogLevel.INFO, verbose = true)
+@LogAlias("Application")
+@GenerateCriticalFile
 public class Engine extends Logger {
     private static final Singleton<Engine> engineSingleton = new Singleton<>(Engine.class);
     private final Map<ServiceType, ApplicationService> services;
@@ -47,14 +49,19 @@ public class Engine extends Logger {
 
     private void initializeServices() {
         registerServices();
+        StringBuilder builder = new StringBuilder();
+
         for(ApplicationService service : this.services.values()) {
             boolean initializeResult = service.init();
             info("Initializing the " + service.getClass().getSimpleName() +
                     " ".repeat(12 - service.getClass().getSimpleName().length()) +
                     " service. Result: " + (initializeResult ? "Success." : "Failed."));
 
+            if(!initializeResult) builder.append(" ").append(service.getClass().getSimpleName());
+
             if(!initializeResult) {
                 engineSingleton.getInstance().successfulInitialization = false;
+                critical("Failed to initialize services: " + builder, new IllegalStateException());
             }
         }
     }
@@ -109,8 +116,8 @@ public class Engine extends Logger {
     }
 
     public void update() {
-        updateServices();
         updateGame();
+        updateServices();
     }
 
     private void updateGame() {
