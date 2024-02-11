@@ -24,6 +24,10 @@ public class Vector3 {
         this.z = other.z;
     }
 
+    public Vector2 xy() {
+        return new Vector2(this.x, this.y);
+    }
+
     public static Vector3 zero() {
         return new Vector3(0f, 0f, 0f);
     }
