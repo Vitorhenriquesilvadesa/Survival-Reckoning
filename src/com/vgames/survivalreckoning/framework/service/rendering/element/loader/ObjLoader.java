@@ -1,13 +1,13 @@
-package com.vgames.survivalreckoning.framework.service.rendering.element.model;
+package com.vgames.survivalreckoning.framework.service.rendering.element.loader;
 
 import com.vgames.survivalreckoning.framework.log.annotation.GenerateCriticalFile;
 import com.vgames.survivalreckoning.framework.math.Vector2;
 import com.vgames.survivalreckoning.framework.math.Vector3;
-import com.vgames.survivalreckoning.framework.service.rendering.AssetLoader;
+import com.vgames.survivalreckoning.framework.service.general.AssetLoader;
+import com.vgames.survivalreckoning.framework.service.rendering.element.model.RawModel;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 

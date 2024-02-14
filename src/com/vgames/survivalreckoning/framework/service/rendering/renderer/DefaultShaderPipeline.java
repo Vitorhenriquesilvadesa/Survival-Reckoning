@@ -1,8 +1,9 @@
-package com.vgames.survivalreckoning.framework.service.rendering;
+package com.vgames.survivalreckoning.framework.service.rendering.renderer;
 
 import com.vgames.survivalreckoning.framework.log.annotation.LogAlias;
 import com.vgames.survivalreckoning.framework.math.Mathf;
 import com.vgames.survivalreckoning.framework.math.Matrix4f;
+import com.vgames.survivalreckoning.framework.service.rendering.element.light.DirectionalLight;
 
 @LogAlias("Asset Loader")
 public class DefaultShaderPipeline extends ShaderPipeline {

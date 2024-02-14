@@ -1,4 +1,4 @@
-package com.vgames.survivalreckoning.framework.service.rendering;
+package com.vgames.survivalreckoning.framework.service.rendering.renderer;
 
 import com.vgames.survivalreckoning.framework.service.rendering.element.model.TexturedModel;
 

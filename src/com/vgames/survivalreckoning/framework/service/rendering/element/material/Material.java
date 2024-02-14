@@ -1,4 +1,4 @@
-package com.vgames.survivalreckoning.framework.service.rendering.element.model;
+package com.vgames.survivalreckoning.framework.service.rendering.element.material;
 
 public class Material {
 

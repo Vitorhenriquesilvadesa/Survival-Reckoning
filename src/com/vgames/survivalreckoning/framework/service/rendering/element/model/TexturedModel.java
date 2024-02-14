@@ -1,6 +1,6 @@
 package com.vgames.survivalreckoning.framework.service.rendering.element.model;
 
-import com.vgames.survivalreckoning.framework.service.rendering.RenderingElement;
+import com.vgames.survivalreckoning.framework.service.rendering.element.material.Material;
 
 public class TexturedModel {
 

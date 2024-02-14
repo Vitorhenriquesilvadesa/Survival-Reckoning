@@ -1,4 +1,4 @@
-package com.vgames.survivalreckoning.framework.service.rendering;
+package com.vgames.survivalreckoning.framework.service.rendering.renderer;
 
 import java.util.Objects;
 import java.util.UUID;

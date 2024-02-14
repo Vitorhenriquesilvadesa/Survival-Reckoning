@@ -8,9 +8,13 @@ import com.vgames.survivalreckoning.framework.log.Logger;
 import com.vgames.survivalreckoning.framework.service.event.EventAPI;
 import com.vgames.survivalreckoning.framework.service.event.EventListener;
 import com.vgames.survivalreckoning.framework.service.event.actions.Event;
-import com.vgames.survivalreckoning.framework.service.rendering.element.model.ObjLoader;
+import com.vgames.survivalreckoning.framework.service.rendering.element.light.DirectionalLight;
+import com.vgames.survivalreckoning.framework.service.rendering.element.loader.ObjLoader;
 import com.vgames.survivalreckoning.framework.service.rendering.element.model.RawModel;
-import com.vgames.survivalreckoning.framework.service.rendering.element.model.RawModelLoader;
+import com.vgames.survivalreckoning.framework.service.rendering.element.loader.RawModelLoader;
+import com.vgames.survivalreckoning.framework.service.rendering.renderer.Camera;
+import com.vgames.survivalreckoning.framework.service.rendering.renderer.MasterRenderer;
+import com.vgames.survivalreckoning.framework.service.rendering.renderer.ShaderPipelineBuilder;
 
 import java.util.ArrayList;
 import java.util.List;

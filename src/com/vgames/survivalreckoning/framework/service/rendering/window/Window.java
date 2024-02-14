@@ -2,7 +2,7 @@ package com.vgames.survivalreckoning.framework.service.rendering.window;
 
 
 import com.vgames.survivalreckoning.framework.service.event.UpdatableComponent;
-import com.vgames.survivalreckoning.framework.service.rendering.RenderingElement;
+import com.vgames.survivalreckoning.framework.service.rendering.element.RenderingElement;
 import com.vgames.survivalreckoning.framework.math.Vector2;
 
 import static org.lwjgl.glfw.GLFW.*;

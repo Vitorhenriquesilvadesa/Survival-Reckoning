@@ -1,11 +1,11 @@
-package com.vgames.survivalreckoning.framework.service.rendering;
+package com.vgames.survivalreckoning.framework.service.rendering.renderer;
 
 import com.vgames.survivalreckoning.framework.engine.Engine;
-import com.vgames.survivalreckoning.framework.log.Logger;
 import com.vgames.survivalreckoning.framework.math.Matrix4f;
 import com.vgames.survivalreckoning.framework.math.Vector3;
+import com.vgames.survivalreckoning.framework.service.general.AssetLoader;
+import com.vgames.survivalreckoning.framework.service.rendering.GraphicsAPI;
 import org.lwjgl.BufferUtils;
-import org.lwjgl.system.MemoryUtil;
 
 import java.nio.FloatBuffer;
 

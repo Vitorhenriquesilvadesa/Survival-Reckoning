@@ -1,13 +1,12 @@
-package com.vgames.survivalreckoning.framework.service.rendering.element.model;
+package com.vgames.survivalreckoning.framework.service.rendering.element.loader;
 
+import com.vgames.survivalreckoning.framework.service.rendering.element.material.Texture;
 import org.lwjgl.BufferUtils;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 import java.nio.IntBuffer;
 
 import static org.lwjgl.opengl.GL11.*;

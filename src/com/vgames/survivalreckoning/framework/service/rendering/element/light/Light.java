@@ -1,4 +1,4 @@
-package com.vgames.survivalreckoning.framework.service.rendering;
+package com.vgames.survivalreckoning.framework.service.rendering.element.light;
 
 import com.vgames.survivalreckoning.framework.math.Vector3;
 

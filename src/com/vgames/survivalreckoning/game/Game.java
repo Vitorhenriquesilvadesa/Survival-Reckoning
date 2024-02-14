@@ -9,6 +9,9 @@ import com.vgames.survivalreckoning.framework.math.Vector3;
 import com.vgames.survivalreckoning.framework.service.input.Input;
 import com.vgames.survivalreckoning.framework.service.input.KeyCode;
 import com.vgames.survivalreckoning.framework.service.rendering.GraphicsAPI;
+import com.vgames.survivalreckoning.framework.service.rendering.element.loader.TextureLoader;
+import com.vgames.survivalreckoning.framework.service.rendering.element.material.Material;
+import com.vgames.survivalreckoning.framework.service.rendering.element.material.Texture;
 import com.vgames.survivalreckoning.framework.service.rendering.element.model.*;
 
 import java.util.Random;

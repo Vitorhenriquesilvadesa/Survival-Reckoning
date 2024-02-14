@@ -1,9 +1,9 @@
-package com.vgames.survivalreckoning.framework.service.rendering;
+package com.vgames.survivalreckoning.framework.service.rendering.renderer;
 
 import com.vgames.survivalreckoning.framework.entity.Entity;
 import com.vgames.survivalreckoning.framework.math.Mathf;
 import com.vgames.survivalreckoning.framework.math.Matrix4f;
-import com.vgames.survivalreckoning.framework.service.rendering.element.model.Material;
+import com.vgames.survivalreckoning.framework.service.rendering.element.material.Material;
 import com.vgames.survivalreckoning.framework.service.rendering.element.model.RawModel;
 import com.vgames.survivalreckoning.framework.service.rendering.element.model.TexturedModel;
 

@@ -1,11 +1,10 @@
-package com.vgames.survivalreckoning.framework.service.rendering.element.model;
+package com.vgames.survivalreckoning.framework.service.rendering.element.loader;
 
-import com.vgames.survivalreckoning.framework.log.Logger;
 import com.vgames.survivalreckoning.framework.log.annotation.LogAlias;
-import com.vgames.survivalreckoning.framework.service.rendering.AssetLoader;
+import com.vgames.survivalreckoning.framework.service.general.AssetLoader;
+import com.vgames.survivalreckoning.framework.service.rendering.element.model.RawModel;
 import org.lwjgl.BufferUtils;
 
-import java.io.FileInputStream;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;

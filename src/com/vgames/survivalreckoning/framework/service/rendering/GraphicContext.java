@@ -6,6 +6,7 @@ import com.vgames.survivalreckoning.framework.service.event.actions.*;
 import com.vgames.survivalreckoning.framework.service.event.exception.UnknownKeyActionException;
 import com.vgames.survivalreckoning.framework.service.event.exception.UnknownMouseActionException;
 import com.vgames.survivalreckoning.framework.service.general.exception.ServiceInitializationException;
+import com.vgames.survivalreckoning.framework.service.rendering.element.RenderingElement;
 import com.vgames.survivalreckoning.framework.service.rendering.window.Window;
 import com.vgames.survivalreckoning.framework.service.rendering.window.WindowBuilder;
 
