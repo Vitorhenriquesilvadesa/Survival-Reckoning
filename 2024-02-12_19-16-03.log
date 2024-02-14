@@ -1,0 +1,23 @@
+Critical Error:
+Timestamp: 2024-02-12 19:16:03
+Message: Could not compile Fragment Shader : ERROR: 0:31: 'pow' : no matching overloaded function found (using implicit conversion) 
+ERROR: 0:31: 'pow' : function is not known 
+
+
+Stack Trace:
+java.lang.RuntimeException
+	at com.vgames.survivalreckoning.framework.service.rendering.ShaderPipelineBuilder.loadShader(ShaderPipelineBuilder.java:89)
+	at com.vgames.survivalreckoning.framework.service.rendering.GraphicsAPI.loadShader(GraphicsAPI.java:61)
+	at com.vgames.survivalreckoning.framework.service.rendering.ShaderPipeline.<init>(ShaderPipeline.java:23)
+	at com.vgames.survivalreckoning.framework.service.rendering.DefaultShaderPipeline.<init>(DefaultShaderPipeline.java:22)
+	at com.vgames.survivalreckoning.framework.service.rendering.GraphicsAPI.init(GraphicsAPI.java:41)
+	at com.vgames.survivalreckoning.framework.engine.Engine.initializeServices(Engine.java:55)
+	at com.vgames.survivalreckoning.framework.engine.Engine.init(Engine.java:30)
+	at com.vgames.survivalreckoning.framework.application.Application.init(Application.java:15)
+	at com.vgames.survivalreckoning.Main.main(Main.java:7)
+
+Additional Details:
+Exception Type: java.lang.RuntimeException
+Exception Message: null
+Exception Cause: N/A
+Exception Source: com.vgames.survivalreckoning.framework.service.rendering.ShaderPipelineBuilder.loadShader(ShaderPipelineBuilder.java:89)

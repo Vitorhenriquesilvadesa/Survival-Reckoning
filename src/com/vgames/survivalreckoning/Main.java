@@ -1,6 +1,6 @@
 package com.vgames.survivalreckoning;
 
-import com.vgames.survivalreckoning.application.Application;
+import com.vgames.survivalreckoning.framework.application.Application;
 
 public class Main {
     public static void main(String[] args) {
