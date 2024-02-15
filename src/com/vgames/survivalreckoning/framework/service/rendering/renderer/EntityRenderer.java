@@ -7,6 +7,7 @@ import com.vgames.survivalreckoning.framework.service.rendering.element.material
 import com.vgames.survivalreckoning.framework.service.rendering.element.model.Mesh;
 import com.vgames.survivalreckoning.framework.service.rendering.element.model.Model;
 import com.vgames.survivalreckoning.framework.service.rendering.renderer.config.Frustum;
+import com.vgames.survivalreckoning.framework.service.rendering.renderer.config.OrthographicFrustum;
 import com.vgames.survivalreckoning.framework.service.rendering.renderer.config.PerspectiveFrustum;
 import com.vgames.survivalreckoning.framework.service.rendering.shaderpipeline.EntityShaderPipeline;
 
@@ -22,8 +23,8 @@ public class EntityRenderer {
 
     public EntityRenderer(EntityShaderPipeline shaderPipeline) {
         this.shaderPipeline = shaderPipeline;
-        this.frustum = new PerspectiveFrustum(70f, 0.1f, 1000f);
-        //this.frustum = new OrthographicFrustum(-1, 1, -1, 1, 0.1f, 1000f);
+        //this.frustum = new PerspectiveFrustum(70f, 0.1f, 1000f);
+        this.frustum = new OrthographicFrustum(-1, 1, -1, 1, 0.1f, 1000f);
         shaderPipeline.bind();
         shaderPipeline.loadProjectionMatrix(frustum.getProjectionMatrix());
         shaderPipeline.unbind();

@@ -37,6 +37,8 @@ public class SurvivalReckoning extends Game {
         texture = Engine.fromService(GraphicsAPI.class).loadTexture("Temple", ImageFilter.POINT);
         material = new Material(texture, 0, 0, true, true);
         model = new Model(mesh, material);
+        texture = Engine.fromService(GraphicsAPI.class).loadTexture("lp_100", ImageFilter.POINT);
+        material = new Material(texture, 0, 0, true, true);
 
         //Engine.fromService(GraphicsAPI.class).pushTerrainInRenderingPool(terrain);
 
@@ -44,37 +46,48 @@ public class SurvivalReckoning extends Game {
                 new Transform(new Vector3(0, 2, -1), new Vector3(0, 0, 0), 1f),
                 SpriteRenderer.class, RotationComponent.class);
 
+        GameObject entity = instantiate(
+                new Transform(new Vector3(3, -2, -1), new Vector3(0, 0, 0), 1f, gameObject.transform),
+                SpriteRenderer.class);
+
         gameObject.getComponent(SpriteRenderer.class).setModel(model);
 
-        Engine.fromService(GraphicsAPI.class).pushEntityInRenderingPool(gameObject);
+        material = new Material(texture, 0, 0, true, true);
+        model = new Model(mesh, material);
 
+        entity.getComponent(SpriteRenderer.class).setModel(model);
+
+        Engine.fromService(GraphicsAPI.class).pushEntityInRenderingPool(gameObject);
+        Engine.fromService(GraphicsAPI.class).pushEntityInRenderingPool(entity);
     }
 
     @Override
     public void update() {
 
+        Vector3 cameraPosition = Engine.fromService(GraphicsAPI.class).getCamera().transform.getPosition();
+
         if (Input.isKeyPressed(KeyCode.SR_KEY_RIGHT)) {
-            Engine.fromService(GraphicsAPI.class).getCamera().transform.position.x += 0.006f;
+            cameraPosition.x += 0.005f;
         }
 
         if (Input.isKeyPressed(KeyCode.SR_KEY_LEFT)) {
-            Engine.fromService(GraphicsAPI.class).getCamera().transform.position.x -= 0.006f;
+            cameraPosition.x -= 0.005f;
         }
 
         if (Input.isKeyPressed(KeyCode.SR_KEY_UP)) {
-            Engine.fromService(GraphicsAPI.class).getCamera().transform.position.z += 0.006f;
+            cameraPosition.z += 0.005f;
         }
 
         if (Input.isKeyPressed(KeyCode.SR_KEY_DOWN)) {
-            Engine.fromService(GraphicsAPI.class).getCamera().transform.position.z -= 0.006f;
+            cameraPosition.z -= 0.005f;
         }
 
         if (Input.isKeyPressed(KeyCode.SR_KEY_W)) {
-            Engine.fromService(GraphicsAPI.class).getCamera().transform.position.y += 0.006f;
+            cameraPosition.y += 0.005f;
         }
 
         if (Input.isKeyPressed(KeyCode.SR_KEY_S)) {
-            Engine.fromService(GraphicsAPI.class).getCamera().transform.position.y -= 0.006f;
+            cameraPosition.y -= 0.005f;
         }
 
         if (Input.isKeyPressed(KeyCode.SR_KEY_D)) {
@@ -85,8 +98,7 @@ public class SurvivalReckoning extends Game {
             material.reflectivity -= 0.03f;
         }
 
-        if (Input.isKeyPressed(KeyCode.SR_KEY_SPACE)) {
-            gameObject.transform.rotation.z += 0.002f;
-        }
+        Vector3 position = gameObject.transform.getPosition();
+        gameObject.transform.setPosition(new Vector3(position.x + 0.001f, position.y, position.z));
     }
 }

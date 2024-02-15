@@ -60,12 +60,24 @@ public class Vector3 {
         return new Vector3(vector.x * scalar, vector.y * scalar, vector.z * scalar);
     }
 
+    public static Vector3 multiply(Vector3 a, Vector3 b) {
+        return new Vector3(a.x * b.x, a.y * b.y, a.z * b.z);
+    }
+
     public static Vector3 divide(Vector3 vector, float scalar) {
 
         if (scalar != 0.0f) {
             return new Vector3(vector.x / scalar, vector.y / scalar, vector.z / scalar);
         } else {
             return zero();
+        }
+    }
+
+    public static Vector3 divide(Vector3 a, Vector3 b) {
+        if (b.x != 0 && b.y != 0 && b.z != 0) {
+            return new Vector3(a.x / b.x, a.y / b.y, a.z / b.z);
+        } else {
+            return Vector3.zero();
         }
     }
 

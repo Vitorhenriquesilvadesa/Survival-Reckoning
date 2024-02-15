@@ -1,6 +1,7 @@
 package com.vgames.survivalreckoning.framework.entity.component;
 
 import com.vgames.survivalreckoning.framework.entity.GameObject;
+import com.vgames.survivalreckoning.framework.math.Vector3;
 
 public class RotationComponent extends Component {
 
@@ -10,6 +11,7 @@ public class RotationComponent extends Component {
 
     @Override
     public void update() {
-        parent.transform.rotation.z += 0.005f;
+        Vector3 rotation = parent.transform.getRotation();
+        parent.transform.setRotation(new Vector3(rotation.x, rotation.y, rotation.z + 0.005f));
     }
 }

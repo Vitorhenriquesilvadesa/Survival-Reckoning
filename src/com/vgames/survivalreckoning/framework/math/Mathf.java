@@ -11,9 +11,9 @@ public class Mathf {
 
         matrix.setIdentity();
 
-        matrix.translate(transform.position);
-        matrix.rotate(transform.rotation);
-        matrix.scale(transform.scale);
+        matrix.translate(transform.getPosition());
+        matrix.rotate(transform.getRotation());
+        matrix.scale(transform.getScale());
 
         return matrix;
     }
@@ -24,7 +24,7 @@ public class Mathf {
 
         viewMatrix.setIdentity();
 
-        Vector3 cameraPosition = cameraTransform.position;
+        Vector3 cameraPosition = cameraTransform.getPosition();
         Vector3 negativeCameraPos = new Vector3(-cameraPosition.x, -cameraPosition.y, -cameraPosition.z);
         viewMatrix.translate(negativeCameraPos);
 
