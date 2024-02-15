@@ -1,4 +1,4 @@
-package com.vgames.survivalreckoning.framework.service.rendering.renderer;
+package com.vgames.survivalreckoning.framework.service.rendering.shaderpipeline;
 
 import com.vgames.survivalreckoning.framework.engine.Engine;
 import com.vgames.survivalreckoning.framework.math.Matrix4f;
@@ -16,8 +16,6 @@ public abstract class ShaderPipeline extends AssetLoader {
     private final int programID;
     private final int vertexShaderID;
     private final int fragmentShaderID;
-
-    private static FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(16);
 
     public ShaderPipeline(String vertexFile, String fragmentFile) {
         this.vertexShaderID = Engine.fromService(GraphicsAPI.class).loadShader(vertexFile, GL_VERTEX_SHADER);

@@ -2,11 +2,11 @@ package com.vgames.survivalreckoning.framework.entity;
 
 import java.util.UUID;
 
-public class EntityUUID {
+public class GameUUID {
 
     private final UUID uuid;
 
-    public EntityUUID() {
+    public GameUUID() {
         this.uuid = UUID.randomUUID();
     }
 

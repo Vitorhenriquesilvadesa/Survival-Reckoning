@@ -1,7 +1,7 @@
 package com.vgames.survivalreckoning.framework.engine;
 
 
-import com.vgames.survivalreckoning.game.Game;
+import com.vgames.survivalreckoning.framework.application.Game;
 import com.vgames.survivalreckoning.framework.service.general.ApplicationService;
 import com.vgames.survivalreckoning.framework.design_patterns.Singleton;
 import com.vgames.survivalreckoning.framework.log.*;
@@ -13,6 +13,7 @@ import com.vgames.survivalreckoning.framework.service.event.EventAPI;
 import com.vgames.survivalreckoning.framework.service.event.EventFlag;
 import com.vgames.survivalreckoning.framework.service.rendering.GraphicsAPI;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,12 +26,18 @@ public class Engine extends Logger {
     private boolean successfulInitialization;
     private Game game;
 
-    public void init() {
+    public void init(Class<? extends Game> gameClass) {
         successfulInitialization = true;
         initializeServices();
         initializationLog();
         setEventFlags();
-        game = new Game();
+
+        try {
+            game = gameClass.getDeclaredConstructor().newInstance();
+        } catch (InstantiationException | NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
+            critical("", new RuntimeException(e));
+        }
+
         game.start();
     }
 
@@ -42,7 +49,7 @@ public class Engine extends Logger {
         breakLine();
         for(ApplicationService service : engineSingleton.getInstance().services.values()) {
             warn("Shutdown the " + service.getClass().getSimpleName() +
-                    " ".repeat(12 - service.getClass().getSimpleName().length()) + " service.");
+                    " ".repeat(15 - service.getClass().getSimpleName().length()) + " service.");
             service.shutdown();
         }
     }
@@ -54,7 +61,7 @@ public class Engine extends Logger {
         for(ApplicationService service : this.services.values()) {
             boolean initializeResult = service.init();
             info("Initializing the " + service.getClass().getSimpleName() +
-                    " ".repeat(12 - service.getClass().getSimpleName().length()) +
+                    " ".repeat(15 - service.getClass().getSimpleName().length()) +
                     " service. Result: " + (initializeResult ? "Success." : "Failed."));
 
             if(!initializeResult) builder.append(" ").append(service.getClass().getSimpleName());
@@ -71,6 +78,7 @@ public class Engine extends Logger {
         registerService(ServiceType.GRAPHICS_API);
         registerService(ServiceType.AUDIO_API);
         registerService(ServiceType.INPUT_API);
+        registerService(ServiceType.POOL_API);
     }
 
     private void setEventFlags() {

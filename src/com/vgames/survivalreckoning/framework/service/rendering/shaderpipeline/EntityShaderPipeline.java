@@ -1,15 +1,17 @@
-package com.vgames.survivalreckoning.framework.service.rendering.renderer;
+package com.vgames.survivalreckoning.framework.service.rendering.shaderpipeline;
 
 import com.vgames.survivalreckoning.framework.log.annotation.LogAlias;
 import com.vgames.survivalreckoning.framework.math.Mathf;
 import com.vgames.survivalreckoning.framework.math.Matrix4f;
 import com.vgames.survivalreckoning.framework.service.rendering.element.light.DirectionalLight;
+import com.vgames.survivalreckoning.framework.service.rendering.element.material.Material;
+import com.vgames.survivalreckoning.framework.service.rendering.renderer.config.Camera;
 
 @LogAlias("Asset Loader")
-public class DefaultShaderPipeline extends ShaderPipeline {
+public class EntityShaderPipeline extends ShaderPipeline {
 
-    private static final String VERTEX_FILE = "src/resources/shaders/default.vert";
-    private static final String FRAGMENT_FILE = "src/resources/shaders/default.frag";
+    private static final String VERTEX_FILE = "src/resources/shaders/entity.vert";
+    private static final String FRAGMENT_FILE = "src/resources/shaders/entity.frag";
 
     private int location_transformationMatrix;
     private int location_projectionMatrix;
@@ -18,8 +20,9 @@ public class DefaultShaderPipeline extends ShaderPipeline {
     private int location_lightColor;
     private int location_smoothness;
     private int location_reflectivity;
+    private int location_fakeLighting;
 
-    public DefaultShaderPipeline() {
+    public EntityShaderPipeline() {
         super(VERTEX_FILE, FRAGMENT_FILE);
     }
 
@@ -32,6 +35,7 @@ public class DefaultShaderPipeline extends ShaderPipeline {
         location_lightColor = getUniformLocation("lightColor");
         location_reflectivity = getUniformLocation("reflectivity");
         location_smoothness = getUniformLocation("smoothness");
+        location_fakeLighting = getUniformLocation("useFakeLighting");
     }
 
     @Override
@@ -59,8 +63,12 @@ public class DefaultShaderPipeline extends ShaderPipeline {
         loadVector(location_lightColor, light.color);
     }
 
-    public void loadMaterialVariables(float smooth, float reflectivity) {
-        loadFloat(location_smoothness, smooth);
-        loadFloat(location_reflectivity, reflectivity);
+    public void loadMaterialVariables(Material material) {
+        loadFloat(location_smoothness, material.smoothness);
+        loadFloat(location_reflectivity, material.reflectivity);
+    }
+
+    public void loadFakeLightingVariable(boolean useFake) {
+        loadBoolean(location_fakeLighting, useFake);
     }
 }

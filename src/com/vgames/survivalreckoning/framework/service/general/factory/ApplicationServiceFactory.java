@@ -1,5 +1,6 @@
 package com.vgames.survivalreckoning.framework.service.general.factory;
 
+import com.vgames.survivalreckoning.framework.service.pool.ObjectPoolAPI;
 import com.vgames.survivalreckoning.framework.service.audio.AudioAPI;
 import com.vgames.survivalreckoning.framework.service.general.ApplicationService;
 import com.vgames.survivalreckoning.framework.service.event.EventAPI;
@@ -19,6 +20,7 @@ public class ApplicationServiceFactory {
             case AUDIO_API -> new AudioAPI();
             case EVENT_API -> new EventAPI();
             case INPUT_API -> new InputAPI();
+            case POOL_API -> new ObjectPoolAPI();
             default -> throw new UnknownServiceException(type);
         };
     }

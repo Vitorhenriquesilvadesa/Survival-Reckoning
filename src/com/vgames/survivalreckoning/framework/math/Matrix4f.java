@@ -157,6 +157,22 @@ public class Matrix4f {
         return projectionMatrix;
     }
 
+    public static Matrix4f perspective(float angleOfView, float near, float far) {
+
+        Matrix4f matrix = new Matrix4f();
+        matrix.setIdentity();
+
+        float scale = 1 / Mathf.tan(angleOfView * 0.5f * (float) Math.PI / 180);
+        matrix.elements[0] = scale;
+        matrix.elements[5] = scale;
+        matrix.elements[10] = -far / (far - near);
+        matrix.elements[14] = -far * near / (far - near);
+        matrix.elements[11] = -1;
+        matrix.elements[15] = 0;
+
+        return matrix;
+    }
+
     public static Matrix4f orthographic(float left, float right, float bottom, float top, float near, float far) {
 
         Matrix4f matrix = new Matrix4f();
@@ -196,75 +212,118 @@ public class Matrix4f {
     }
 
     public void scale(Vector3 scale) {
-        elements[0] = scale.x;
-        elements[5] = scale.y;
-        elements[10] = scale.z;
+
+        Matrix4f matrix = new Matrix4f();
+        matrix.setIdentity();
+
+        matrix.elements[0] = scale.x;
+        matrix.elements[5] = scale.y;
+        matrix.elements[10] = scale.z;
+
+        this.multiply(matrix);
     }
 
     public void translate(Vector3 translation) {
-        elements[12] += translation.x;
-        elements[13] += translation.y;
-        elements[14] -= translation.z;
+
+        Matrix4f matrix = new Matrix4f();
+        matrix.setIdentity();
+
+        matrix.elements[12] = translation.x;
+        matrix.elements[13] = translation.y;
+        matrix.elements[14] = -translation.z;
+
+        this.multiply(matrix);
     }
 
     public void rotateX(float angle) {
         float cos = Mathf.cos(angle);
         float sin = Mathf.sin(angle);
 
-        float temp1 = elements[4] * cos + elements[8] * sin;
-        float temp2 = elements[5] * cos + elements[9] * sin;
-        float temp3 = elements[6] * cos + elements[10] * sin;
-        float temp4 = elements[7] * cos + elements[11] * sin;
+        Matrix4f matrix = new Matrix4f();
+        matrix.setIdentity();
 
-        elements[8] = elements[8] * cos - elements[4] * sin;
-        elements[9] = elements[9] * cos - elements[5] * sin;
-        elements[10] = elements[10] * cos - elements[6] * sin;
-        elements[11] = elements[11] * cos - elements[7] * sin;
+        matrix.elements[5] = cos;
+        matrix.elements[6] = sin;
+        matrix.elements[9] = -sin;
+        matrix.elements[10] = cos;
 
-        elements[4] = temp1;
-        elements[5] = temp2;
-        elements[6] = temp3;
-        elements[7] = temp4;
+        this.multiply(matrix);
+
+
+//        float temp1 = elements[4] * cos + elements[8] * sin;
+//        float temp2 = elements[5] * cos + elements[9] * sin;
+//        float temp3 = elements[6] * cos + elements[10] * sin;
+//        float temp4 = elements[7] * cos + elements[11] * sin;
+//
+//        elements[8] = elements[8] * cos - elements[4] * sin;
+//        elements[9] = elements[9] * cos - elements[5] * sin;
+//        elements[10] = elements[10] * cos - elements[6] * sin;
+//        elements[11] = elements[11] * cos - elements[7] * sin;
+//
+//        elements[4] = temp1;
+//        elements[5] = temp2;
+//        elements[6] = temp3;
+//        elements[7] = temp4;
     }
 
     public void rotateY(float angle) {
         float cos = Mathf.cos(angle);
         float sin = Mathf.sin(angle);
 
-        float temp1 = elements[0] * cos - elements[8] * sin;
-        float temp2 = elements[1] * cos - elements[9] * sin;
-        float temp3 = elements[2] * cos - elements[10] * sin;
-        float temp4 = elements[3] * cos - elements[11] * sin;
+        Matrix4f matrix = new Matrix4f();
+        matrix.setIdentity();
 
-        elements[8] = elements[0] * sin + elements[8] * cos;
-        elements[9] = elements[1] * sin + elements[9] * cos;
-        elements[10] = elements[2] * sin + elements[10] * cos;
-        elements[11] = elements[3] * sin + elements[11] * cos;
+        matrix.elements[0] = cos;
+        matrix.elements[2] = -sin;
+        matrix.elements[8] = sin;
+        matrix.elements[10] = cos;
 
-        elements[0] = temp1;
-        elements[1] = temp2;
-        elements[2] = temp3;
-        elements[3] = temp4;
+        this.multiply(matrix);
+
+//        float temp1 = elements[0] * cos - elements[8] * sin;
+//        float temp2 = elements[1] * cos - elements[9] * sin;
+//        float temp3 = elements[2] * cos - elements[10] * sin;
+//        float temp4 = elements[3] * cos - elements[11] * sin;
+//
+//        elements[8] = elements[0] * sin + elements[8] * cos;
+//        elements[9] = elements[1] * sin + elements[9] * cos;
+//        elements[10] = elements[2] * sin + elements[10] * cos;
+//        elements[11] = elements[3] * sin + elements[11] * cos;
+//
+//        elements[0] = temp1;
+//        elements[1] = temp2;
+//        elements[2] = temp3;
+//        elements[3] = temp4;
     }
 
     public void rotateZ(float angle) {
         float cos = Mathf.cos(angle);
         float sin = Mathf.sin(angle);
 
-        float temp1 = elements[0] * cos + elements[4] * sin;
-        float temp2 = elements[1] * cos + elements[5] * sin;
-        float temp3 = elements[2] * cos + elements[6] * sin;
-        float temp4 = elements[3] * cos + elements[7] * sin;
+        Matrix4f matrix = new Matrix4f();
+        matrix.setIdentity();
 
-        elements[4] = elements[4] * cos - elements[0] * sin;
-        elements[5] = elements[5] * cos - elements[1] * sin;
-        elements[6] = elements[6] * cos - elements[2] * sin;
-        elements[7] = elements[7] * cos - elements[3] * sin;
+        matrix.elements[0] = cos;
+        matrix.elements[1] = -sin;
+        matrix.elements[4] = sin;
+        matrix.elements[5] = cos;
 
-        elements[0] = temp1;
-        elements[1] = temp2;
-        elements[2] = temp3;
-        elements[3] = temp4;
+        this.multiply(matrix);
+
+//        float temp1 = elements[0] * cos + elements[4] * sin;
+//        float temp2 = elements[1] * cos + elements[5] * sin;
+//        float temp3 = elements[2] * cos + elements[6] * sin;
+//        float temp4 = elements[3] * cos + elements[7] * sin;
+//
+//        elements[4] = elements[4] * cos - elements[0] * sin;
+//        elements[5] = elements[5] * cos - elements[1] * sin;
+//        elements[6] = elements[6] * cos - elements[2] * sin;
+//        elements[7] = elements[7] * cos - elements[3] * sin;
+//
+//        elements[0] = temp1;
+//        elements[1] = temp2;
+//        elements[2] = temp3;
+//        elements[3] = temp4;
     }
 
     public void rotate(Vector3 angles) {

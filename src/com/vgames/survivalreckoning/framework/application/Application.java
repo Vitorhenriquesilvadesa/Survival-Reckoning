@@ -11,8 +11,8 @@ import com.vgames.survivalreckoning.framework.service.event.EventFlag;
 @LogInfo(level = LogLevel.INFO)
 @NotDebugLog
 public class Application extends Logger {
-    public static void init() {
-        Engine.getInstance().init();
+    public static void init(Class<? extends Game> gameClass) {
+        Engine.getInstance().init(gameClass);
     }
 
     public static void run() {

@@ -2,7 +2,7 @@ package com.vgames.survivalreckoning.framework.service.rendering.element.loader;
 
 import com.vgames.survivalreckoning.framework.log.annotation.LogAlias;
 import com.vgames.survivalreckoning.framework.service.general.AssetLoader;
-import com.vgames.survivalreckoning.framework.service.rendering.element.model.RawModel;
+import com.vgames.survivalreckoning.framework.service.rendering.element.model.Mesh;
 import org.lwjgl.BufferUtils;
 
 import java.nio.FloatBuffer;
@@ -13,13 +13,13 @@ import java.util.List;
 import static org.lwjgl.opengl.GL45.*;
 
 @LogAlias("Asset Loader")
-public class RawModelLoader extends AssetLoader {
+public class MeshLoader extends AssetLoader {
     private final List<Integer> vaos = new ArrayList<>();
     private final List<Integer> vbos = new ArrayList<>();
     private final List<Integer> textures = new ArrayList<>();
     private static boolean isCreated = false;
 
-    public RawModelLoader() {
+    public MeshLoader() {
         if(!isCreated) {
             isCreated = true;
         } else {
@@ -27,14 +27,14 @@ public class RawModelLoader extends AssetLoader {
         }
     }
 
-    public RawModel loadToVAO(float[] positions, float[] textureCoords, float[] normals, int[] indices) {
+    public Mesh loadToVAO(float[] positions, float[] textureCoords, float[] normals, int[] indices) {
         int vaoID = createVAO();
         bindIndicesBuffer(indices);
         storeDataInAttributeList(0, 3, positions);
         storeDataInAttributeList(1, 2, textureCoords);
         storeDataInAttributeList(2, 3, normals);
         unbindVAO();
-        return new RawModel(vaoID, indices.length);
+        return new Mesh(vaoID, indices.length);
     }
 
     public int createVAO() {

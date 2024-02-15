@@ -1,4 +1,4 @@
-package com.vgames.survivalreckoning.framework.service.rendering.renderer;
+package com.vgames.survivalreckoning.framework.service.rendering.shaderpipeline;
 
 import com.vgames.survivalreckoning.framework.log.Logger;
 import com.vgames.survivalreckoning.framework.log.annotation.GenerateCriticalFile;

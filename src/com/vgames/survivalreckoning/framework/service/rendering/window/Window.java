@@ -28,7 +28,7 @@ public class Window implements RenderingElement, UpdatableComponent {
     private void initializeNative() {
         this.nativeWindow = glfwCreateWindow(this.width, this.height, this.title, 0, 0);
         glfwMakeContextCurrent(this.nativeWindow);
-        if(withCoreProfile) {
+        if (withCoreProfile) {
             glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
         }
         createCapabilities();
@@ -39,7 +39,7 @@ public class Window implements RenderingElement, UpdatableComponent {
     }
 
     private void clear() {
-        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        glClearColor(0.4f, 0.8f, 1.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     }
 

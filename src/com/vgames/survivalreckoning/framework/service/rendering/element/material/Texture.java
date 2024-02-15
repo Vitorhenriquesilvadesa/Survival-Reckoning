@@ -25,5 +25,4 @@ public class Texture {
     public int getTextureID() {
         return id;
     }
-
 }

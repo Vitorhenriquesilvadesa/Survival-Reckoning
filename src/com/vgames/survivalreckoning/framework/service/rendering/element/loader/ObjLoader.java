@@ -4,7 +4,7 @@ import com.vgames.survivalreckoning.framework.log.annotation.GenerateCriticalFil
 import com.vgames.survivalreckoning.framework.math.Vector2;
 import com.vgames.survivalreckoning.framework.math.Vector3;
 import com.vgames.survivalreckoning.framework.service.general.AssetLoader;
-import com.vgames.survivalreckoning.framework.service.rendering.element.model.RawModel;
+import com.vgames.survivalreckoning.framework.service.rendering.element.model.Mesh;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -14,7 +14,7 @@ import java.util.List;
 @GenerateCriticalFile
 public class ObjLoader extends AssetLoader {
 
-    public RawModel loadModel(String modelPath, RawModelLoader loader) {
+    public Mesh loadModel(String modelPath, MeshLoader loader) {
         FileReader fr = null;
 
         try {

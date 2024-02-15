@@ -1,4 +1,4 @@
-package com.vgames.survivalreckoning.framework.service.rendering.renderer;
+package com.vgames.survivalreckoning.framework.service.rendering.renderer.config;
 
 import com.vgames.survivalreckoning.framework.math.Matrix4f;
 

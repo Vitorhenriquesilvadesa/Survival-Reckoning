@@ -2,26 +2,26 @@ package com.vgames.survivalreckoning.framework.service.rendering.element.model;
 
 import com.vgames.survivalreckoning.framework.service.rendering.element.material.Material;
 
-public class TexturedModel {
+public class Model {
 
-    private RawModel rawModel;
+    private Mesh mesh;
     private Material material;
 
-    public TexturedModel(RawModel model, Material material) {
-        this.rawModel = model;
+    public Model(Mesh model, Material material) {
+        this.mesh = model;
         this.material = material;
     }
 
-    public RawModel getRawModel() {
-        return rawModel;
+    public Mesh getRawModel() {
+        return mesh;
     }
 
     public Material getMaterial() {
         return material;
     }
 
-    public void setRawModel(RawModel rawModel) {
-        this.rawModel = rawModel;
+    public void setRawModel(Mesh mesh) {
+        this.mesh = mesh;
     }
 
     public void setMaterial(Material material) {

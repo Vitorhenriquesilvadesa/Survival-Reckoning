@@ -33,5 +33,5 @@ void main(void) {
     float smoothedFactor = pow(specularFactor, _smoothness);
     vec3 finalSpecular = smoothedFactor * _reflectivity * lightColor;
 
-    out_Color = vec4(diffuse, 1.0) * texture(textureSampler, pass_textureCoords) + vec4(finalSpecular, 1.0);
+    out_Color = texture(textureSampler, pass_textureCoords);
 }

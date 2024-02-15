@@ -1,5 +1,7 @@
 package com.vgames.survivalreckoning.framework.service.rendering.element.loader;
 
+import com.vgames.survivalreckoning.framework.log.annotation.LogAlias;
+import com.vgames.survivalreckoning.framework.service.general.AssetLoader;
 import com.vgames.survivalreckoning.framework.service.rendering.element.material.Texture;
 import org.lwjgl.BufferUtils;
 
@@ -11,22 +13,22 @@ import java.nio.IntBuffer;
 
 import static org.lwjgl.opengl.GL11.*;
 
-public class TextureLoader {
+@LogAlias("Asset Loader")
+public class TextureLoader extends AssetLoader {
 
-
-    public static Texture getTexture(String path) {
+    public Texture getTexture(String path, ImageFilter filter) {
         int width = 0;
         int height = 0;
 
         int[] pixels = null;
         try {
-            BufferedImage image = ImageIO.read(new FileInputStream("src/resources/textures/"+path+".png"));
+            BufferedImage image = ImageIO.read(new FileInputStream(path+".png"));
             width = image.getWidth();
             height = image.getHeight();
             pixels = new int[width * height];
             image.getRGB(0, 0, width, height, pixels, 0, width);
         } catch (IOException e) {
-            e.printStackTrace();
+            critical("", new RuntimeException(e));
         }
 
         assert width != 0 && height != 0;
@@ -43,8 +45,18 @@ public class TextureLoader {
 
         int result = glGenTextures();
         glBindTexture(GL_TEXTURE_2D, result);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+        int _filter;
+
+        switch(filter) {
+            case POINT -> _filter = GL_NEAREST;
+            default -> _filter = GL_LINEAR;
+        }
+
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, _filter);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, _filter);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
         IntBuffer buffer = BufferUtils.createIntBuffer(data.length);
         buffer.put(data).flip();

@@ -1,7 +1,7 @@
 package com.vgames.survivalreckoning.framework.math;
 
 import com.vgames.survivalreckoning.framework.entity.component.Transform;
-import com.vgames.survivalreckoning.framework.service.rendering.renderer.Camera;
+import com.vgames.survivalreckoning.framework.service.rendering.renderer.config.Camera;
 
 public class Mathf {
 
@@ -23,7 +23,6 @@ public class Mathf {
         Transform cameraTransform = camera.transform;
 
         viewMatrix.setIdentity();
-        viewMatrix.rotate(cameraTransform.rotation);
 
         Vector3 cameraPosition = cameraTransform.position;
         Vector3 negativeCameraPos = new Vector3(-cameraPosition.x, -cameraPosition.y, -cameraPosition.z);
