@@ -44,7 +44,7 @@ public class SurvivalReckoning extends Game {
 
         gameObject = instantiate(
                 new Transform(new Vector3(0, 2, -1), new Vector3(0, 0, 0), 1f),
-                SpriteRenderer.class, RotationComponent.class);
+                SpriteRenderer.class);
 
         GameObject entity = instantiate(
                 new Transform(new Vector3(3, -2, -1), new Vector3(0, 0, 0), 1f, gameObject.transform),
