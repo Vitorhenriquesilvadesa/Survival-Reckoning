@@ -28,11 +28,12 @@ public class MasterRenderer extends Logger {
     private final Map<Model, List<GameObject>> entities = new HashMap<>();
     private final List<Terrain> terrains = new ArrayList<>();
     private Frustum frustum;
-    private final int screenSize = 8;
+    private final float viewportWidth = 16f;
+    private final float viewportHeight = 9f;
 
     public MasterRenderer() {
         //this.frustum = new PerspectiveFrustum(70f, 0.1f, 1000f);
-        this.frustum = new OrthographicFrustum(-screenSize, screenSize, -screenSize, screenSize, -screenSize, 100);
+        this.frustum = new OrthographicFrustum(-viewportWidth / 2f, viewportWidth / 2f, -viewportHeight / 2f, viewportHeight / 2f, 0.1f, 100f);
         this.entityRenderer = new EntityRenderer(entityShaderPipeline, frustum);
         this.terrainRenderer = new TerrainRenderer(terrainShaderPipeline, frustum);
     }
@@ -60,9 +61,11 @@ public class MasterRenderer extends Logger {
     }
 
     public void processEntity(GameObject gameObject) {
-        Model model = gameObject.getComponent(SpriteRenderer.class).getModel();
+        SpriteRenderer spriteRenderer = gameObject.getComponent(SpriteRenderer.class);
 
-        if(model == null) return;
+        if(spriteRenderer == null) return;
+
+        Model model = spriteRenderer.getModel();
 
         List<GameObject> batch = entities.get(model);
 

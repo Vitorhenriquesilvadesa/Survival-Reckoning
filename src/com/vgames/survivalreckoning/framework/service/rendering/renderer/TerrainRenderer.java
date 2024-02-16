@@ -8,7 +8,6 @@ import com.vgames.survivalreckoning.framework.service.rendering.element.terrain.
 import com.vgames.survivalreckoning.framework.service.rendering.renderer.config.Frustum;
 import com.vgames.survivalreckoning.framework.service.rendering.renderer.config.PerspectiveFrustum;
 import com.vgames.survivalreckoning.framework.service.rendering.shaderpipeline.TerrainShaderPipeline;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -25,7 +24,7 @@ public class TerrainRenderer {
     private Frustum frustum;
     private TerrainShaderPipeline shaderPipeline;
 
-    public TerrainRenderer(@NotNull TerrainShaderPipeline shaderPipeline) {
+    public TerrainRenderer(TerrainShaderPipeline shaderPipeline) {
         this.shaderPipeline = shaderPipeline;
         this.frustum = new PerspectiveFrustum(70f, 0.1f, 1000f);
         //this.frustum = new OrthographicFrustum(-1, 1, -1, 1, 0.1f, 1000f);
@@ -34,7 +33,7 @@ public class TerrainRenderer {
         shaderPipeline.unbind();
     }
 
-    public TerrainRenderer(@NotNull TerrainShaderPipeline shaderPipeline, @NotNull Frustum frustum) {
+    public TerrainRenderer(TerrainShaderPipeline shaderPipeline,Frustum frustum) {
         this.shaderPipeline = shaderPipeline;
         this.frustum = frustum;
         //this.frustum = new OrthographicFrustum(-1, 1, -1, 1, 0.1f, 1000f);

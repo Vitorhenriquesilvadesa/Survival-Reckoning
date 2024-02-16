@@ -25,8 +25,8 @@ public class GraphicContext implements RenderingElement, UpdatableComponent {
 
         this.window = new WindowBuilder()
                 .title("Survival Reckoning")
-                .height(600)
-                .width(800)
+                .height(720)
+                .width(1280)
                 .withCoreProfile(true)
                 .build();
         this.nativeWindow = window.getNativeWindow();

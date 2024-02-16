@@ -7,17 +7,17 @@ import com.vgames.survivalreckoning.framework.entity.component.Transform;
 public class GameObject extends ComponentContainer {
 
     public Transform transform;
-    private GameUUID uuid;
+    private GameObjectUUID uuid;
 
     public GameObject() {
         this.transform = new Transform();
-        this.uuid = new GameUUID();
+        this.uuid = new GameObjectUUID();
         setOwner(this);
     }
 
     public GameObject(Transform transform) {
         this.transform = transform;
-        this.uuid = new GameUUID();
+        this.uuid = new GameObjectUUID();
         setOwner(this);
     }
 }
