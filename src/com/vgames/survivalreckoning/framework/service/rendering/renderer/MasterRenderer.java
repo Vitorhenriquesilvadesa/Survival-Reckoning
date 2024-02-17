@@ -2,6 +2,7 @@ package com.vgames.survivalreckoning.framework.service.rendering.renderer;
 
 import com.vgames.survivalreckoning.framework.entity.GameObject;
 import com.vgames.survivalreckoning.framework.entity.component.SpriteRenderer;
+import com.vgames.survivalreckoning.framework.entity.component.box2dmesh.Box2DMesh;
 import com.vgames.survivalreckoning.framework.log.Logger;
 import com.vgames.survivalreckoning.framework.log.annotation.LogAlias;
 import com.vgames.survivalreckoning.framework.service.rendering.element.light.DirectionalLight;
@@ -61,11 +62,13 @@ public class MasterRenderer extends Logger {
     }
 
     public void processEntity(GameObject gameObject) {
+
         SpriteRenderer spriteRenderer = gameObject.getComponent(SpriteRenderer.class);
+        Box2DMesh mesh = gameObject.getComponent(Box2DMesh.class);
 
-        if(spriteRenderer == null) return;
+        if(spriteRenderer == null || mesh == null) return;
 
-        Model model = spriteRenderer.getModel();
+        Model model = new Model(mesh.getMesh(), spriteRenderer.getTexture());
 
         List<GameObject> batch = entities.get(model);
 
