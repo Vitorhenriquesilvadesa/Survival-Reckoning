@@ -1,8 +1,8 @@
-package com.vgames.survivalreckoning.framework.entity.component;
+package com.vgames.survivalreckoning.framework.entity.component.spriterenderer;
 
 import com.vgames.survivalreckoning.framework.entity.GameObject;
+import com.vgames.survivalreckoning.framework.entity.component.Component;
 import com.vgames.survivalreckoning.framework.service.rendering.element.material.Texture;
-import com.vgames.survivalreckoning.framework.service.rendering.element.model.Model;
 
 
 public class SpriteRenderer extends Component {
@@ -11,11 +11,6 @@ public class SpriteRenderer extends Component {
 
     public SpriteRenderer(GameObject parent) {
         super(parent);
-    }
-
-    @Override
-    public void cleanup() {
-
     }
 
     public Texture getTexture() {

@@ -61,10 +61,10 @@ public class Box2DMesh extends Component {
         };
 
         float[] textureCoordinates = {
-                0.0f, 1.0f, // Canto inferior esquerdo
-                0.0f, 0.0f, // Canto superior esquerdo
-                1.0f, 0.0f, // Canto superior direito
-                1.0f, 1.0f  // Canto inferior direito
+                0.0f, 1.0f,
+                0.0f, 0.0f,
+                1.0f, 0.0f,
+                1.0f, 1.0f
         };
 
         float[] normals = { 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f };

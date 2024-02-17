@@ -1,11 +1,12 @@
-package com.vgames.survivalreckoning.framework.entity.component;
+package com.vgames.survivalreckoning.framework.entity.component.rotation;
 
 import com.vgames.survivalreckoning.framework.entity.GameObject;
+import com.vgames.survivalreckoning.framework.entity.component.Component;
 import com.vgames.survivalreckoning.framework.math.Vector3;
 
 public class RotationComponent extends Component {
 
-    protected RotationComponent(GameObject parent) {
+    public RotationComponent(GameObject parent) {
         super(parent);
     }
 

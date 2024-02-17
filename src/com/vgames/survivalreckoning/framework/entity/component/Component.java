@@ -5,7 +5,6 @@ import com.vgames.survivalreckoning.framework.entity.GameObject;
 
 public abstract class Component {
     protected GameObject parent;
-
     protected Component(GameObject parent) {
         this.parent = parent;
     }
@@ -15,4 +14,12 @@ public abstract class Component {
     public void update() { }
 
     public void cleanup() { }
+
+    public GameObject getParent() {
+        return parent;
+    }
+
+    public void setParent(GameObject parent) {
+        this.parent = parent;
+    }
 }
