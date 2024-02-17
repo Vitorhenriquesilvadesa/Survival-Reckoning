@@ -1,6 +1,7 @@
 package com.vgames.survivalreckoning.framework.service.rendering.element.model;
 
 import com.vgames.survivalreckoning.framework.service.rendering.element.material.Material;
+import com.vgames.survivalreckoning.framework.service.rendering.element.material.Texture;
 
 public class Model {
 
@@ -10,6 +11,11 @@ public class Model {
     public Model(Mesh model, Material material) {
         this.mesh = model;
         this.material = material;
+    }
+
+    public Model(Mesh model, Texture texture) {
+        this.mesh = model;
+        this.material = new Material(texture, 0, 0, true, true);
     }
 
     public Mesh getRawModel() {
