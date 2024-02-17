@@ -46,13 +46,17 @@ public class ObjectPoolAPI implements ApplicationService {
 
     public static GameObject instantiate(Transform parent) {
         GameObject gameObject = new GameObject(parent);
-        gameObjects.add(gameObject);
+        attachObject(gameObject);
         return gameObject;
     }
 
     public static GameObject instantiate() {
         GameObject gameObject = new GameObject();
-        gameObjects.add(gameObject);
+        attachObject(gameObject);
         return gameObject;
+    }
+
+    private static void attachObject(GameObject gameObject) {
+        gameObjects.add(gameObject);
     }
 }

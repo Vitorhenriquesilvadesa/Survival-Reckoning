@@ -19,6 +19,7 @@ public class Box2DMesh extends Component {
 
     public Box2DMesh(GameObject parent) {
         super(parent);
+        setProps(new Box2DSize(0, 0, Vector2.zero()));
     }
 
     public void setProps(Box2DSize props) {

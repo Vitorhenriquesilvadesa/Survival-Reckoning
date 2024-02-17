@@ -3,13 +3,13 @@ package com.vgames.survivalreckoning.game;
 import com.vgames.survivalreckoning.framework.application.Game;
 import com.vgames.survivalreckoning.framework.engine.Engine;
 import com.vgames.survivalreckoning.framework.entity.GameObject;
-import com.vgames.survivalreckoning.framework.entity.component.rotation.RotationComponent;
 import com.vgames.survivalreckoning.framework.entity.component.spriterenderer.SpriteRenderer;
 import com.vgames.survivalreckoning.framework.entity.Transform;
 import com.vgames.survivalreckoning.framework.entity.component.box2dmesh.Box2DMesh;
 import com.vgames.survivalreckoning.framework.entity.component.box2dmesh.Box2DSize;
 import com.vgames.survivalreckoning.framework.math.Vector2;
 import com.vgames.survivalreckoning.framework.math.Vector3;
+import com.vgames.survivalreckoning.framework.service.event.reactive.ReactiveArrayList;
 import com.vgames.survivalreckoning.framework.service.input.Input;
 import com.vgames.survivalreckoning.framework.service.input.KeyCode;
 import com.vgames.survivalreckoning.framework.service.rendering.GraphicsAPI;
@@ -21,6 +21,7 @@ import static com.vgames.survivalreckoning.framework.service.pool.ObjectPoolAPI.
 public class SurvivalReckoning extends Game {
     GameObject gameObject;
     Texture texture;
+    ReactiveArrayList<Integer> reactiveArrayList;
 
     @Override
     public void start() {
@@ -30,7 +31,9 @@ public class SurvivalReckoning extends Game {
 
     private void initializeStartScene() {
 
-        Engine.fromService(GraphicsAPI.class).setViewportSize(80 / 4f, 45 / 4f);
+        Engine.fromService(GraphicsAPI.class).setViewportSize(320, 180);
+
+        reactiveArrayList = new ReactiveArrayList<>();
 
         texture = Engine.fromService(GraphicsAPI.class).loadTexture("Temple", ImageFilter.POINT);
 
@@ -72,6 +75,10 @@ public class SurvivalReckoning extends Game {
 
         if (Input.isKeyPressed(KeyCode.SR_KEY_S)) {
             cameraPosition.y -= 0.005f;
+        }
+
+        if(Input.isKeyPressed(KeyCode.SR_KEY_SPACE)) {
+            reactiveArrayList.add(10);
         }
     }
 }

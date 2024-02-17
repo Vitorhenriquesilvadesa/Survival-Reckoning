@@ -31,6 +31,7 @@ public abstract class ComponentContainer extends Logger {
         try {
             Component _component = componentClass.getDeclaredConstructor(GameObject.class).newInstance(this.owner);
             _component.setParent(this.owner);
+            _component.start();
             this.componentList.add(_component);
         } catch (InstantiationException | NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
             critical("", new RuntimeException(e));
