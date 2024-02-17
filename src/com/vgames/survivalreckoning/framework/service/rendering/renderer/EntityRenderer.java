@@ -90,4 +90,8 @@ public class EntityRenderer {
     public void setFrustum(Frustum frustum) {
         this.frustum = frustum;
     }
+
+    public Frustum getFrustum() {
+        return this.frustum;
+    }
 }

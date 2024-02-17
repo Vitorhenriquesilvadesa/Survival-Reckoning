@@ -1,9 +1,6 @@
 package com.vgames.survivalreckoning.framework.entity;
 
 
-import com.vgames.survivalreckoning.framework.entity.component.ComponentContainer;
-import com.vgames.survivalreckoning.framework.entity.component.Transform;
-
 public class GameObject extends ComponentContainer {
 
     public Transform transform;

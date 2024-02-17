@@ -19,6 +19,7 @@ public class Box2DMesh extends Component {
 
     public Box2DMesh(GameObject parent) {
         super(parent);
+        setProps(new Box2DSize(0, 0, Vector2.zero()));
     }
 
     public void setProps(Box2DSize props) {
@@ -61,10 +62,10 @@ public class Box2DMesh extends Component {
         };
 
         float[] textureCoordinates = {
-                0.0f, 1.0f, // Canto inferior esquerdo
-                0.0f, 0.0f, // Canto superior esquerdo
-                1.0f, 0.0f, // Canto superior direito
-                1.0f, 1.0f  // Canto inferior direito
+                0.0f, 1.0f,
+                0.0f, 0.0f,
+                1.0f, 0.0f,
+                1.0f, 1.0f
         };
 
         float[] normals = { 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f };

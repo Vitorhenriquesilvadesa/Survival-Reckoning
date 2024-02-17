@@ -71,6 +71,12 @@ public class GraphicsAPI extends Logger implements ApplicationService, EventList
         graphicsContext.update();
     }
 
+    public void setViewportSize(float viewportWidth, float viewportHeight) {
+
+        assert viewportWidth > 0f && viewportHeight > 0f : "Viewport size must be greater than zero.";
+        this.renderer.setViewportSize(viewportWidth, viewportHeight);
+    }
+
     public int loadShader(String file, int shaderType) {
         return this.shaderPipelineBuilder.loadShader(file, shaderType);
     }

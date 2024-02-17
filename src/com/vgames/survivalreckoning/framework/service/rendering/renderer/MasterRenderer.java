@@ -1,7 +1,7 @@
 package com.vgames.survivalreckoning.framework.service.rendering.renderer;
 
 import com.vgames.survivalreckoning.framework.entity.GameObject;
-import com.vgames.survivalreckoning.framework.entity.component.SpriteRenderer;
+import com.vgames.survivalreckoning.framework.entity.component.spriterenderer.SpriteRenderer;
 import com.vgames.survivalreckoning.framework.entity.component.box2dmesh.Box2DMesh;
 import com.vgames.survivalreckoning.framework.log.Logger;
 import com.vgames.survivalreckoning.framework.log.annotation.LogAlias;
@@ -42,12 +42,14 @@ public class MasterRenderer extends Logger {
 
     public void render(DirectionalLight directionalLight, Camera camera) {
         entityShaderPipeline.bind();
+        entityShaderPipeline.loadProjectionMatrix(entityRenderer.getFrustum().getProjectionMatrix());
         entityShaderPipeline.loadDirectionalLight(directionalLight);
         entityShaderPipeline.loadViewMatrix(camera);
         entityRenderer.render(entities);
         entityShaderPipeline.unbind();
 
         terrainShaderPipeline.bind();
+        terrainShaderPipeline.loadProjectionMatrix(entityRenderer.getFrustum().getProjectionMatrix());
         terrainShaderPipeline.loadDirectionalLight(directionalLight);
         terrainShaderPipeline.loadViewMatrix(camera);
         terrainRenderer.render(terrains);
@@ -84,5 +86,14 @@ public class MasterRenderer extends Logger {
     public void cleanup() {
         entityShaderPipeline.cleanup();
         terrainShaderPipeline.cleanup();
+    }
+
+    public void setViewportSize(float viewportWidth, float viewportHeight) {
+        float halfWidth = viewportWidth / 2f;
+        float halfHeight = viewportHeight / 2f;
+
+        this.frustum = new OrthographicFrustum(-halfWidth, halfWidth, -halfHeight, halfHeight, 0.1f, 1000f);
+        this.entityRenderer.setFrustum(frustum);
+        this.terrainRenderer.setFrustum(frustum);
     }
 }

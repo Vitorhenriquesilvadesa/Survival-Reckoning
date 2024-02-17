@@ -1,6 +1,7 @@
-package com.vgames.survivalreckoning.framework.entity.component;
+package com.vgames.survivalreckoning.framework.entity.component.collider;
 
 import com.vgames.survivalreckoning.framework.entity.GameObject;
+import com.vgames.survivalreckoning.framework.entity.component.Component;
 
 public abstract class Collider extends Component {
     private String tag;

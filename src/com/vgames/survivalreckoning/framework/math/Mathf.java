@@ -1,6 +1,6 @@
 package com.vgames.survivalreckoning.framework.math;
 
-import com.vgames.survivalreckoning.framework.entity.component.Transform;
+import com.vgames.survivalreckoning.framework.entity.Transform;
 import com.vgames.survivalreckoning.framework.service.rendering.renderer.config.Camera;
 
 public class Mathf {
