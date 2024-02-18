@@ -1,0 +1,17 @@
+Critical Error:
+Timestamp: 2024-02-18 14:50:57
+Message: Reactive methods must have one parameter.
+Stack Trace:
+java.lang.RuntimeException: Invalid method declaration.
+	at com.vgames.survivalreckoning.framework.service.event.reactive.QueueDispatcher.subscribe(QueueDispatcher.java:39)
+	at com.vgames.survivalreckoning.framework.service.event.EventAPI.subscribe(EventAPI.java:41)
+	at com.vgames.survivalreckoning.game.SurvivalReckoning.start(SurvivalReckoning.java:27)
+	at com.vgames.survivalreckoning.framework.engine.Engine.init(Engine.java:41)
+	at com.vgames.survivalreckoning.framework.application.Application.init(Application.java:15)
+	at com.vgames.survivalreckoning.Main.main(Main.java:8)
+
+Additional Details:
+Exception Type: java.lang.RuntimeException
+Exception Message: Invalid method declaration.
+Exception Cause: N/A
+Exception Source: com.vgames.survivalreckoning.framework.service.event.reactive.QueueDispatcher.subscribe(QueueDispatcher.java:39)

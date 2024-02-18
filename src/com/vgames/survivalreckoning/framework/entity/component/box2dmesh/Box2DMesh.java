@@ -3,10 +3,7 @@ package com.vgames.survivalreckoning.framework.entity.component.box2dmesh;
 import com.vgames.survivalreckoning.framework.engine.Engine;
 import com.vgames.survivalreckoning.framework.entity.GameObject;
 import com.vgames.survivalreckoning.framework.entity.component.Component;
-import com.vgames.survivalreckoning.framework.entity.component.spriterenderer.CollisionEvent;
 import com.vgames.survivalreckoning.framework.math.Vector2;
-import com.vgames.survivalreckoning.framework.service.event.EventAPI;
-import com.vgames.survivalreckoning.framework.service.event.reactive.Reactive;
 import com.vgames.survivalreckoning.framework.service.rendering.GraphicsAPI;
 import com.vgames.survivalreckoning.framework.service.rendering.element.model.Mesh;
 

@@ -4,7 +4,6 @@ import com.vgames.survivalreckoning.framework.application.Game;
 import com.vgames.survivalreckoning.framework.engine.Engine;
 import com.vgames.survivalreckoning.framework.entity.GameObject;
 import com.vgames.survivalreckoning.framework.entity.component.camera.CameraComponent;
-import com.vgames.survivalreckoning.framework.entity.component.spriterenderer.CollisionEvent;
 import com.vgames.survivalreckoning.framework.entity.component.spriterenderer.SpriteRenderer;
 import com.vgames.survivalreckoning.framework.entity.Transform;
 import com.vgames.survivalreckoning.framework.entity.component.box2dmesh.Box2DMesh;
@@ -42,7 +41,7 @@ public class SurvivalReckoning extends Game {
     }
 
     @Reactive
-    public void onResize(WindowResizeEvent event) {
+    private void onResize(WindowResizeEvent event) {
         System.out.println(event);
     }
 }
