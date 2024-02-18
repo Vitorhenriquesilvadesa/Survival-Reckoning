@@ -1,9 +1,13 @@
 package com.vgames.survivalreckoning.framework.entity.component.spriterenderer;
 
+import com.vgames.survivalreckoning.framework.engine.Engine;
 import com.vgames.survivalreckoning.framework.entity.GameObject;
 import com.vgames.survivalreckoning.framework.entity.component.Component;
 import com.vgames.survivalreckoning.framework.entity.component.box2dmesh.Box2DMesh;
 import com.vgames.survivalreckoning.framework.entity.component.box2dmesh.Box2DSize;
+import com.vgames.survivalreckoning.framework.service.event.EventAPI;
+import com.vgames.survivalreckoning.framework.service.event.reactive.Reactive;
+import com.vgames.survivalreckoning.framework.service.rendering.GraphicsAPI;
 import com.vgames.survivalreckoning.framework.service.rendering.element.material.Texture;
 
 
@@ -14,9 +18,7 @@ public class SpriteRenderer extends Component {
 
     public SpriteRenderer(GameObject parent) {
         super(parent);
-    }
-
-    public void start() {
+        Engine.fromService(GraphicsAPI.class).pushEntityInRenderingPool(parent);
     }
 
     public void update() {

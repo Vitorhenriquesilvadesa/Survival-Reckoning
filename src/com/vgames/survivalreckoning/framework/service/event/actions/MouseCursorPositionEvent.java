@@ -2,8 +2,8 @@ package com.vgames.survivalreckoning.framework.service.event.actions;
 
 public class MouseCursorPositionEvent extends Event {
 
-    private float x;
-    private float y;
+    private final float x;
+    private final float y;
 
     public MouseCursorPositionEvent(float x, float y) {
         this.x = x;

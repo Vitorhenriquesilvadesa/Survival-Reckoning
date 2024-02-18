@@ -3,7 +3,10 @@ package com.vgames.survivalreckoning.framework.entity.component.box2dmesh;
 import com.vgames.survivalreckoning.framework.engine.Engine;
 import com.vgames.survivalreckoning.framework.entity.GameObject;
 import com.vgames.survivalreckoning.framework.entity.component.Component;
+import com.vgames.survivalreckoning.framework.entity.component.spriterenderer.CollisionEvent;
 import com.vgames.survivalreckoning.framework.math.Vector2;
+import com.vgames.survivalreckoning.framework.service.event.EventAPI;
+import com.vgames.survivalreckoning.framework.service.event.reactive.Reactive;
 import com.vgames.survivalreckoning.framework.service.rendering.GraphicsAPI;
 import com.vgames.survivalreckoning.framework.service.rendering.element.model.Mesh;
 
@@ -48,7 +51,7 @@ public class Box2DMesh extends Component {
 
         float[] positions = new float[vertices.size() * 3];
 
-        for(int i = 0; i < vertices.size(); i++) {
+        for (int i = 0; i < vertices.size(); i++) {
             positions[i * 3] = vertices.get(i).x;
             positions[i * 3 + 1] = vertices.get(i).y;
             positions[i * 3 + 2] = 0f;
@@ -68,7 +71,7 @@ public class Box2DMesh extends Component {
                 1.0f, 1.0f
         };
 
-        float[] normals = { 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f };
+        float[] normals = {0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f};
 
         return Engine.fromService(GraphicsAPI.class).loadModel(positions, textureCoordinates, normals, indices);
     }
