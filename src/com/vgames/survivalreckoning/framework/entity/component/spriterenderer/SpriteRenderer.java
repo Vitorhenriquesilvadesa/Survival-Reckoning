@@ -24,7 +24,7 @@ public class SpriteRenderer extends Component {
     public void update() {
         if(!meshSizeDefined) {
             if(texture != null) {
-                parent.getComponent(Box2DMesh.class).setProps(new Box2DSize(texture.getWidth(), texture.getHeight()));
+                getComponent(Box2DMesh.class).setProps(new Box2DSize(texture.getWidth(), texture.getHeight()));
                 meshSizeDefined = true;
             }
         }

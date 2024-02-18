@@ -18,7 +18,7 @@ public class CameraComponent extends Component {
 
     public void start() {
         camera.transform = new Transform(parent.transform);
-        Vector3 position = parent.transform.getPosition();
+        Vector3 position = transform.getPosition();
         camera.transform.setPosition(new Vector3(position.x, position.y, position.z - 1));
     }
 

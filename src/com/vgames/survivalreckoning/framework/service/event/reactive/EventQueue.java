@@ -27,7 +27,7 @@ public class EventQueue {
 
     public Event popEvent() {
         if(!isEmpty()) {
-            return events.getFirst();
+            return events.removeFirst();
         }
 
         throw new EmptyEventQueueException();

@@ -8,10 +8,7 @@ import com.vgames.survivalreckoning.framework.service.event.actions.Event;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @LogAlias("EventAPI")
 @GenerateCriticalFile
@@ -28,47 +25,65 @@ public class QueueDispatcher extends Logger {
     @SuppressWarnings("unchecked")
     public void subscribe(Object listener) {
 
-        Class<?> klass = listener.getClass();
-        Method[] klassMethods = klass.getMethods();
+        List<Method> klassMethods = getReactiveMethods(listener);
 
         for (Method method : klassMethods) {
 
-            if (method.isAnnotationPresent(Reactive.class)) {
+            Class<?>[] parameters = method.getParameterTypes();
 
-                Class<?>[] parameters = method.getParameterTypes();
+            if (Event.class.isAssignableFrom(parameters[0])) {
 
-                if (parameters.length != 1) {
-                    critical("Reactive methods must have one parameter.", new RuntimeException("Invalid method declaration."));
+                Map<Method, List<Object>> batch = classMapMap.get(parameters[0]);
+
+                if (batch == null) {
+                    batch = new HashMap<>();
+                    classMapMap.put((Class<? extends Event>) parameters[0], batch);
                 }
 
-                if (Event.class.isAssignableFrom(parameters[0])) {
-
-                    Map<Method, List<Object>> batch = classMapMap.get(parameters[0]);
-
-                    if (batch == null) {
-
-                        batch = new HashMap<>();
-                        classMapMap.put((Class<? extends Event>) parameters[0], batch);
-                    }
-
-                    if (!batch.containsKey(method)) {
-
-                        batch.put(method, new ArrayList<>());
-                        batch.get(method).add(listener);
-                    }
+                if (!batch.containsKey(method)) {
+                    batch.put(method, new ArrayList<>());
+                    batch.get(method).add(listener);
                 }
             }
         }
     }
 
+    public List<Method> getReactiveMethods(Object listener) {
+        Class<?> klass = listener.getClass();
+        Method[] methods = klass.getDeclaredMethods();
+        List<Method> result = new ArrayList<>();
+
+        for (Method method : methods) {
+            if (method.isAnnotationPresent(Reactive.class)) {
+
+                if (!Modifier.isPublic(method.getModifiers())) {
+                    critical("The reactive method '" + method.getName() + "' in class '" + klass.getName() + "' must be PUBLIC.",
+                            new RuntimeException("Invalid method access modifier."));
+                }
+
+                if (method.getParameterTypes().length != 1) {
+                    critical("Reactive methods must have one parameter.", new RuntimeException("Invalid method declaration."));
+                }
+                result.add(method);
+            }
+        }
+
+        return result;
+    }
+
     public void unsubscribe(Object listener) {
 
         Class<?> klass = listener.getClass();
-        Method[] klassMethods = klass.getMethods();
+        Method[] klassMethods = klass.getDeclaredMethods();
+
 
         for (Method method : klassMethods) {
 
             if (method.isAnnotationPresent(Reactive.class)) {
+
+                if (!Modifier.isPublic(method.getModifiers())) {
+                    critical("The method '" + method.getName() + "' in class '" + klass.getSimpleName() + "' must be PUBLIC.");
+                }
 
                 Class<?>[] parameters = method.getParameterTypes();
 
@@ -104,30 +119,35 @@ public class QueueDispatcher extends Logger {
 
             EventQueue eventQueue = eventQueueMap.get(klass);
 
-            if (eventQueue.isEmpty()) {
+            if (eventQueue == null || eventQueue.isEmpty()) {
                 continue;
             }
 
-            Event event = eventQueue.popEvent();
+            while (!eventQueue.isEmpty()) {
 
-            for (Method method : classMapMap.get(klass).keySet()) {
+                Event event = eventQueue.popEvent();
 
-                Map<Method, List<Object>> batch = classMapMap.get(klass);
-                List<Object> instances = batch.get(method);
+                for (Method method : classMapMap.get(klass).keySet()) {
 
-                if (instances.isEmpty()) {
-                    eventQueue.clearEvents();
-                    continue;
-                }
+                    Map<Method, List<Object>> batch = classMapMap.get(klass);
+                    List<Object> instances = batch.get(method);
 
-                for (Object instance : instances) {
-                    try {
-                        if(Modifier.isPrivate(method.getModifiers())) {
-                            critical("The method '" + method.getName() + "' in class '" + instance.getClass().getSimpleName() + "' must be PUBLIC.");
+                    if (instances.isEmpty()) {
+                        eventQueue.clearEvents();
+                        continue;
+                    }
+
+                    for (Object instance : instances) {
+                        try {
+                            if (!Modifier.isPublic(method.getModifiers())) {
+                                critical("The method '" + method.getName() + "' in class '" + instance.getClass().getSimpleName() + "' must be PUBLIC.");
+                            } else {
+                                method.invoke(instance, event);
+                            }
+
+                        } catch (IllegalAccessException | InvocationTargetException e) {
+                            critical("Cannot invoke method '" + method.getName() + "'", new RuntimeException(e));
                         }
-                        method.invoke(instance, event);
-                    } catch (IllegalAccessException | InvocationTargetException e) {
-                        critical("Cannot invoke method '" + method.getName() + "'", new RuntimeException(e));
                     }
                 }
             }
