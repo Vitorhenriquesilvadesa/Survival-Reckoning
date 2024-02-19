@@ -25,4 +25,12 @@ public class Texture {
     public int getTextureID() {
         return id;
     }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
 }

@@ -2,7 +2,8 @@ package com.vgames.survivalreckoning.framework.service.event.actions;
 
 public abstract class Event {
 
-    protected final String  name;
+    protected final String name;
+    private boolean isHandled = false;
 
     public Event() {
         this.name = getClass().getSimpleName();
@@ -10,4 +11,12 @@ public abstract class Event {
 
     @Override
     public abstract String toString();
+
+    public void setHandled(boolean handled) {
+        isHandled = handled;
+    }
+
+    public boolean isHandled() {
+        return isHandled;
+    }
 }

@@ -1,6 +1,7 @@
 package com.vgames.survivalreckoning.framework.service.input;
 
 import com.vgames.survivalreckoning.framework.engine.Engine;
+import com.vgames.survivalreckoning.framework.math.Vector2;
 
 public class Input {
 
@@ -24,5 +25,9 @@ public class Input {
 
     public static boolean isMouseButtonReleased(int button) {
         return !isMouseButtonPressed(button);
+    }
+
+    public static Vector2 getMousePosition() {
+        return inputAPI.getMousePosition();
     }
 }
