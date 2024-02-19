@@ -39,7 +39,7 @@ public class SurvivalReckoning extends Game {
 
         Texture texture = Engine.fromService(GraphicsAPI.class).loadTexture("Temple", ImageFilter.POINT);
         gameObject = instantiate(new Transform(), SpriteRenderer.class, Box2DMesh.class, CameraComponent.class);
-        spriteSheet = Engine.fromService(GraphicsAPI.class).loadSpriteSheet("coin", 240, 16, 0, 0, 0, 16);
+        spriteSheet = Engine.fromService(GraphicsAPI.class).loadSpriteSheet("Coin", 240, 16, 0, 0, 0, 16);
         frameCount = spriteSheet.getSprites().size();
         gameObject.getComponent(SpriteRenderer.class).setTexture(spriteSheet.getSprites().getFirst().texture());
 
