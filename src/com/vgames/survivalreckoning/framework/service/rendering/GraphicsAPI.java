@@ -1,6 +1,10 @@
 package com.vgames.survivalreckoning.framework.service.rendering;
 
+import com.vgames.survivalreckoning.framework.Sprite.Animation;
+import com.vgames.survivalreckoning.framework.Sprite.Sprite;
+import com.vgames.survivalreckoning.framework.Sprite.SpriteSheet;
 import com.vgames.survivalreckoning.framework.entity.GameObject;
+import com.vgames.survivalreckoning.framework.entity.component.Animator;
 import com.vgames.survivalreckoning.framework.math.Vector2;
 import com.vgames.survivalreckoning.framework.math.Vector3;
 import com.vgames.survivalreckoning.framework.service.general.ApplicationService;
@@ -22,6 +26,8 @@ import com.vgames.survivalreckoning.framework.service.rendering.renderer.config.
 import com.vgames.survivalreckoning.framework.service.rendering.renderer.MasterRenderer;
 import com.vgames.survivalreckoning.framework.service.rendering.shaderpipeline.ShaderPipelineBuilder;
 
+import java.awt.image.BufferedImage;
+import java.nio.Buffer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,6 +43,8 @@ public class GraphicsAPI extends Logger implements ApplicationService, EventList
     public DirectionalLight directionalLight;
     private List<GameObject> models;
     private List<Terrain> terrains;
+    private Animator animator;
+    private Animation animation;
 
     @Override
     public boolean init() {
@@ -86,17 +94,24 @@ public class GraphicsAPI extends Logger implements ApplicationService, EventList
     public Texture loadTexture(String path, ImageFilter filter) {
         return this.textureLoader.getTexture("src/resources/textures/" + path, filter);
     }
-
+    public Texture loadTexture(BufferedImage image, ImageFilter filter, int spriteWidth, int spriteHeight,int tileSize) {
+        return this.textureLoader.getTexture(image,filter, spriteWidth, spriteHeight,tileSize);
+    }
     public Terrain loadTerrain(Vector2 position, String texturePath, ImageFilter filter) {
         return new Terrain((int) position.x, (int) position.y, this.meshLoader,
                 new Material(textureLoader.getTexture("src/resources/textures/" + texturePath, filter),
                         0, 0, true));
     }
+    public SpriteSheet loadSpriteSheet(String path, int sheetWidth, int sheetHeight, int row,int spriteWidth,int spriteHeight,int tileSize){
+        return new SpriteSheet("src/resources/textures/" + path, sheetWidth,sheetHeight,row,spriteWidth,spriteHeight,tileSize);
+    }
+    public Animation loadAnimation(SpriteSheet sheet, int frameDuration){
+        return new Animation(sheet.getSprites(),frameDuration);
+    }
 
     public Camera getCamera() {
         return camera;
     }
-
     public void pushEntityInRenderingPool(GameObject model) {
         this.models.add(model);
     }

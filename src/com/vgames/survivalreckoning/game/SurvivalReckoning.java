@@ -1,10 +1,13 @@
 package com.vgames.survivalreckoning.game;
 
+import com.vgames.survivalreckoning.framework.Sprite.Animation;
+import com.vgames.survivalreckoning.framework.Sprite.SpriteSheet;
 import com.vgames.survivalreckoning.framework.application.Game;
 import com.vgames.survivalreckoning.framework.engine.Engine;
 import com.vgames.survivalreckoning.framework.entity.GameObject;
+import com.vgames.survivalreckoning.framework.entity.component.Animator;
 import com.vgames.survivalreckoning.framework.entity.component.RotationComponent;
-import com.vgames.survivalreckoning.framework.entity.component.SpriteRenderer;
+import com.vgames.survivalreckoning.framework.Sprite.SpriteRenderer;
 import com.vgames.survivalreckoning.framework.entity.component.Transform;
 import com.vgames.survivalreckoning.framework.math.Vector3;
 import com.vgames.survivalreckoning.framework.service.input.Input;
@@ -24,6 +27,8 @@ public class SurvivalReckoning extends Game {
     GameObject gameObject;
     Model model;
     Texture texture;
+    SpriteSheet spriteSheet;
+    Animator animator;
 
     @Override
     public void start() {
@@ -34,21 +39,23 @@ public class SurvivalReckoning extends Game {
     private void initializeStartScene() {
 
         mesh = Engine.fromService(GraphicsAPI.class).loadModel("plane");
-        texture = Engine.fromService(GraphicsAPI.class).loadTexture("Temple", ImageFilter.POINT);
+        spriteSheet = Engine.fromService(GraphicsAPI.class).loadSpriteSheet("Temple", 80,80,0,0,0,16);
+        texture = spriteSheet.getSprites().get(0).texture();
         material = new Material(texture, 0, 0, true, true);
         model = new Model(mesh, material);
         texture = Engine.fromService(GraphicsAPI.class).loadTexture("lp_100", ImageFilter.POINT);
         material = new Material(texture, 0, 0, true, true);
 
-        //Engine.fromService(GraphicsAPI.class).pushTerrainInRenderingPool(terrain);
+//        Engine.fromService(GraphicsAPI.class).pushTerrainInRenderingPool(terrain);
 
         gameObject = instantiate(
                 new Transform(new Vector3(0, 2, -1), new Vector3(0, 0, 0), 1f),
-                SpriteRenderer.class, RotationComponent.class);
+                SpriteRenderer.class, Animator.class);
 
         GameObject entity = instantiate(
                 new Transform(new Vector3(3, -2, -1), new Vector3(0, 0, 0), 1f, gameObject.transform),
-                SpriteRenderer.class);
+                SpriteRenderer.class, Animator.class);
+
 
         gameObject.getComponent(SpriteRenderer.class).setModel(model);
 
@@ -56,6 +63,9 @@ public class SurvivalReckoning extends Game {
         model = new Model(mesh, material);
 
         entity.getComponent(SpriteRenderer.class).setModel(model);
+
+        gameObject.getComponent(Animator.class).start();
+        gameObject.getComponent(Animator.class).addAnimation(Engine.fromService(GraphicsAPI.class).loadAnimation(spriteSheet, 10), "Testing");
 
         Engine.fromService(GraphicsAPI.class).pushEntityInRenderingPool(gameObject);
         Engine.fromService(GraphicsAPI.class).pushEntityInRenderingPool(entity);
@@ -99,6 +109,8 @@ public class SurvivalReckoning extends Game {
         }
 
         Vector3 position = gameObject.transform.getPosition();
-        gameObject.transform.setPosition(new Vector3(position.x + 0.001f, position.y, position.z));
+        gameObject.transform.setPosition(new Vector3(position.x, position.y, position.z));
+        gameObject.getComponent(Animator.class).update();
+
     }
 }

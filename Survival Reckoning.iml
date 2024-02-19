@@ -17,5 +17,6 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="lwjgl-assimp-natives-windows1" level="project" />
   </component>
 </module>

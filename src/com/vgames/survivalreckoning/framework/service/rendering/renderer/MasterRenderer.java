@@ -1,7 +1,7 @@
 package com.vgames.survivalreckoning.framework.service.rendering.renderer;
 
 import com.vgames.survivalreckoning.framework.entity.GameObject;
-import com.vgames.survivalreckoning.framework.entity.component.SpriteRenderer;
+import com.vgames.survivalreckoning.framework.Sprite.SpriteRenderer;
 import com.vgames.survivalreckoning.framework.log.Logger;
 import com.vgames.survivalreckoning.framework.log.annotation.LogAlias;
 import com.vgames.survivalreckoning.framework.service.rendering.element.light.DirectionalLight;

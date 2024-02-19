@@ -1,6 +1,7 @@
 package com.vgames.survivalreckoning.framework.engine;
 
 
+import com.vgames.survivalreckoning.framework.Time;
 import com.vgames.survivalreckoning.framework.application.Game;
 import com.vgames.survivalreckoning.framework.service.general.ApplicationService;
 import com.vgames.survivalreckoning.framework.design_patterns.Singleton;
@@ -126,8 +127,11 @@ public class Engine extends Logger {
     public void update() {
         updateGame();
         updateServices();
+        updateTime();
     }
-
+    private void updateTime(){
+        Time.update();
+    }
     private void updateGame() {
         game.update();
     }
