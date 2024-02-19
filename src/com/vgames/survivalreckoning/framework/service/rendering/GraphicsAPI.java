@@ -1,5 +1,6 @@
 package com.vgames.survivalreckoning.framework.service.rendering;
 
+import com.vgames.survivalreckoning.framework.Sprite.SpriteSheet;
 import com.vgames.survivalreckoning.framework.entity.GameObject;
 import com.vgames.survivalreckoning.framework.entity.component.camera.CameraComponent;
 import com.vgames.survivalreckoning.framework.math.Vector2;
@@ -25,6 +26,7 @@ import com.vgames.survivalreckoning.framework.service.rendering.renderer.config.
 import com.vgames.survivalreckoning.framework.service.rendering.renderer.MasterRenderer;
 import com.vgames.survivalreckoning.framework.service.rendering.shaderpipeline.ShaderPipelineBuilder;
 
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -98,6 +100,14 @@ public class GraphicsAPI extends Logger implements ApplicationService, EventList
 
     public Texture loadTexture(String path, ImageFilter filter) {
         return this.textureLoader.getTexture("src/resources/textures/" + path, filter);
+    }
+
+    public Texture loadTexture(BufferedImage image, ImageFilter filter, int spriteWidth, int spriteHeight, int tileSize) {
+        return this.textureLoader.getTexture(image,filter, spriteWidth, spriteHeight,tileSize);
+    }
+
+    public SpriteSheet loadSpriteSheet(String path, int sheetWidth, int sheetHeight, int row,int spriteWidth,int spriteHeight,int tileSize){
+        return new SpriteSheet("src/resources/textures/" + path, sheetWidth,sheetHeight,row,spriteWidth,spriteHeight,tileSize);
     }
 
     public Terrain loadTerrain(Vector2 position, String texturePath, ImageFilter filter) {
