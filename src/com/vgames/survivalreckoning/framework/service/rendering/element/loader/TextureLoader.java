@@ -73,9 +73,6 @@ public class TextureLoader extends AssetLoader {
         int height = 0;
 
         int[] pixels = null;
-
-        System.out.println(spriteWidth + "\n" + spriteHeight + "\n\n" + tileSize);
-
         width = tileSize;
         height = tileSize;
 

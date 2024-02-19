@@ -16,7 +16,7 @@ import java.util.List;
 public class SpriteSheet {
     private List<Sprite> sprites;
     private int width,height;
-    private Vector2 spriteCoord[] = new Vector2[4];
+    private boolean spriteSheetEnd = true;
     /**
      * @param row "The number of the line that the image need to be reading"
      * **/
@@ -31,17 +31,51 @@ public class SpriteSheet {
         width = image.getWidth();
         height = image.getHeight();
 
+        int spriteW = spriteWidth;
+        int spriteH = spriteHeight;
+
         assert width % sheetWidth == 0;
         assert height % sheetHeight == 0;
 
-        sprites.add(new Sprite(Engine.fromService(GraphicsAPI.class).loadTexture(image,ImageFilter.POINT,spriteWidth, spriteHeight, tileSize)));
-        createSprite(spriteWidth,spriteHeight,image);
+        while(spriteSheetEnd){
+            createSprite(spriteW,spriteH,tileSize,image);
+            spriteW += tileSize;
+
+            if(spriteW == width && spriteH + tileSize == height){
+                spriteSheetEnd = false;
+            }
+            if(spriteW  >= width){
+                if(spriteH + tileSize < height){
+                    spriteH += tileSize;
+                }
+                spriteW = 0;
+            }
+
+        }
+        System.out.println(sprites.size());
 //        parseSprite(image,row);
     }
 
-    private void createSprite(int spriteWidth,int spriteHeight,BufferedImage image){
-        int u_normalized = spriteWidth / image.getWidth();
-        int v_normalized= spriteHeight / image.getHeight();
+    private void createSprite(int spriteWidth,int spriteHeight,int tileSize,BufferedImage image){
+        if(isEmpty(image,spriteWidth, spriteHeight)){
+            sprites.add(new Sprite(Engine.fromService(GraphicsAPI.class).loadTexture(image, ImageFilter.POINT, spriteWidth, spriteHeight, tileSize)));
+        }else {
+            spriteSheetEnd = false;
+        }
+    }
+    /**
+     * Verify if the image is transparent
+     * **/
+    public boolean isEmpty(BufferedImage image, int spriteWidth,int spriteHeight){
+        for (int y = 0; y < spriteHeight; y++) {
+            for (int x = 0; x < spriteWidth; x++) {
+                int alpha = (image.getRGB(x, y) >> 24) & 0xFF;
+                if (alpha != 0) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 //
 //    private void parseSprite(BufferedImage image, int row){

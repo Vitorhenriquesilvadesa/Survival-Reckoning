@@ -29,6 +29,7 @@ public class SurvivalReckoning extends Game {
     Texture texture;
     SpriteSheet spriteSheet;
     Animator animator;
+    int i = 0;
 
     @Override
     public void start() {
@@ -73,7 +74,13 @@ public class SurvivalReckoning extends Game {
 
     @Override
     public void update() {
-
+        if(i < spriteSheet.getSprites().size()){
+           Material material = new Material(spriteSheet.getSprites().get(i).texture(),0, 0, true, true);
+           gameObject.getComponent(SpriteRenderer.class).getModel().setMaterial(material);
+            i ++;
+        }else{
+            i = 0;
+        }
         Vector3 cameraPosition = Engine.fromService(GraphicsAPI.class).getCamera().transform.getPosition();
 
         if (Input.isKeyPressed(KeyCode.SR_KEY_RIGHT)) {
