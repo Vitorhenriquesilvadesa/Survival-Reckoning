@@ -1,6 +1,6 @@
 package com.vgames.survivalreckoning.framework.service.rendering.element.terrain;
 
-import com.vgames.survivalreckoning.framework.entity.component.Transform;
+import com.vgames.survivalreckoning.framework.entity.Transform;
 import com.vgames.survivalreckoning.framework.math.Vector3;
 import com.vgames.survivalreckoning.framework.service.rendering.element.loader.MeshLoader;
 import com.vgames.survivalreckoning.framework.service.rendering.element.material.Material;

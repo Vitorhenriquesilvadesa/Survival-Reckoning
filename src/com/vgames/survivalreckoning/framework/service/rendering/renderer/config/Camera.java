@@ -1,6 +1,6 @@
 package com.vgames.survivalreckoning.framework.service.rendering.renderer.config;
 
-import com.vgames.survivalreckoning.framework.entity.component.Transform;
+import com.vgames.survivalreckoning.framework.entity.Transform;
 import com.vgames.survivalreckoning.framework.math.Vector3;
 
 public class Camera {

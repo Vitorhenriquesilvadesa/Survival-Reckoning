@@ -1,5 +1,6 @@
 package com.vgames.survivalreckoning.framework.service.input;
 
+import com.vgames.survivalreckoning.framework.math.Vector2;
 import com.vgames.survivalreckoning.framework.service.general.ApplicationService;
 import com.vgames.survivalreckoning.framework.engine.Engine;
 import com.vgames.survivalreckoning.framework.service.event.EventListener;
@@ -69,6 +70,24 @@ public class InputAPI implements ApplicationService, EventListener {
     public boolean isMouseButtonPressed(int button) {
         if(isDeviceConnected(DeviceType.MOUSE)) {
             return glfwGetMouseButton(Engine.fromService(GraphicsAPI.class).getNativeWindow(), button) == 1;
+        }
+
+        throw new DisconnectedDeviceException(DeviceType.MOUSE);
+    }
+
+    public Vector2 getMousePosition() {
+
+        double[] x = new double[1];
+        double[] y = new double[1];
+        Vector2 viewportSize = Engine.fromService(GraphicsAPI.class).getViewportSize();
+        Vector2 windowSize = Engine.fromService(GraphicsAPI.class).getWindowSize();
+
+        float scalarX = windowSize.x / viewportSize.x;
+        float scalarY = windowSize.y / viewportSize.y;
+
+        if(isDeviceConnected(DeviceType.MOUSE)) {
+            glfwGetCursorPos(Engine.fromService(GraphicsAPI.class).getNativeWindow(), x, y);
+            return new Vector2((float) x[0] / scalarX, (float) y[0] / scalarY);
         }
 
         throw new DisconnectedDeviceException(DeviceType.MOUSE);

@@ -1,6 +1,6 @@
 package com.vgames.survivalreckoning.framework.math;
 
-import com.vgames.survivalreckoning.framework.entity.component.Transform;
+import com.vgames.survivalreckoning.framework.entity.Transform;
 import com.vgames.survivalreckoning.framework.service.rendering.renderer.config.Camera;
 
 public class Mathf {
@@ -45,5 +45,16 @@ public class Mathf {
 
     public static float toRadians(float degrees) {
         return degrees * degreesToRadians;
+    }
+
+    public static float abs(float x) {
+        if(x < 0) x = -x;
+        return x;
+    }
+
+    public static float roundToNearestMultiple(float number, float multiple) {
+        float quotient = number / multiple;
+        int roundedQuotient = Math.round(quotient);
+        return roundedQuotient * multiple;
     }
 }

@@ -1,10 +1,12 @@
 package com.vgames.survivalreckoning.framework.service.rendering.shaderpipeline;
 
+import com.vgames.survivalreckoning.framework.log.annotation.LogAlias;
 import com.vgames.survivalreckoning.framework.math.Mathf;
 import com.vgames.survivalreckoning.framework.math.Matrix4f;
 import com.vgames.survivalreckoning.framework.service.rendering.element.light.DirectionalLight;
 import com.vgames.survivalreckoning.framework.service.rendering.renderer.config.Camera;
 
+@LogAlias("Asset Loader")
 public class TerrainShaderPipeline extends ShaderPipeline {
 
     private static final String VERTEX_FILE = "src/resources/shaders/terrain.vert";

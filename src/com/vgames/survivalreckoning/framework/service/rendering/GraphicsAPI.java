@@ -1,8 +1,11 @@
 package com.vgames.survivalreckoning.framework.service.rendering;
 
 import com.vgames.survivalreckoning.framework.entity.GameObject;
+import com.vgames.survivalreckoning.framework.entity.component.camera.CameraComponent;
 import com.vgames.survivalreckoning.framework.math.Vector2;
 import com.vgames.survivalreckoning.framework.math.Vector3;
+import com.vgames.survivalreckoning.framework.service.event.actions.EventType;
+import com.vgames.survivalreckoning.framework.service.event.actions.WindowResizeEvent;
 import com.vgames.survivalreckoning.framework.service.general.ApplicationService;
 import com.vgames.survivalreckoning.framework.engine.Engine;
 import com.vgames.survivalreckoning.framework.log.Logger;
@@ -33,10 +36,12 @@ public class GraphicsAPI extends Logger implements ApplicationService, EventList
     private MeshLoader meshLoader;
     private TextureLoader textureLoader;
     private ObjLoader objLoader;
-    private Camera camera;
+    private Camera activeCamera;
     public DirectionalLight directionalLight;
     private List<GameObject> models;
     private List<Terrain> terrains;
+    private Vector2 viewportSize;
+    private Vector2 windowSize;
 
     @Override
     public boolean init() {
@@ -52,9 +57,10 @@ public class GraphicsAPI extends Logger implements ApplicationService, EventList
         this.textureLoader = new TextureLoader();
         this.shaderPipelineBuilder = new ShaderPipelineBuilder();
         this.renderer = new MasterRenderer();
-        this.camera = new Camera(new Vector3(0, 0, -10), Vector3.zero(), new Vector3(1, 1, 1));
+        this.activeCamera = new Camera(new Vector3(0, 0, -10), Vector3.zero(), new Vector3(1, 1, 1));
         this.directionalLight = new DirectionalLight(new Vector3(0, 5, 0), new Vector3(1, 1, 1));
         this.graphicsContext.setCallbacks();
+        this.windowSize = new Vector2(1280f, 720f);
         return true;
     }
 
@@ -67,8 +73,15 @@ public class GraphicsAPI extends Logger implements ApplicationService, EventList
         for(Terrain terrain : terrains) {
             renderer.processTerrain(terrain);
         }
-        renderer.render(directionalLight, camera);
+        renderer.render(directionalLight, activeCamera);
         graphicsContext.update();
+    }
+
+    public void setViewportSize(float viewportWidth, float viewportHeight) {
+
+        assert viewportWidth > 0f && viewportHeight > 0f : "Viewport size must be greater than zero.";
+        this.renderer.setViewportSize(viewportWidth, viewportHeight);
+        this.viewportSize = new Vector2(viewportWidth, viewportHeight);
     }
 
     public int loadShader(String file, int shaderType) {
@@ -93,8 +106,16 @@ public class GraphicsAPI extends Logger implements ApplicationService, EventList
                         0, 0, true));
     }
 
-    public Camera getCamera() {
-        return camera;
+    public Camera getActiveCamera() {
+        return activeCamera;
+    }
+
+    public void setActiveCamera(GameObject cameraParent) {
+        this.activeCamera = cameraParent.getComponent(CameraComponent.class).getCamera();
+    }
+
+    public void setActiveCamera(Camera camera) {
+        this.activeCamera = camera;
     }
 
     public void pushEntityInRenderingPool(GameObject model) {
@@ -122,6 +143,18 @@ public class GraphicsAPI extends Logger implements ApplicationService, EventList
 
     @Override
     public void onEvent(Event e) {
+        if(e.getClass() == WindowResizeEvent.class) {
+            this.windowSize.x = ((WindowResizeEvent) e).width;
+            this.windowSize.y = ((WindowResizeEvent) e).height;
+        }
         Engine.fromService(EventAPI.class).dispatchEvent(e);
+    }
+
+    public Vector2 getViewportSize() {
+        return this.viewportSize;
+    }
+
+    public Vector2 getWindowSize() {
+        return windowSize;
     }
 }

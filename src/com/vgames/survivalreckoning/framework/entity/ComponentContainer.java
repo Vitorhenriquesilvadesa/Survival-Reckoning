@@ -1,7 +1,8 @@
-package com.vgames.survivalreckoning.framework.entity.component;
+package com.vgames.survivalreckoning.framework.entity;
 
 import com.vgames.survivalreckoning.framework.entity.GameObject;
 import com.vgames.survivalreckoning.framework.entity.NullComponent;
+import com.vgames.survivalreckoning.framework.entity.component.Component;
 import com.vgames.survivalreckoning.framework.log.Logger;
 import com.vgames.survivalreckoning.framework.log.annotation.GenerateCriticalFile;
 
@@ -29,7 +30,8 @@ public abstract class ComponentContainer extends Logger {
 
         try {
             Component _component = componentClass.getDeclaredConstructor(GameObject.class).newInstance(this.owner);
-            _component.parent = this.owner;
+            _component.setParent(this.owner);
+            _component.start();
             this.componentList.add(_component);
         } catch (InstantiationException | NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
             critical("", new RuntimeException(e));

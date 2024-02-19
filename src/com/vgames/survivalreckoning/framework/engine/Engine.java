@@ -126,6 +126,11 @@ public class Engine extends Logger {
     public void update() {
         updateGame();
         updateServices();
+        updateTime();
+    }
+
+    private void updateTime() {
+        Time.update();
     }
 
     private void updateGame() {

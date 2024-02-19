@@ -24,7 +24,7 @@ public class EntityRenderer {
     public EntityRenderer(EntityShaderPipeline shaderPipeline) {
         this.shaderPipeline = shaderPipeline;
         //this.frustum = new PerspectiveFrustum(70f, 0.1f, 1000f);
-        this.frustum = new OrthographicFrustum(-1, 1, -1, 1, 0.1f, 1000f);
+        //this.frustum = new OrthographicFrustum(-16, 16, -9f, 9f, 0.1f, 1000f);
         shaderPipeline.bind();
         shaderPipeline.loadProjectionMatrix(frustum.getProjectionMatrix());
         shaderPipeline.unbind();
@@ -89,5 +89,12 @@ public class EntityRenderer {
 
     public void setFrustum(Frustum frustum) {
         this.frustum = frustum;
+        shaderPipeline.bind();
+        shaderPipeline.loadProjectionMatrix(frustum.getProjectionMatrix());
+        shaderPipeline.unbind();
+    }
+
+    public Frustum getFrustum() {
+        return this.frustum;
     }
 }
