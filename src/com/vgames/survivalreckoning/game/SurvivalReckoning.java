@@ -55,7 +55,7 @@ public class SurvivalReckoning extends Game {
     }
 
     @Reactive
-    public void onCollisionEnter(WindowResizeEvent event) {
+    private void onCollisionEnter(WindowResizeEvent event) {
         System.out.println(event);
     }
 }
