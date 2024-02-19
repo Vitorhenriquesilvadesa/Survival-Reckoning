@@ -2,8 +2,8 @@ package com.vgames.survivalreckoning.framework.service.event.actions;
 
 public class WindowResizeEvent extends Event {
 
-    int width;
-    int height;
+    public int width;
+    public int height;
 
     public WindowResizeEvent(int width, int height) {
         this.width = width;

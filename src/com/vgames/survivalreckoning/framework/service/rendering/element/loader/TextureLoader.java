@@ -13,6 +13,7 @@ import java.nio.IntBuffer;
 
 import static org.lwjgl.opengl.GL11.*;
 
+@SuppressWarnings("ALL")
 @LogAlias("Asset Loader")
 public class TextureLoader extends AssetLoader {
 
@@ -46,11 +47,11 @@ public class TextureLoader extends AssetLoader {
         int result = glGenTextures();
         glBindTexture(GL_TEXTURE_2D, result);
 
-        int _filter;
+        int _filter = GL_LINEAR;
 
         switch(filter) {
             case POINT -> _filter = GL_NEAREST;
-            default -> _filter = GL_LINEAR;
+            case LINEAR -> _filter = GL_LINEAR;
         }
 
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, _filter);

@@ -4,6 +4,7 @@ import com.vgames.survivalreckoning.framework.engine.Engine;
 import com.vgames.survivalreckoning.framework.entity.GameObject;
 import com.vgames.survivalreckoning.framework.entity.component.Component;
 import com.vgames.survivalreckoning.framework.math.Vector2;
+import com.vgames.survivalreckoning.framework.math.Vector3;
 import com.vgames.survivalreckoning.framework.service.rendering.GraphicsAPI;
 import com.vgames.survivalreckoning.framework.service.rendering.element.model.Mesh;
 
@@ -22,10 +23,14 @@ public class Box2DMesh extends Component {
         setProps(new Box2DSize(0, 0, Vector2.zero()));
     }
 
+    public void setOrigin(Vector2 origin) {
+        this.origin = origin;
+    }
+
     public void setProps(Box2DSize props) {
         this.height = props.height;
         this.width = props.width;
-        this.origin = props.origin;
+        this.origin = props.origin == null ? (this.origin == null ? Vector2.zero() : this.origin) : props.origin;
         this.mesh = generateMesh();
     }
 
@@ -48,7 +53,7 @@ public class Box2DMesh extends Component {
 
         float[] positions = new float[vertices.size() * 3];
 
-        for(int i = 0; i < vertices.size(); i++) {
+        for (int i = 0; i < vertices.size(); i++) {
             positions[i * 3] = vertices.get(i).x;
             positions[i * 3 + 1] = vertices.get(i).y;
             positions[i * 3 + 2] = 0f;
@@ -68,7 +73,7 @@ public class Box2DMesh extends Component {
                 1.0f, 1.0f
         };
 
-        float[] normals = { 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f };
+        float[] normals = {0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f};
 
         return Engine.fromService(GraphicsAPI.class).loadModel(positions, textureCoordinates, normals, indices);
     }

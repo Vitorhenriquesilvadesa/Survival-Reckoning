@@ -89,6 +89,9 @@ public class EntityRenderer {
 
     public void setFrustum(Frustum frustum) {
         this.frustum = frustum;
+        shaderPipeline.bind();
+        shaderPipeline.loadProjectionMatrix(frustum.getProjectionMatrix());
+        shaderPipeline.unbind();
     }
 
     public Frustum getFrustum() {

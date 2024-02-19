@@ -2,14 +2,15 @@ package com.vgames.survivalreckoning.game;
 
 import com.vgames.survivalreckoning.framework.application.Game;
 import com.vgames.survivalreckoning.framework.engine.Engine;
+import com.vgames.survivalreckoning.framework.engine.Time;
 import com.vgames.survivalreckoning.framework.entity.GameObject;
+import com.vgames.survivalreckoning.framework.entity.component.camera.CameraComponent;
 import com.vgames.survivalreckoning.framework.entity.component.spriterenderer.SpriteRenderer;
 import com.vgames.survivalreckoning.framework.entity.Transform;
 import com.vgames.survivalreckoning.framework.entity.component.box2dmesh.Box2DMesh;
-import com.vgames.survivalreckoning.framework.entity.component.box2dmesh.Box2DSize;
-import com.vgames.survivalreckoning.framework.math.Vector2;
-import com.vgames.survivalreckoning.framework.math.Vector3;
-import com.vgames.survivalreckoning.framework.service.event.reactive.ReactiveArrayList;
+import com.vgames.survivalreckoning.framework.service.event.EventAPI;
+import com.vgames.survivalreckoning.framework.service.event.actions.WindowResizeEvent;
+import com.vgames.survivalreckoning.framework.service.event.reactive.Reactive;
 import com.vgames.survivalreckoning.framework.service.input.Input;
 import com.vgames.survivalreckoning.framework.service.input.KeyCode;
 import com.vgames.survivalreckoning.framework.service.rendering.GraphicsAPI;
@@ -20,65 +21,38 @@ import static com.vgames.survivalreckoning.framework.service.pool.ObjectPoolAPI.
 
 public class SurvivalReckoning extends Game {
     GameObject gameObject;
-    Texture texture;
-    ReactiveArrayList<Integer> reactiveArrayList;
+    float time = 0f;
+    float width = 320;
+    float height = 180;
 
     @Override
     public void start() {
-        info("Initializing now.");
-        initializeStartScene();
-    }
+        Engine.fromService(GraphicsAPI.class).setViewportSize(width, height);
+        Engine.fromService(EventAPI.class).subscribe(this);
 
-    private void initializeStartScene() {
-
-        Engine.fromService(GraphicsAPI.class).setViewportSize(320, 180);
-
-        reactiveArrayList = new ReactiveArrayList<>();
-
-        texture = Engine.fromService(GraphicsAPI.class).loadTexture("Temple", ImageFilter.POINT);
-
-        gameObject = instantiate(
-                new Transform(new Vector3(0, 0, 0), new Vector3(0, 0, 0), 1f),
-                SpriteRenderer.class, Box2DMesh.class);
-
-
-        gameObject.getComponent(Box2DMesh.class).setProps(new Box2DSize(3, 3, new Vector2(0, 0)));
+        Texture texture = Engine.fromService(GraphicsAPI.class).loadTexture("screenSize", ImageFilter.POINT);
+        gameObject = instantiate(new Transform(), SpriteRenderer.class, Box2DMesh.class, CameraComponent.class);
         gameObject.getComponent(SpriteRenderer.class).setTexture(texture);
-
-        Engine.fromService(GraphicsAPI.class).pushEntityInRenderingPool(gameObject);
     }
 
     @Override
     public void update() {
+        time += Time.deltaTime();
 
-        Vector3 cameraPosition = Engine.fromService(GraphicsAPI.class).getCamera().transform.getPosition();
-
-        if (Input.isKeyPressed(KeyCode.SR_KEY_RIGHT)) {
-            cameraPosition.x += 0.005f;
+        if(time >= 1.0f) {
+            System.out.println("FPS: " + Time.fps());
+            time = 0f;
         }
 
-        if (Input.isKeyPressed(KeyCode.SR_KEY_LEFT)) {
-            cameraPosition.x -= 0.005f;
+        if(Input.isKeyPressed(KeyCode.SR_KEY_E)) {
+            width += 16f / 100f;
+            height += 9f / 100f;
+            Engine.fromService(GraphicsAPI.class).setViewportSize(width, height);
         }
+    }
 
-        if (Input.isKeyPressed(KeyCode.SR_KEY_UP)) {
-            cameraPosition.z += 0.005f;
-        }
-
-        if (Input.isKeyPressed(KeyCode.SR_KEY_DOWN)) {
-            cameraPosition.z -= 0.005f;
-        }
-
-        if (Input.isKeyPressed(KeyCode.SR_KEY_W)) {
-            cameraPosition.y += 0.005f;
-        }
-
-        if (Input.isKeyPressed(KeyCode.SR_KEY_S)) {
-            cameraPosition.y -= 0.005f;
-        }
-
-        if(Input.isKeyPressed(KeyCode.SR_KEY_SPACE)) {
-            reactiveArrayList.add(10);
-        }
+    @Reactive
+    public void onCollisionEnter(WindowResizeEvent event) {
+        event.setHandled(true);
     }
 }

@@ -6,8 +6,13 @@ import com.vgames.survivalreckoning.framework.entity.component.box2dmesh.Box2DMe
 public class BoxCollider2D extends Collider {
     private Box2DMesh mesh;
 
-    protected BoxCollider2D(GameObject parent) {
+    public BoxCollider2D(GameObject parent) {
         super(parent);
+        this.tag = "BoxCollider2D";
+    }
+
+    public void start() {
+        mesh = getComponent(Box2DMesh.class);
     }
 
 

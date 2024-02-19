@@ -19,6 +19,6 @@ public class Box2DSize {
         assert width >= 0.0f && height >= 0.0f : "Size of a box 2D must be greater than zero.";
         this.width = width;
         this.height = height;
-        this.origin = Vector2.zero();
+        this.origin = null;
     }
 }

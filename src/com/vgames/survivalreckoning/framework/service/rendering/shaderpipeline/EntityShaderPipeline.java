@@ -10,8 +10,8 @@ import com.vgames.survivalreckoning.framework.service.rendering.renderer.config.
 @LogAlias("Asset Loader")
 public class EntityShaderPipeline extends ShaderPipeline {
 
-    private static final String VERTEX_FILE = "src/resources/shaders/entity.vert";
-    private static final String FRAGMENT_FILE = "src/resources/shaders/entity.frag";
+    private static final String VERTEX_FILE = "src/resources/shaders/sprite.vert";
+    private static final String FRAGMENT_FILE = "src/resources/shaders/sprite.frag";
 
     private int location_transformationMatrix;
     private int location_projectionMatrix;

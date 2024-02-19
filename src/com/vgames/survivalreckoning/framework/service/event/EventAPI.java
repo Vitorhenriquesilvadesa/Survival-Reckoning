@@ -1,5 +1,6 @@
 package com.vgames.survivalreckoning.framework.service.event;
 
+import com.vgames.survivalreckoning.framework.service.event.reactive.QueueDispatcher;
 import com.vgames.survivalreckoning.framework.service.general.ApplicationService;
 import com.vgames.survivalreckoning.framework.log.LogLevel;
 import com.vgames.survivalreckoning.framework.log.Logger;
@@ -15,10 +16,12 @@ import java.util.Map;
 public class EventAPI extends Logger implements ApplicationService {
 
     Map<EventFlag, EventCallbackFn> flags;
+    QueueDispatcher queueDispatcher;
 
     @Override
     public boolean init() {
         this.flags = new HashMap<>();
+        this.queueDispatcher = new QueueDispatcher();
         return true;
     }
 
@@ -31,12 +34,20 @@ public class EventAPI extends Logger implements ApplicationService {
     }
 
     public void dispatchEvent(Event e) {
-        trace(e.toString());
+        queueDispatcher.dispatchEvent(e);
+    }
+
+    public void subscribe(Object object) {
+        queueDispatcher.subscribe(object);
+    }
+
+    public void unsubscribe(Object object) {
+        queueDispatcher.unsubscribe(object);
     }
 
     @Override
     public void update() {
-
+        queueDispatcher.dispatchQueues();
     }
 
     @Override
