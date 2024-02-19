@@ -9,6 +9,7 @@ import com.vgames.survivalreckoning.framework.entity.component.spriterenderer.Sp
 import com.vgames.survivalreckoning.framework.entity.Transform;
 import com.vgames.survivalreckoning.framework.entity.component.box2dmesh.Box2DMesh;
 import com.vgames.survivalreckoning.framework.service.event.EventAPI;
+import com.vgames.survivalreckoning.framework.service.event.actions.KeyPressedEvent;
 import com.vgames.survivalreckoning.framework.service.event.actions.WindowResizeEvent;
 import com.vgames.survivalreckoning.framework.service.event.reactive.Reactive;
 import com.vgames.survivalreckoning.framework.service.input.Input;
@@ -30,7 +31,7 @@ public class SurvivalReckoning extends Game {
         Engine.fromService(GraphicsAPI.class).setViewportSize(width, height);
         Engine.fromService(EventAPI.class).subscribe(this);
 
-        Texture texture = Engine.fromService(GraphicsAPI.class).loadTexture("screenSize", ImageFilter.POINT);
+        Texture texture = Engine.fromService(GraphicsAPI.class).loadTexture("Temple", ImageFilter.POINT);
         gameObject = instantiate(new Transform(), SpriteRenderer.class, Box2DMesh.class, CameraComponent.class);
         gameObject.getComponent(SpriteRenderer.class).setTexture(texture);
     }
@@ -49,10 +50,12 @@ public class SurvivalReckoning extends Game {
             height += 9f / 100f;
             Engine.fromService(GraphicsAPI.class).setViewportSize(width, height);
         }
+
+        Engine.fromService(EventAPI.class).dispatchEvent(new KeyPressedEvent(20));
     }
 
     @Reactive
     public void onCollisionEnter(WindowResizeEvent event) {
-        event.setHandled(true);
+        System.out.println(event);
     }
 }
