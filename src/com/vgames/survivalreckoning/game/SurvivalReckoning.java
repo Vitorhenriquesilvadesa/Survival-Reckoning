@@ -1,5 +1,6 @@
 package com.vgames.survivalreckoning.game;
 
+import com.vgames.survivalreckoning.framework.Sprite.SpriteSheet;
 import com.vgames.survivalreckoning.framework.application.Game;
 import com.vgames.survivalreckoning.framework.engine.Engine;
 import com.vgames.survivalreckoning.framework.engine.Time;
@@ -23,8 +24,13 @@ import static com.vgames.survivalreckoning.framework.service.pool.ObjectPoolAPI.
 public class SurvivalReckoning extends Game {
     GameObject gameObject;
     float time = 0f;
+    int i = 0;
+    int frameCount;
     float width = 320;
     float height = 180;
+
+    Texture animatedTexture;
+    SpriteSheet spriteSheet;
 
     @Override
     public void start() {
@@ -33,16 +39,27 @@ public class SurvivalReckoning extends Game {
 
         Texture texture = Engine.fromService(GraphicsAPI.class).loadTexture("Temple", ImageFilter.POINT);
         gameObject = instantiate(new Transform(), SpriteRenderer.class, Box2DMesh.class, CameraComponent.class);
-        gameObject.getComponent(SpriteRenderer.class).setTexture(texture);
+        spriteSheet = Engine.fromService(GraphicsAPI.class).loadSpriteSheet("coin", 240, 16, 0, 0, 0, 16);
+        frameCount = spriteSheet.getSprites().size();
+        gameObject.getComponent(SpriteRenderer.class).setTexture(spriteSheet.getSprites().getFirst().texture());
+
     }
 
     @Override
     public void update() {
+
         time += Time.deltaTime();
 
-        if(time >= 1.0f) {
+        if(time >= 0.05f) {
             System.out.println("FPS: " + Time.fps());
             time = 0f;
+
+            if(i < frameCount - 1) {
+                gameObject.getComponent(SpriteRenderer.class).setTexture(spriteSheet.getSprites().get(i).texture());
+                i++;
+            } else {
+                i = 0;
+            }
         }
 
         if(Input.isKeyPressed(KeyCode.SR_KEY_E)) {
@@ -55,7 +72,7 @@ public class SurvivalReckoning extends Game {
     }
 
     @Reactive
-    private void onCollisionEnter(WindowResizeEvent event) {
+    public void onCollisionEnter(WindowResizeEvent event) {
         System.out.println(event);
     }
 }
