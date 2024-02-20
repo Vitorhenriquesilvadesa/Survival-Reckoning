@@ -1,6 +1,7 @@
 package com.vgames.survivalreckoning.framework.service.rendering;
 
 import com.vgames.survivalreckoning.framework.Sprite.SpriteSheet;
+import com.vgames.survivalreckoning.framework.animatior.Animation;
 import com.vgames.survivalreckoning.framework.entity.GameObject;
 import com.vgames.survivalreckoning.framework.entity.component.camera.CameraComponent;
 import com.vgames.survivalreckoning.framework.math.Vector2;
@@ -44,7 +45,7 @@ public class GraphicsAPI extends Logger implements ApplicationService, EventList
     private List<Terrain> terrains;
     private Vector2 viewportSize;
     private Vector2 windowSize;
-
+    private Animation animation;
     @Override
     public boolean init() {
         this.graphicsContext = new GraphicContext();
@@ -89,7 +90,12 @@ public class GraphicsAPI extends Logger implements ApplicationService, EventList
     public int loadShader(String file, int shaderType) {
         return this.shaderPipelineBuilder.loadShader(file, shaderType);
     }
-
+    public Animation loadAnimation(String spriteSheetPath,int row, int tileSize,float durationFrame,int offSet){
+        row *= tileSize;
+        tileSize -= offSet;
+        SpriteSheet spriteSheet =  loadSpriteSheet(spriteSheetPath,row,tileSize,offSet);
+        return new Animation(spriteSheet.getSprites(), durationFrame);
+    }
     public Mesh loadModel(float[] positions, float[] textureCoords, float[] normals, int[] indices) {
         return this.meshLoader.loadToVAO(positions, textureCoords, normals, indices);
     }
@@ -106,8 +112,8 @@ public class GraphicsAPI extends Logger implements ApplicationService, EventList
         return this.textureLoader.getTexture(image,filter, spriteWidth, spriteHeight,tileSize);
     }
 
-    public SpriteSheet loadSpriteSheet(String path, int sheetWidth, int sheetHeight, int row,int spriteWidth,int spriteHeight,int tileSize){
-        return new SpriteSheet("src/resources/textures/" + path, sheetWidth,sheetHeight,row,spriteWidth,spriteHeight,tileSize);
+    public SpriteSheet loadSpriteSheet(String path,int row,int tileSize,int offSet){
+        return new SpriteSheet("src/resources/textures/" + path,row,tileSize, offSet);
     }
 
     public Terrain loadTerrain(Vector2 position, String texturePath, ImageFilter filter) {

@@ -21,7 +21,7 @@ public class Time {
         instance.previousTime = newTime;
     }
 
-    public float getDeltaTime() {
+    private float getDeltaTime() {
         return deltaTime;
     }
 

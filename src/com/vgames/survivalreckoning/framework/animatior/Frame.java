@@ -1,4 +1,4 @@
-package com.vgames.survivalreckoning.framework.Sprite;
+package com.vgames.survivalreckoning.framework.animatior;
 
 import com.vgames.survivalreckoning.framework.service.rendering.element.material.Texture;
 
@@ -17,5 +17,9 @@ public class Frame {
 
     public float getDuration() {
         return duration;
+    }
+
+    public void setDuration(float duration) {
+        this.duration = duration;
     }
 }
