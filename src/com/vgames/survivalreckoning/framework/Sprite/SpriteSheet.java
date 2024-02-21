@@ -16,11 +16,11 @@ import java.util.List;
 public class SpriteSheet {
     private List<Sprite> sprites;
     private int width,height;
-    private boolean spriteSheetEnd = true;
+    private boolean spriteSheetEnd = false;
     /**
      * @param row "The number of the line that the image need to be reading"
      * **/
-    public SpriteSheet(String path, int sheetWidth, int sheetHeight, int row,int spriteWidth,int spriteHeight,int tileSize) {
+    public SpriteSheet(String path, int row,int tileSize,int offSet) {
         BufferedImage image = null;
         sprites = new ArrayList<>();
         try {
@@ -31,67 +31,48 @@ public class SpriteSheet {
         width = image.getWidth();
         height = image.getHeight();
 
-        int spriteW = spriteWidth;
-        int spriteH = spriteHeight;
+        int spriteW = 0;
+        int spriteH = row;
 
-        assert width % sheetWidth == 0;
-        assert height % sheetHeight == 0;
-
-        while(spriteSheetEnd){
-            createSprite(spriteW,spriteH,tileSize,image);
-            spriteW += tileSize;
-
-            if(spriteW == width && spriteH + tileSize == height){
-                spriteSheetEnd = false;
-            }
-            if(spriteW  >= width){
-                if(spriteH + tileSize < height){
-                    spriteH += tileSize;
+        assert width % tileSize == 0;
+        assert height % tileSize == 0;
+        while(!spriteSheetEnd){
+            if(isTransparent(image,spriteW + tileSize, spriteH + tileSize, tileSize)){
+                createSprite(spriteW,spriteH,tileSize,image, offSet);
+                spriteW += tileSize;
+                if(spriteW == width && spriteH + tileSize >= height){
+                    spriteSheetEnd = true;
                 }
-                spriteW = 0;
+                if(spriteW  >= width){
+                    if(spriteH + tileSize < height){
+                        spriteH += tileSize;
+                    }
+                    spriteW = 0;
+                }
+            }else{
+                spriteSheetEnd = true;
             }
-
         }
-        System.out.println(sprites.size());
-//        parseSprite(image,row);
+
     }
 
-    private void createSprite(int spriteWidth,int spriteHeight,int tileSize,BufferedImage image){
-        if(isEmpty(image,spriteWidth, spriteHeight)){
-            sprites.add(new Sprite(Engine.fromService(GraphicsAPI.class).loadTexture(image, ImageFilter.POINT, spriteWidth, spriteHeight, tileSize)));
-        }else {
-            spriteSheetEnd = false;
-        }
+    private void createSprite(int spriteWidth,int spriteHeight,int tileSize,BufferedImage image,int offSet){
+        sprites.add(new Sprite(Engine.fromService(GraphicsAPI.class).loadTexture(image, ImageFilter.POINT, spriteWidth, spriteHeight, tileSize)));
     }
     /**
      * Verify if the image is transparent
      * **/
-    public boolean isEmpty(BufferedImage image, int spriteWidth,int spriteHeight){
-        for (int y = 0; y < spriteHeight; y++) {
-            for (int x = 0; x < spriteWidth; x++) {
-                int alpha = (image.getRGB(x, y) >> 24) & 0xFF;
-                if (alpha != 0) {
-                    return false;
+    public boolean isTransparent(BufferedImage image, int spriteWidth,int spriteHeight,int tileSize){
+        for (int y = spriteHeight - tileSize; y < spriteHeight; y++) {
+            for (int x = spriteWidth - tileSize; x < spriteWidth; x++) {
+                int pixel = image.getRGB(x, y);
+                if ((pixel >> 24) != 0x00) {
+                    return true;
                 }
             }
         }
-        return true;
+        return false;
     }
-//
-//    private void parseSprite(BufferedImage image, int row){
-//        int y  = row * height;
-//        int column = 0;
-//
-//        while(width * column < image.getWidth()){
-//            BufferedImage subImage = image.getSubimage(width * column,y, width,height);
-//            if(!isBoundingBoxEmpty(subImage)){
-//                Sprite sprite = new Sprite(Engine.fromService(GraphicsAPI.class).loadTexture(subImage,ImageFilter.LINEAR));
-//                sprites.add(sprite);
-//            }
-//            column ++;
-//        }
-//    }
-
     private boolean isBoundingBoxEmpty(BufferedImage image){
         for(int i = 0; i < image.getWidth(); i ++){
             for(int j = 0; j < image.getHeight(); j ++){
