@@ -17,7 +17,7 @@ public abstract class Component {
 
     public void update() { }
 
-    public void cleanup() { }
+    public void dispose() { }
 
     public GameObject getParent() {
         return parent;

@@ -19,10 +19,10 @@ import java.util.*;
 public class QueueDispatcher extends Logger {
 
     /** Mapping of event classes to reactive methods and their corresponding listeners. */
-    private final Map<Class<? extends Event>, Map<Method, List<Object>>> classMapMap;
+    private final Map<Class<? extends ReactiveEvent>, Map<Method, List<Object>>> classMapMap;
 
     /** Mapping of event classes to their associated event queues. */
-    private final Map<Class<? extends Event>, EventQueue> eventQueueMap;
+    private final Map<Class<? extends ReactiveEvent>, EventQueue> eventQueueMap;
 
     /**
      * Default constructor for the QueueDispatcher class.
@@ -44,12 +44,12 @@ public class QueueDispatcher extends Logger {
         for (Method method : klassMethods) {
             Class<?>[] parameters = method.getParameterTypes();
 
-            if (Event.class.isAssignableFrom(parameters[0])) {
+            if (ReactiveEvent.class.isAssignableFrom(parameters[0])) {
                 Map<Method, List<Object>> batch = classMapMap.get(parameters[0]);
 
                 if (batch == null) {
                     batch = new HashMap<>();
-                    classMapMap.put((Class<? extends Event>) parameters[0], batch);
+                    classMapMap.put((Class<? extends ReactiveEvent>) parameters[0], batch);
                 }
 
                 if (!batch.containsKey(method)) {
@@ -77,8 +77,8 @@ public class QueueDispatcher extends Logger {
      * Dispatches an event by putting it into the appropriate queue.
      * @param event The event to be dispatched.
      */
-    public synchronized void dispatchEvent(Event event) {
-        Class<? extends Event> eventClass = event.getClass();
+    public synchronized void dispatchEvent(ReactiveEvent event) {
+        Class<? extends ReactiveEvent> eventClass = event.getClass();
 
         if (!eventQueueMap.containsKey(event.getClass())) {
             eventQueueMap.put(eventClass, new EventQueue());
@@ -91,7 +91,7 @@ public class QueueDispatcher extends Logger {
      * Dispatches all event queues, notifying corresponding listeners.
      */
     public synchronized void dispatchQueues() {
-        for (Class<? extends Event> klass : classMapMap.keySet()) {
+        for (Class<? extends ReactiveEvent> klass : classMapMap.keySet()) {
             EventQueue eventQueue = eventQueueMap.get(klass);
 
             if (eventQueue == null || eventQueue.isEmpty()) {
@@ -132,10 +132,12 @@ public class QueueDispatcher extends Logger {
     private synchronized boolean checkForValidMethod(Method method, Class<?> klass) {
         if (!Modifier.isPublic(method.getModifiers())) {
             critical("Method '" + method.getName() + "' in class '" + klass.getSimpleName() + "' must be PUBLIC.");
+            return false;
         }
 
         if (method.getParameterCount() != 1) {
             critical("Reactive methods must have one parameter.", new RuntimeException("Invalid method declaration."));
+            return false;
         }
 
         return true;
@@ -167,16 +169,15 @@ public class QueueDispatcher extends Logger {
      * @param queue The event queue associated with the event type.
      * @param klass The class of the event type.
      */
-    private synchronized void notifyListeners(EventQueue queue, Class<? extends Event> klass) {
+    private synchronized void notifyListeners(EventQueue queue, Class<? extends ReactiveEvent> klass) {
         while (!queue.isEmpty()) {
-            Event event = queue.popEvent();
+            ReactiveEvent event = queue.popEvent();
 
             for (Method method : classMapMap.get(klass).keySet()) {
                 Map<Method, List<Object>> batch = classMapMap.get(klass);
                 List<Object> instances = batch.get(method);
 
                 if (instances.isEmpty()) {
-                    queue.clearEvents();
                     continue;
                 }
 
@@ -197,7 +198,7 @@ public class QueueDispatcher extends Logger {
      * @param instance The listener instance.
      * @param param The method parameter.
      */
-    private synchronized void invokeMethod(Method method, Object instance, Event param) {
+    private synchronized void invokeMethod(Method method, Object instance, ReactiveEvent param) {
         try {
             if (!Modifier.isPublic(method.getModifiers())) {
                 critical("Method '" + method.getName() + "' in class '" + instance.getClass().getSimpleName() + "' must be PUBLIC.");

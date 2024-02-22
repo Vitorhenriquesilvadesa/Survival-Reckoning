@@ -17,6 +17,7 @@ public class Box2DMesh extends Component {
     public int width = 0;
     public int height = 0;
     public Vector2 origin = Vector2.zero();
+    private List<Vertex> vertices;
 
     public Box2DMesh(GameObject parent) {
         super(parent);
@@ -25,6 +26,7 @@ public class Box2DMesh extends Component {
 
     public void setOrigin(Vector2 origin) {
         this.origin = origin;
+        this.mesh = generateMesh();
     }
 
     public void setProps(Box2DSize props) {
@@ -59,8 +61,6 @@ public class Box2DMesh extends Component {
             positions[i * 3 + 2] = 0f;
         }
 
-        vertices.clear();
-
         int[] indices = {
                 2, 1, 0,
                 0, 3, 2
@@ -74,6 +74,8 @@ public class Box2DMesh extends Component {
         };
 
         float[] normals = {0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f};
+
+        this.vertices = vertices;
 
         return Engine.fromService(GraphicsAPI.class).loadModel(positions, textureCoordinates, normals, indices);
     }

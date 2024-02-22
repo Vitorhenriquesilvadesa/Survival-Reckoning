@@ -10,7 +10,7 @@ public class NullComponent extends Component {
     }
 
     @Override
-    public void cleanup() {
+    public void dispose() {
 
     }
 
