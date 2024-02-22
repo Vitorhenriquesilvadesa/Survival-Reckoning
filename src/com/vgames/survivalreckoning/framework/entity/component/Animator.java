@@ -2,7 +2,7 @@ package com.vgames.survivalreckoning.framework.entity.component;
 
 import com.vgames.survivalreckoning.framework.Sprite.Animation;
 import com.vgames.survivalreckoning.framework.Sprite.Frame;
-import com.vgames.survivalreckoning.framework.Time;
+import com.vgames.survivalreckoning.framework.engine.Time;
 import com.vgames.survivalreckoning.framework.entity.GameObject;
 import com.vgames.survivalreckoning.framework.log.annotation.GenerateCriticalFile;
 

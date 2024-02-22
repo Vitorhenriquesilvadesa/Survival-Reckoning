@@ -1,7 +1,5 @@
 package com.vgames.survivalreckoning.framework.entity;
 
-import com.vgames.survivalreckoning.framework.entity.GameObject;
-import com.vgames.survivalreckoning.framework.entity.NullComponent;
 import com.vgames.survivalreckoning.framework.entity.component.Component;
 import com.vgames.survivalreckoning.framework.log.Logger;
 import com.vgames.survivalreckoning.framework.log.annotation.GenerateCriticalFile;
@@ -73,7 +71,7 @@ public abstract class ComponentContainer extends Logger {
 
     public void clearComponents() {
         for(Component component : this.componentList) {
-            component.cleanup();
+            component.dispose();
         }
     }
 
