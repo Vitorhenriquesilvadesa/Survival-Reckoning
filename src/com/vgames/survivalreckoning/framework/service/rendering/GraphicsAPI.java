@@ -166,4 +166,8 @@ public class GraphicsAPI extends Logger implements ApplicationService, EventList
     public Vector2 getWindowSize() {
         return windowSize;
     }
+
+    public void popObjectFromRenderingPool(GameObject parent) {
+        this.models.remove(parent);
+    }
 }

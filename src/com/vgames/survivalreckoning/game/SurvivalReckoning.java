@@ -10,8 +10,10 @@ import com.vgames.survivalreckoning.framework.entity.component.collider.BoxColli
 import com.vgames.survivalreckoning.framework.entity.component.spriterenderer.SpriteRenderer;
 import com.vgames.survivalreckoning.framework.entity.Transform;
 import com.vgames.survivalreckoning.framework.entity.component.box2dmesh.Box2DMesh;
+import com.vgames.survivalreckoning.framework.math.Vector3;
 import com.vgames.survivalreckoning.framework.service.event.EventAPI;
 import com.vgames.survivalreckoning.framework.service.event.actions.CollisionEvent;
+import com.vgames.survivalreckoning.framework.service.event.actions.KeyPressedEvent;
 import com.vgames.survivalreckoning.framework.service.event.actions.WindowResizeEvent;
 import com.vgames.survivalreckoning.framework.service.event.reactive.Reactive;
 import com.vgames.survivalreckoning.framework.service.input.Input;
@@ -35,6 +37,9 @@ public class SurvivalReckoning extends Game {
     public void start() {
         Engine.fromService(GraphicsAPI.class).setViewportSize(width, height);
         Engine.fromService(EventAPI.class).subscribe(this);
+
+        Texture texture = Engine.fromService(GraphicsAPI.class).loadTexture("Temple", ImageFilter.POINT);
+        gameObject = instantiate(new Transform(Vector3.zero(), new Vector3(0f, 0f, 0f), 2f), SpriteRenderer.class, Box2DMesh.class, CameraComponent.class);
         gameObject = instantiate(new Transform(), SpriteRenderer.class, Box2DMesh.class, CameraComponent.class);
         spriteSheet = Engine.fromService(GraphicsAPI.class).loadSpriteSheet("coin", 240, 16, 0, 0, 0, 16);
         frameCount = spriteSheet.getSprites().size();
@@ -46,6 +51,17 @@ public class SurvivalReckoning extends Game {
 
         time += Time.deltaTime();
 
+//        if(time >= 0.05f) {
+//            System.out.println("FPS: " + Time.fps());
+//            time = 0f;
+//
+//            if(i < frameCount - 1) {
+//                gameObject.getComponent(SpriteRenderer.class).setTexture(spriteSheet.getSprites().get(i).texture());
+//                i++;
+//            } else {
+//                i = 0;
+//            }
+//        }
         if(time >= 0.05f) {
             time = 0f;
 
@@ -68,6 +84,6 @@ public class SurvivalReckoning extends Game {
 
     @Reactive
     public void onCollisionEnter(CollisionEvent event) {
-
+        System.out.println(event.firstCollider.getTag());
     }
 }
