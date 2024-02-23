@@ -31,8 +31,6 @@ public class SurvivalReckoning extends Game {
     int frameCount;
     float width = 320;
     float height = 180;
-
-    Texture animatedTexture;
     SpriteSheet spriteSheet;
 
     @Override
@@ -42,6 +40,7 @@ public class SurvivalReckoning extends Game {
 
         Texture texture = Engine.fromService(GraphicsAPI.class).loadTexture("Temple", ImageFilter.POINT);
         gameObject = instantiate(new Transform(Vector3.zero(), new Vector3(0f, 0f, 0f), 2f), SpriteRenderer.class, Box2DMesh.class, CameraComponent.class);
+        gameObject = instantiate(new Transform(), SpriteRenderer.class, Box2DMesh.class, CameraComponent.class);
         spriteSheet = Engine.fromService(GraphicsAPI.class).loadSpriteSheet("coin", 240, 16, 0, 0, 0, 16);
         frameCount = spriteSheet.getSprites().size();
         gameObject.getComponent(SpriteRenderer.class).setTexture(spriteSheet.getSprites().getFirst().texture());
@@ -63,6 +62,16 @@ public class SurvivalReckoning extends Game {
 //                i = 0;
 //            }
 //        }
+        if(time >= 0.05f) {
+            time = 0f;
+
+            if(i < frameCount - 1) {
+                gameObject.getComponent(SpriteRenderer.class).setTexture(spriteSheet.getSprites().get(i).texture());
+                i++;
+            } else {
+                i = 0;
+            }
+        }
 
         if(Input.isKeyPressed(KeyCode.SR_KEY_E)) {
             width += 16f / 100f;
