@@ -16,7 +16,7 @@ public class SpriteRenderer extends Component {
     }
 
     @Override
-    public void cleanup() {
+    public void dispose() {
 
     }
 

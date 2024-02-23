@@ -7,13 +7,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EventQueue {
-    private final List<Event> events;
+    private final List<ReactiveEvent> events;
 
     public EventQueue() {
         this.events = new ArrayList<>();
     }
 
-    public void pushEvent(Event event) {
+    public void pushEvent(ReactiveEvent event) {
         this.events.add(event);
     }
 
@@ -25,7 +25,7 @@ public class EventQueue {
         return events.isEmpty();
     }
 
-    public Event popEvent() {
+    public ReactiveEvent popEvent() {
         if(!isEmpty()) {
             return events.removeFirst();
         }

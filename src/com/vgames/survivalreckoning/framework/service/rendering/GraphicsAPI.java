@@ -157,7 +157,6 @@ public class GraphicsAPI extends Logger implements ApplicationService, EventList
             this.windowSize.x = ((WindowResizeEvent) e).width;
             this.windowSize.y = ((WindowResizeEvent) e).height;
         }
-        Engine.fromService(EventAPI.class).dispatchEvent(e);
     }
 
     public Vector2 getViewportSize() {
@@ -166,5 +165,9 @@ public class GraphicsAPI extends Logger implements ApplicationService, EventList
 
     public Vector2 getWindowSize() {
         return windowSize;
+    }
+
+    public void popObjectFromRenderingPool(GameObject parent) {
+        this.models.remove(parent);
     }
 }

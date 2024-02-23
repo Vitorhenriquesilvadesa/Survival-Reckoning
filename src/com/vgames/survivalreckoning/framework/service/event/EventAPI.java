@@ -1,6 +1,7 @@
 package com.vgames.survivalreckoning.framework.service.event;
 
 import com.vgames.survivalreckoning.framework.service.event.reactive.QueueDispatcher;
+import com.vgames.survivalreckoning.framework.service.event.reactive.ReactiveEvent;
 import com.vgames.survivalreckoning.framework.service.general.ApplicationService;
 import com.vgames.survivalreckoning.framework.log.LogLevel;
 import com.vgames.survivalreckoning.framework.log.Logger;
@@ -33,7 +34,7 @@ public class EventAPI extends Logger implements ApplicationService {
         this.flags.put(flag, function);
     }
 
-    public void dispatchEvent(Event e) {
+    public void dispatchEvent(ReactiveEvent e) {
         queueDispatcher.dispatchEvent(e);
     }
 
