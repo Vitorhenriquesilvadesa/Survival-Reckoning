@@ -50,7 +50,6 @@ public class SpriteSheet {
                 }
                 spriteW = 0;
             }
-
         }
     }
 

@@ -7,6 +7,7 @@ public abstract class ReactiveEvent {
     public ReactiveEvent() {
 
     }
+    boolean isHandled;
 
     public void setHandled(boolean handled) {
         isHandled = handled;

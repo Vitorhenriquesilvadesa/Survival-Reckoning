@@ -1,6 +1,6 @@
 package com.vgames.survivalreckoning.framework.service.event.reactive;
 
-import com.vgames.survivalreckoning.framework.service.event.actions.Event;
+import com.vgames.survivalreckoning.framework.service.event.reactive.ReactiveEvent;
 import com.vgames.survivalreckoning.framework.service.event.exception.EmptyEventQueueException;
 
 import java.util.ArrayList;

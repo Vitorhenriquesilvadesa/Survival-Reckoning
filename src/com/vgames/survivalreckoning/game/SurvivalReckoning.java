@@ -50,8 +50,11 @@ public class SurvivalReckoning extends Game {
         scene.addLayer("test2");
 
         Engine.fromService(GraphicsAPI.class).pushSceneInCurrentStack(scene);
-
         GameObject gameObject2 = instantiate(new Transform(), SpriteRenderer.class, Box2DMesh.class, TopDownMovement.class, PlayerMovement.class);
+
+        Texture texture = Engine.fromService(GraphicsAPI.class).loadTexture("Temple", ImageFilter.POINT);
+        gameObject = instantiate(new Transform(Vector3.zero(), new Vector3(0f, 0f, 0f), 2f), SpriteRenderer.class, Box2DMesh.class, CameraComponent.class);
+        gameObject = instantiate(new Transform(), SpriteRenderer.class, Box2DMesh.class, CameraComponent.class);
         spriteSheet = Engine.fromService(GraphicsAPI.class).loadSpriteSheet("coin", 240, 16, 0, 0, 0, 16);
         frameCount = spriteSheet.getSprites().size();
         gameObject2.getComponent(SpriteRenderer.class).setTexture(spriteSheet.getSprites().getFirst().texture());
@@ -67,6 +70,32 @@ public class SurvivalReckoning extends Game {
         if(time >= 1f) {
             System.out.println("FPS: " + Time.fps());
             time = 0f;
+//        if(time >= 0.05f) {
+//            System.out.println("FPS: " + Time.fps());
+//            time = 0f;
+//
+//            if(i < frameCount - 1) {
+//                gameObject.getComponent(SpriteRenderer.class).setTexture(spriteSheet.getSprites().get(i).texture());
+//                i++;
+//            } else {
+//                i = 0;
+//            }
+//        }
+        if(time >= 0.05f) {
+            time = 0f;
+
+            if(i < frameCount - 1) {
+                gameObject.getComponent(SpriteRenderer.class).setTexture(spriteSheet.getSprites().get(i).texture());
+                i++;
+            } else {
+                i = 0;
+            }
+        }
+
+        if(Input.isKeyPressed(KeyCode.SR_KEY_E)) {
+            width += 16f / 100f;
+            height += 9f / 100f;
+            Engine.fromService(GraphicsAPI.class).setViewportSize(width, height);
         }
 
         if(input.isKeyPressed(KeyCode.SR_KEY_LEFT)) {

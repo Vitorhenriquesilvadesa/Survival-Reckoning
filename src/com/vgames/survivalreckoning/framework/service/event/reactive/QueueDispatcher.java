@@ -35,6 +35,10 @@ public class QueueDispatcher extends Logger {
     /**
      * Mapping of event classes to their associated event queues.
      */
+    /** Mapping of event classes to reactive methods and their corresponding listeners. */
+    private final Map<Class<? extends ReactiveEvent>, Map<Method, List<Object>>> classMapMap;
+
+    /** Mapping of event classes to their associated event queues. */
     private final Map<Class<? extends ReactiveEvent>, EventQueue> eventQueueMap;
 
     /**
@@ -151,10 +155,12 @@ public class QueueDispatcher extends Logger {
     private synchronized boolean checkForValidMethod(Method method, Class<?> klass) {
         if (!Modifier.isPublic(method.getModifiers())) {
             critical("Method '" + method.getName() + "' in class '" + klass.getSimpleName() + "' must be PUBLIC.");
+            return false;
         }
 
         if (method.getParameterCount() != 1) {
             critical("Reactive methods must have one parameter.", new RuntimeException("Invalid method declaration."));
+            return false;
         }
 
         return true;
