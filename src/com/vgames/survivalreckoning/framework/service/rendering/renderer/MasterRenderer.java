@@ -27,6 +27,7 @@ public class MasterRenderer extends Logger {
     private final EntityRenderer entityRenderer;
     private final TerrainRenderer terrainRenderer;
     private final Map<Model, List<GameObject>> entities = new HashMap<>();
+    private long entityCount;
     private final List<Terrain> terrains = new ArrayList<>();
     private Frustum frustum;
     private final float viewportWidth = 16f;
@@ -45,7 +46,7 @@ public class MasterRenderer extends Logger {
         entityShaderPipeline.loadProjectionMatrix(entityRenderer.getFrustum().getProjectionMatrix());
         entityShaderPipeline.loadDirectionalLight(directionalLight);
         entityShaderPipeline.loadViewMatrix(camera);
-        entityRenderer.render(entities);
+        entityRenderer.render(entities, entityCount);
         entityShaderPipeline.unbind();
 
         terrainShaderPipeline.bind();
@@ -57,6 +58,7 @@ public class MasterRenderer extends Logger {
 
         terrains.clear();
         entities.clear();
+        entityCount = 0;
     }
 
     public void processTerrain(Terrain terrain) {
@@ -81,6 +83,8 @@ public class MasterRenderer extends Logger {
             newBatch.add(gameObject);
             entities.put(model, newBatch);
         }
+
+        entityCount++;
     }
 
     public void cleanup() {

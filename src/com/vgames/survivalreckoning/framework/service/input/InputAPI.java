@@ -1,5 +1,7 @@
 package com.vgames.survivalreckoning.framework.service.input;
 
+import com.vgames.survivalreckoning.framework.design_patterns.Singleton;
+import com.vgames.survivalreckoning.framework.design_patterns.injection.DependencyManager;
 import com.vgames.survivalreckoning.framework.math.Vector2;
 import com.vgames.survivalreckoning.framework.service.general.ApplicationService;
 import com.vgames.survivalreckoning.framework.engine.Engine;
@@ -34,7 +36,10 @@ public class InputAPI implements ApplicationService, EventListener {
         registerDevice(DeviceType.MOUSE);
         registerDevice(DeviceType.KEYBOARD);
         registerDevice(DeviceType.GAMEPAD);
-        Input.init();
+        Singleton<InputManager> inputManagerSingleton = new Singleton<>(new InputManager());
+        inputManagerSingleton.getInstance().init();
+
+        DependencyManager.injectDependency(inputManagerSingleton.getInstance());
         return true;
     }
 

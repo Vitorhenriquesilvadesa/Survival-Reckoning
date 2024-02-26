@@ -52,8 +52,6 @@ public class SpriteSheet {
             }
 
         }
-        System.out.println(sprites.size());
-//        parseSprite(image,row);
     }
 
     private void createSprite(int spriteWidth,int spriteHeight,int tileSize,BufferedImage image){

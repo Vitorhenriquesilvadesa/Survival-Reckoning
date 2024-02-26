@@ -1,8 +1,10 @@
 package com.vgames.survivalreckoning.framework.service.rendering.renderer;
 
 import com.vgames.survivalreckoning.framework.entity.GameObject;
+import com.vgames.survivalreckoning.framework.entity.Transform;
 import com.vgames.survivalreckoning.framework.math.Mathf;
 import com.vgames.survivalreckoning.framework.math.Matrix4f;
+import com.vgames.survivalreckoning.framework.math.Vector3;
 import com.vgames.survivalreckoning.framework.service.rendering.element.material.Material;
 import com.vgames.survivalreckoning.framework.service.rendering.element.model.Mesh;
 import com.vgames.survivalreckoning.framework.service.rendering.element.model.Model;
@@ -38,13 +40,19 @@ public class EntityRenderer {
         shaderPipeline.unbind();
     }
 
-    public void render(Map<Model, List<GameObject>> entities) {
+    public void render(Map<Model, List<GameObject>> entities, long entityCount) {
+
+        final float space = 1 / (float) (entityCount + 1);
+
         for (Model model : entities.keySet()) {
+            float offSet = space;
+
             prepareTexturedModel(model);
             List<GameObject> batch = entities.get(model);
 
             for (GameObject gameObject : batch) {
-                prepareInstance(gameObject);
+                prepareInstance(gameObject, offSet);
+                offSet += space;
                 glDrawElements(GL_TRIANGLES, model.getRawModel().vertexCount(), GL_UNSIGNED_INT, 0);
             }
             unbindTexturedModel();
@@ -82,8 +90,12 @@ public class EntityRenderer {
         glBindVertexArray(0);
     }
 
-    public void prepareInstance(GameObject gameObject) {
-        Matrix4f transformationMatrix = Mathf.createTransformationMatrix(gameObject.transform);
+    public void prepareInstance(GameObject gameObject, float offset) {
+        Transform transform = gameObject.transform;
+        Vector3 position = transform.getPosition();
+        Vector3 virtualPosition = Vector3.add(position, new Vector3(0, 0, offset));
+
+        Matrix4f transformationMatrix = Mathf.createTransformationMatrix(virtualPosition, transform.getRotation(), transform.getScale());
         shaderPipeline.loadTransformationMatrix(transformationMatrix);
     }
 

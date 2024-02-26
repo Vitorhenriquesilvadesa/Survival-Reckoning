@@ -5,6 +5,7 @@ import com.vgames.survivalreckoning.framework.entity.GameObject;
 import com.vgames.survivalreckoning.framework.entity.component.Component;
 import com.vgames.survivalreckoning.framework.entity.component.box2dmesh.Box2DMesh;
 import com.vgames.survivalreckoning.framework.entity.component.box2dmesh.Box2DSize;
+import com.vgames.survivalreckoning.framework.service.input.KeyCode;
 import com.vgames.survivalreckoning.framework.service.rendering.GraphicsAPI;
 import com.vgames.survivalreckoning.framework.service.rendering.element.material.Texture;
 
@@ -16,7 +17,11 @@ public class SpriteRenderer extends Component {
 
     public SpriteRenderer(GameObject parent) {
         super(parent);
-        Engine.fromService(GraphicsAPI.class).pushEntityInRenderingPool(parent);
+        //Engine.fromService(GraphicsAPI.class).putObjectInScene(parent, parent.getLayerName());
+    }
+
+    public void start() {
+
     }
 
     public void update() {
@@ -29,7 +34,7 @@ public class SpriteRenderer extends Component {
     }
 
     public void dispose() {
-        Engine.fromService(GraphicsAPI.class).popObjectFromRenderingPool(parent);
+        Engine.fromService(GraphicsAPI.class).removeObjectFromScene(parent);
     }
 
     public Texture getTexture() {

@@ -5,12 +5,9 @@ import com.vgames.survivalreckoning.framework.entity.GameObject;
 import com.vgames.survivalreckoning.framework.entity.component.camera.CameraComponent;
 import com.vgames.survivalreckoning.framework.math.Vector2;
 import com.vgames.survivalreckoning.framework.math.Vector3;
-import com.vgames.survivalreckoning.framework.service.event.actions.EventType;
 import com.vgames.survivalreckoning.framework.service.event.actions.WindowResizeEvent;
 import com.vgames.survivalreckoning.framework.service.general.ApplicationService;
-import com.vgames.survivalreckoning.framework.engine.Engine;
 import com.vgames.survivalreckoning.framework.log.Logger;
-import com.vgames.survivalreckoning.framework.service.event.EventAPI;
 import com.vgames.survivalreckoning.framework.service.event.EventListener;
 import com.vgames.survivalreckoning.framework.service.event.actions.Event;
 import com.vgames.survivalreckoning.framework.service.rendering.element.light.DirectionalLight;
@@ -24,6 +21,8 @@ import com.vgames.survivalreckoning.framework.service.rendering.element.loader.M
 import com.vgames.survivalreckoning.framework.service.rendering.element.terrain.Terrain;
 import com.vgames.survivalreckoning.framework.service.rendering.renderer.config.Camera;
 import com.vgames.survivalreckoning.framework.service.rendering.renderer.MasterRenderer;
+import com.vgames.survivalreckoning.framework.service.rendering.scene.Scene;
+import com.vgames.survivalreckoning.framework.service.rendering.scene.SceneStack;
 import com.vgames.survivalreckoning.framework.service.rendering.shaderpipeline.ShaderPipelineBuilder;
 
 import java.awt.image.BufferedImage;
@@ -40,10 +39,10 @@ public class GraphicsAPI extends Logger implements ApplicationService, EventList
     private ObjLoader objLoader;
     private Camera activeCamera;
     public DirectionalLight directionalLight;
-    private List<GameObject> models;
     private List<Terrain> terrains;
     private Vector2 viewportSize;
     private Vector2 windowSize;
+    private SceneStack sceneStack;
 
     @Override
     public boolean init() {
@@ -52,7 +51,6 @@ public class GraphicsAPI extends Logger implements ApplicationService, EventList
         if (this.graphicsContext.coreProfileIsEnabled()) {
             info("OpenGL running in Core Profile.");
         }
-        this.models = new ArrayList<>();
         this.terrains = new ArrayList<>();
         this.meshLoader = new MeshLoader();
         this.objLoader = new ObjLoader();
@@ -63,16 +61,18 @@ public class GraphicsAPI extends Logger implements ApplicationService, EventList
         this.directionalLight = new DirectionalLight(new Vector3(0, 5, 0), new Vector3(1, 1, 1));
         this.graphicsContext.setCallbacks();
         this.windowSize = new Vector2(1280f, 720f);
+        this.sceneStack = new SceneStack();
         return true;
     }
 
     @Override
     public void update() {
         graphicsContext.render();
-        for (GameObject model : models) {
+
+        for (GameObject model : sceneStack.toGameObjectList()) {
             renderer.processEntity(model);
         }
-        for(Terrain terrain : terrains) {
+        for (Terrain terrain : terrains) {
             renderer.processTerrain(terrain);
         }
         renderer.render(directionalLight, activeCamera);
@@ -103,11 +103,11 @@ public class GraphicsAPI extends Logger implements ApplicationService, EventList
     }
 
     public Texture loadTexture(BufferedImage image, ImageFilter filter, int spriteWidth, int spriteHeight, int tileSize) {
-        return this.textureLoader.getTexture(image,filter, spriteWidth, spriteHeight,tileSize);
+        return this.textureLoader.getTexture(image, filter, spriteWidth, spriteHeight, tileSize);
     }
 
-    public SpriteSheet loadSpriteSheet(String path, int sheetWidth, int sheetHeight, int row,int spriteWidth,int spriteHeight,int tileSize){
-        return new SpriteSheet("src/resources/textures/" + path, sheetWidth,sheetHeight,row,spriteWidth,spriteHeight,tileSize);
+    public SpriteSheet loadSpriteSheet(String path, int sheetWidth, int sheetHeight, int row, int spriteWidth, int spriteHeight, int tileSize) {
+        return new SpriteSheet("src/resources/textures/" + path, sheetWidth, sheetHeight, row, spriteWidth, spriteHeight, tileSize);
     }
 
     public Terrain loadTerrain(Vector2 position, String texturePath, ImageFilter filter) {
@@ -128,8 +128,16 @@ public class GraphicsAPI extends Logger implements ApplicationService, EventList
         this.activeCamera = camera;
     }
 
-    public void pushEntityInRenderingPool(GameObject model) {
-        this.models.add(model);
+    public void putObjectInScene(GameObject gameObject, String layerName) {
+        this.sceneStack.push(gameObject, layerName);
+    }
+
+    public void putObjectInScene(GameObject gameObject, int layerIndex) {
+        this.sceneStack.push(gameObject, layerIndex);
+    }
+
+    public void pushSceneInCurrentStack(Scene scene) {
+        this.sceneStack.pushScene(scene);
     }
 
     public void pushTerrainInRenderingPool(Terrain terrain) {
@@ -153,7 +161,7 @@ public class GraphicsAPI extends Logger implements ApplicationService, EventList
 
     @Override
     public void onEvent(Event e) {
-        if(e.getClass() == WindowResizeEvent.class) {
+        if (e.getClass() == WindowResizeEvent.class) {
             this.windowSize.x = ((WindowResizeEvent) e).width;
             this.windowSize.y = ((WindowResizeEvent) e).height;
         }
@@ -167,7 +175,7 @@ public class GraphicsAPI extends Logger implements ApplicationService, EventList
         return windowSize;
     }
 
-    public void popObjectFromRenderingPool(GameObject parent) {
-        this.models.remove(parent);
+    public void removeObjectFromScene(GameObject parent) {
+        this.sceneStack.removeObject(parent);
     }
 }

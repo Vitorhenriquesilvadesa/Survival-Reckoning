@@ -25,14 +25,16 @@ public class Vector2 {
     }
 
     public static Vector2 normalize(Vector2 vector) {
+
+        float x = 0, y = 0;
         float length = length(vector);
 
         if (length != 0.0f) {
-            vector.x /= length;
-            vector.y /= length;
+            x = vector.x / length;
+            y = vector.y / length;
         }
 
-        return vector;
+        return new Vector2(x, y);
     }
 
     public static float length(Vector2 vector) {

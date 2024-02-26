@@ -1,16 +1,21 @@
 package com.vgames.survivalreckoning.framework.entity.component;
 
 
+import com.vgames.survivalreckoning.framework.design_patterns.injection.DependencyInjector;
+import com.vgames.survivalreckoning.framework.engine.Engine;
 import com.vgames.survivalreckoning.framework.entity.GameObject;
 import com.vgames.survivalreckoning.framework.entity.Transform;
+import com.vgames.survivalreckoning.framework.service.event.EventAPI;
 
 public abstract class Component {
 
     protected GameObject parent;
     protected Transform transform;
-    protected Component(GameObject parent) {
+    public Component(GameObject parent) {
         this.parent = parent;
         this.transform = parent.transform;
+        Engine.fromService(EventAPI.class).subscribe(this);
+        Engine.fromService(EventAPI.class).resolveDependencies(this);
     }
 
     public void start() { }

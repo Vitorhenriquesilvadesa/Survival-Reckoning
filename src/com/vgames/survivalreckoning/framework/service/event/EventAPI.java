@@ -1,5 +1,7 @@
 package com.vgames.survivalreckoning.framework.service.event;
 
+import com.vgames.survivalreckoning.framework.design_patterns.injection.DependencyInjector;
+import com.vgames.survivalreckoning.framework.design_patterns.injection.DependencyManager;
 import com.vgames.survivalreckoning.framework.service.event.reactive.QueueDispatcher;
 import com.vgames.survivalreckoning.framework.service.event.reactive.ReactiveEvent;
 import com.vgames.survivalreckoning.framework.service.general.ApplicationService;
@@ -18,12 +20,22 @@ public class EventAPI extends Logger implements ApplicationService {
 
     Map<EventFlag, EventCallbackFn> flags;
     QueueDispatcher queueDispatcher;
+    DependencyInjector dependencyInjector;
 
     @Override
     public boolean init() {
         this.flags = new HashMap<>();
         this.queueDispatcher = new QueueDispatcher();
+        this.dependencyInjector = new DependencyInjector();
         return true;
+    }
+
+    public void resolveDependencies(Object target) {
+        dependencyInjector.resolveDependencies(target);
+    }
+
+    public void injectDependencies(Object dependency) {
+        DependencyManager.injectDependency(dependency);
     }
 
     public boolean getFlag(EventFlag flag) {

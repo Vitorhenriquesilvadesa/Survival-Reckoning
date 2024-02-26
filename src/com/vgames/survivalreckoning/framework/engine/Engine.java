@@ -24,6 +24,9 @@ public class Engine extends Logger {
     private static final Singleton<Engine> engineSingleton = new Singleton<>(Engine.class);
     private final Map<ServiceType, ApplicationService> services;
     private boolean successfulInitialization;
+    private int callsPerSecond;
+    private float timeBetweenCalls;
+    private long lastUpdateTime;
     private Game game;
 
     public void init(Class<? extends Game> gameClass) {
@@ -31,6 +34,10 @@ public class Engine extends Logger {
         initializeServices();
         initializationLog();
         setEventFlags();
+
+        callsPerSecond = 60;
+        timeBetweenCalls = 1f / callsPerSecond;
+        lastUpdateTime = System.nanoTime();
 
         try {
             game = gameClass.getDeclaredConstructor().newInstance();
@@ -123,10 +130,19 @@ public class Engine extends Logger {
         return engineSingleton.getInstance();
     }
 
+    public int maxUpdateCallPerSecond() {
+        return callsPerSecond;
+    }
+
     public void update() {
-        updateGame();
-        updateServices();
-        updateTime();
+        long currentTime = System.nanoTime();
+        float deltaTime = (currentTime - lastUpdateTime) / 1_000_000_000.0f; // Converte para segundos
+        if (deltaTime >= timeBetweenCalls) {
+            updateGame();
+            updateServices();
+            updateTime();
+            lastUpdateTime = currentTime;
+        }
     }
 
     private void updateTime() {

@@ -13,4 +13,9 @@ public class GameObjectUUID {
     public UUID getUuid() {
         return uuid;
     }
+
+    @Override
+    public String toString() {
+        return uuid.toString();
+    }
 }

@@ -56,6 +56,11 @@ public class ObjectPoolAPI implements ApplicationService {
         return gameObject;
     }
 
+    public static void destroy(GameObject gameObject) {
+        gameObject.clearComponents();
+        gameObjects.remove(gameObject);
+    }
+
     private static void attachObject(GameObject gameObject) {
         gameObjects.add(gameObject);
     }
