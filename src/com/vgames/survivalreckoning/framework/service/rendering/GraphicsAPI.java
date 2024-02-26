@@ -90,10 +90,10 @@ public class GraphicsAPI extends Logger implements ApplicationService, EventList
     public int loadShader(String file, int shaderType) {
         return this.shaderPipelineBuilder.loadShader(file, shaderType);
     }
-    public Animation loadAnimation(String spriteSheetPath,int row, int tileSize,float durationFrame,int offSet){
-        row *= tileSize;
-        tileSize -= offSet;
-        SpriteSheet spriteSheet =  loadSpriteSheet(spriteSheetPath,row,tileSize,offSet);
+    public Animation loadAnimation(String spriteSheetPath,int row, int spriteSize,ArrayList<Float> durationFrame,int offSet){
+        row *= spriteSize;
+
+        SpriteSheet spriteSheet =  loadSpriteSheet(spriteSheetPath,row,spriteSize,offSet);
         return new Animation(spriteSheet.getSprites(), durationFrame);
     }
     public Mesh loadModel(float[] positions, float[] textureCoords, float[] normals, int[] indices) {

@@ -37,17 +37,14 @@ public class SpriteSheet {
         assert width % tileSize == 0;
         assert height % tileSize == 0;
         while(!spriteSheetEnd){
-            if(isTransparent(image,spriteW + tileSize, spriteH + tileSize, tileSize)){
+            if(!isTransparent(image,spriteW + tileSize, spriteH + tileSize, tileSize)){
                 createSprite(spriteW,spriteH,tileSize,image, offSet);
                 spriteW += tileSize;
-                if(spriteW == width && spriteH + tileSize >= height){
+                if(spriteW == width){
                     spriteSheetEnd = true;
                 }
                 if(spriteW  >= width){
-                    if(spriteH + tileSize < height){
-                        spriteH += tileSize;
-                    }
-                    spriteW = 0;
+                    spriteSheetEnd = true;
                 }
             }else{
                 spriteSheetEnd = true;
@@ -67,17 +64,7 @@ public class SpriteSheet {
             for (int x = spriteWidth - tileSize; x < spriteWidth; x++) {
                 int pixel = image.getRGB(x, y);
                 if ((pixel >> 24) != 0x00) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-    private boolean isBoundingBoxEmpty(BufferedImage image){
-        for(int i = 0; i < image.getWidth(); i ++){
-            for(int j = 0; j < image.getHeight(); j ++){
-                if((image.getRGB(i,j) & 0xFF000000) != 0X00){
-                    return  false;
+                    return false;
                 }
             }
         }

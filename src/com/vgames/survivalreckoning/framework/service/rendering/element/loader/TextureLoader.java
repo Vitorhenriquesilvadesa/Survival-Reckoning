@@ -79,7 +79,6 @@ public class TextureLoader extends AssetLoader {
 
         pixels = new int[width * height];
         image.getRGB(spriteWidth, spriteHeight, width,height, pixels, 0, width);
-
         assert width != 0 && height != 0;
 
         int[] data = new int[width * height];
