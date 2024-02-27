@@ -1,18 +1,15 @@
-package com.vgames.survivalreckoning.framework.entity.component;
+package com.vgames.survivalreckoning.framework.entity;
 
-import com.vgames.survivalreckoning.framework.log.annotation.LogAlias;
 import com.vgames.survivalreckoning.framework.math.Vector3;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@LogAlias("Transform")
 public class Transform {
     private Vector3 position;
     private Vector3 rotation;
     private Vector3 scale;
-
-    private List<Transform> children = new ArrayList<>();
+    private final List<Transform> children = new ArrayList<>();
     private Transform parent;
 
     public Transform() {
@@ -75,16 +72,26 @@ public class Transform {
 
     public void setPosition(Vector3 position) {
         Vector3 deltaPosition = Vector3.subtract(position, this.position);
-        for(Transform child : children) {
+        for (Transform child : children) {
             Vector3 childPosition = Vector3.add(child.position, deltaPosition);
             child.setPosition(childPosition);
         }
         this.position = position;
     }
 
+    public void setDepthLocation(int depthLocation) {
+        Vector3 newPosition = new Vector3(position.x, position.y, depthLocation);
+        Vector3 deltaPosition = Vector3.subtract(newPosition, this.position);
+        for (Transform child : children) {
+            Vector3 childPosition = Vector3.add(child.position, deltaPosition);
+            child.setPosition(childPosition);
+        }
+        this.position = newPosition;
+    }
+
     public void setRotation(Vector3 rotation) {
         Vector3 deltaRotation = Vector3.subtract(rotation, this.rotation);
-        for(Transform child : children) {
+        for (Transform child : children) {
             Vector3 childRotation = Vector3.add(child.rotation, deltaRotation);
             child.setRotation(childRotation);
         }
@@ -93,11 +100,20 @@ public class Transform {
 
     public void setScale(Vector3 scale) {
         Vector3 deltaScale = Vector3.divide(Vector3.subtract(scale, this.scale), this.scale);
-        for(Transform child : children) {
+        for (Transform child : children) {
             Vector3 childScale = Vector3.multiply(child.scale, deltaScale);
             child.setScale(childScale);
         }
         this.scale = scale;
     }
 
+    public void setScale(float scale) {
+        Vector3 newScale = new Vector3(scale, scale, scale);
+        Vector3 deltaScale = Vector3.divide(Vector3.subtract(newScale, this.scale), this.scale);
+        for (Transform child : children) {
+            Vector3 childScale = Vector3.multiply(child.scale, deltaScale);
+            child.setScale(childScale);
+        }
+        this.scale = newScale;
+    }
 }

@@ -14,6 +14,12 @@ uniform float reflectivity;
 
 void main(void) {
 
+    vec4 textureColor = texture(textureSampler, pass_textureCoords);
+
+    if(textureColor.a < 0.05) {
+        discard;
+    }
+
     float _smoothness = max(smoothness, 0.0);
     float _reflectivity = max(reflectivity, 0.0);
 
@@ -33,6 +39,6 @@ void main(void) {
     float smoothedFactor = pow(specularFactor, _smoothness);
     vec3 finalSpecular = smoothedFactor * _reflectivity * lightColor;
 
-    out_Color = texture(textureSampler, pass_textureCoords);
+    out_Color = textureColor;
     //out_Color = vec4(lightDirection, 1.0);
 }

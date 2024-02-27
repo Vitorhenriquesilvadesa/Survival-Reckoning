@@ -115,6 +115,7 @@ public abstract class Logger {
 
     protected void critical(String message) {
         printMessage(CRITICAL, message, COLOR_CRITICAL);
+        System.exit(-1);
     }
 
     protected void error(String message, Throwable throwable) {

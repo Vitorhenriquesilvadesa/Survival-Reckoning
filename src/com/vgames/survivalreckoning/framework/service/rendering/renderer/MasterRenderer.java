@@ -1,7 +1,8 @@
 package com.vgames.survivalreckoning.framework.service.rendering.renderer;
 
 import com.vgames.survivalreckoning.framework.entity.GameObject;
-import com.vgames.survivalreckoning.framework.entity.component.SpriteRenderer;
+import com.vgames.survivalreckoning.framework.entity.component.spriterenderer.SpriteRenderer;
+import com.vgames.survivalreckoning.framework.entity.component.box2dmesh.Box2DMesh;
 import com.vgames.survivalreckoning.framework.log.Logger;
 import com.vgames.survivalreckoning.framework.log.annotation.LogAlias;
 import com.vgames.survivalreckoning.framework.service.rendering.element.light.DirectionalLight;
@@ -26,6 +27,7 @@ public class MasterRenderer extends Logger {
     private final EntityRenderer entityRenderer;
     private final TerrainRenderer terrainRenderer;
     private final Map<Model, List<GameObject>> entities = new HashMap<>();
+    private long entityCount;
     private final List<Terrain> terrains = new ArrayList<>();
     private Frustum frustum;
     private final float viewportWidth = 16f;
@@ -41,12 +43,14 @@ public class MasterRenderer extends Logger {
 
     public void render(DirectionalLight directionalLight, Camera camera) {
         entityShaderPipeline.bind();
+        entityShaderPipeline.loadProjectionMatrix(entityRenderer.getFrustum().getProjectionMatrix());
         entityShaderPipeline.loadDirectionalLight(directionalLight);
         entityShaderPipeline.loadViewMatrix(camera);
-        entityRenderer.render(entities);
+        entityRenderer.render(entities, entityCount);
         entityShaderPipeline.unbind();
 
         terrainShaderPipeline.bind();
+        terrainShaderPipeline.loadProjectionMatrix(entityRenderer.getFrustum().getProjectionMatrix());
         terrainShaderPipeline.loadDirectionalLight(directionalLight);
         terrainShaderPipeline.loadViewMatrix(camera);
         terrainRenderer.render(terrains);
@@ -54,6 +58,7 @@ public class MasterRenderer extends Logger {
 
         terrains.clear();
         entities.clear();
+        entityCount = 0;
     }
 
     public void processTerrain(Terrain terrain) {
@@ -61,11 +66,13 @@ public class MasterRenderer extends Logger {
     }
 
     public void processEntity(GameObject gameObject) {
+
         SpriteRenderer spriteRenderer = gameObject.getComponent(SpriteRenderer.class);
+        Box2DMesh mesh = gameObject.getComponent(Box2DMesh.class);
 
-        if(spriteRenderer == null) return;
+        if(spriteRenderer == null || mesh == null) return;
 
-        Model model = spriteRenderer.getModel();
+        Model model = new Model(mesh.getMesh(), spriteRenderer.getTexture());
 
         List<GameObject> batch = entities.get(model);
 
@@ -76,10 +83,21 @@ public class MasterRenderer extends Logger {
             newBatch.add(gameObject);
             entities.put(model, newBatch);
         }
+
+        entityCount++;
     }
 
     public void cleanup() {
         entityShaderPipeline.cleanup();
         terrainShaderPipeline.cleanup();
+    }
+
+    public void setViewportSize(float viewportWidth, float viewportHeight) {
+        float halfWidth = viewportWidth / 2f;
+        float halfHeight = viewportHeight / 2f;
+
+        this.frustum = new OrthographicFrustum(-halfWidth, halfWidth, -halfHeight, halfHeight, 0.1f, 1000f);
+        this.entityRenderer.setFrustum(frustum);
+        this.terrainRenderer.setFrustum(frustum);
     }
 }
