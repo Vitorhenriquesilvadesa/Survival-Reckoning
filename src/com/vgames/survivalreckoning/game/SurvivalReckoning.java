@@ -16,10 +16,7 @@ import com.vgames.survivalreckoning.framework.service.event.reactive.Reactive;
 import com.vgames.survivalreckoning.framework.service.input.Input;
 import com.vgames.survivalreckoning.framework.service.input.KeyCode;
 import com.vgames.survivalreckoning.framework.service.rendering.GraphicsAPI;
-import com.vgames.survivalreckoning.framework.service.rendering.element.loader.ImageFilter;
-import com.vgames.survivalreckoning.framework.service.rendering.element.material.Texture;
 
-import java.security.Key;
 import java.util.ArrayList;
 
 import static com.vgames.survivalreckoning.framework.service.pool.ObjectPoolAPI.*;
@@ -41,10 +38,14 @@ public class SurvivalReckoning extends Game {
         frameDuration.add(0.5f);
         frameDuration.add(0.5f);
         frameDuration.add(0.5f);
+        ArrayList<Float> frameDuration2 = new ArrayList<>();
+        for(int i = 0; i < 5; i ++){
+            frameDuration2.add(0.5f);
+        }
 
-        gameObject.getComponent(Animator.class).addAnimation(Engine.fromService(GraphicsAPI.class).loadAnimation("ch",3,32,frameDuration,0), "front_walking",2);
-        gameObject.getComponent(Animator.class).addAnimation(Engine.fromService(GraphicsAPI.class).loadAnimation("ch",4,32,frameDuration,0), "back_walking",2);
-        gameObject.getComponent(Animator.class).addAnimation(Engine.fromService(GraphicsAPI.class).loadAnimation("ch",5,32,frameDuration,0), "right_walking",2);
+        gameObject.getComponent(Animator.class).addAnimation(Engine.fromService(GraphicsAPI.class).loadAnimation("tiles", 2,0,16,1,frameDuration2,1,1), "front_walking",5);
+
+//        gameObject.getComponent(Animator.class).addAnimation(Engine.fromService(GraphicsAPI.class).loadAnimation("character", 0,frameDuration2,24,1), "front_walking",1);
     }
     @Override
    public void update() {
@@ -54,30 +55,30 @@ public class SurvivalReckoning extends Game {
             Engine.fromService(GraphicsAPI.class).setViewportSize(width, height);
         }
         Vector3 position = gameObject.transform.getPosition();
-        if(Input.isKeyPressed(KeyCode.SR_KEY_W)){
-            gameObject.getComponent(Animator.class).playAnimation("front_walking");
-            position.y -= VELOCITY;
-            gameObject.transform.setPosition(position);
-        }else
-       if(Input.isKeyPressed(KeyCode.SR_KEY_A)){
-            gameObject.getComponent(Animator.class).playAnimation("right_walking");
-            gameObject.transform.setRotation(new Vector3(0,0,0));
-            position.x -= VELOCITY;
-            gameObject.transform.setPosition(position);
-        }else
-       if(Input.isKeyPressed(KeyCode.SR_KEY_S)){
-            gameObject.getComponent(Animator.class).playAnimation("back_walking");
-            position.y += VELOCITY;
-            gameObject.transform.setPosition(position);
-        }else
-       if(Input.isKeyPressed(KeyCode.SR_KEY_D)){
-            gameObject.getComponent(Animator.class).playAnimation("right_walking");
-           gameObject.transform.setRotation(new Vector3(0,0,0));
-           position.x += VELOCITY;
-            gameObject.transform.setPosition(position);
-        }else{
-           gameObject.getComponent(Animator.class).puaseAnimation();
-       }
+//        if(Input.isKeyPressed(KeyCode.SR_KEY_W)){
+//            gameObject.getComponent(Animator.class).playAnimation("front_walking");
+//            position.y -= VELOCITY;
+//            gameObject.transform.setPosition(position);
+//        }else
+//       if(Input.isKeyPressed(KeyCode.SR_KEY_A)){
+//            gameObject.getComponent(Animator.class).playAnimation("right_walking");
+//            gameObject.transform.setRotation(new Vector3(0,0,0));
+//            position.x -= VELOCITY;
+//            gameObject.transform.setPosition(position);
+//        }else
+//       if(Input.isKeyPressed(KeyCode.SR_KEY_S)){
+//            gameObject.getComponent(Animator.class).playAnimation("back_walking");
+//            position.y += VELOCITY;
+//            gameObject.transform.setPosition(position);
+//        }else
+//       if(Input.isKeyPressed(KeyCode.SR_KEY_D)){
+//            gameObject.getComponent(Animator.class).playAnimation("right_walking");
+//           gameObject.transform.setRotation(new Vector3(0,0,0));
+//           position.x += VELOCITY;
+//            gameObject.transform.setPosition(position);
+//        }else{
+//           gameObject.getComponent(Animator.class).puaseAnimation();
+//       }
         Engine.fromService(EventAPI.class).dispatchEvent(new KeyPressedEvent(20));
     }
 
