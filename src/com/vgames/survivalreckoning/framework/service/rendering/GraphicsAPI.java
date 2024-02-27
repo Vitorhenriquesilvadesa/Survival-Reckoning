@@ -90,10 +90,13 @@ public class GraphicsAPI extends Logger implements ApplicationService, EventList
     public int loadShader(String file, int shaderType) {
         return this.shaderPipelineBuilder.loadShader(file, shaderType);
     }
-    public Animation loadAnimation(String spriteSheetPath,int row, int spriteSize,ArrayList<Float> durationFrame,int offSet){
-        row *= spriteSize;
-
-        SpriteSheet spriteSheet =  loadSpriteSheet(spriteSheetPath,row,spriteSize,offSet);
+    public Animation loadAnimation(String spriteSheetPath,int row,ArrayList<Float> durationFrame, int spriteSize,int xOffSet,int yOffSet){
+        row *= spriteSize + yOffSet;
+        SpriteSheet spriteSheet =  loadSpriteSheet(spriteSheetPath,row,spriteSize,xOffSet, yOffSet);
+        return new Animation(spriteSheet.getSprites(), durationFrame);
+    }
+    public Animation loadAnimation(String spriteSheetPath,int row, int animationPosition,int spriteSize,int framesQuantity,ArrayList<Float> durationFrame,int xOffSet,int yOffSet){
+        SpriteSheet spriteSheet =  loadSpriteSheet(spriteSheetPath,row,spriteSize,animationPosition,framesQuantity,xOffSet,yOffSet);
         return new Animation(spriteSheet.getSprites(), durationFrame);
     }
     public Mesh loadModel(float[] positions, float[] textureCoords, float[] normals, int[] indices) {
@@ -112,8 +115,11 @@ public class GraphicsAPI extends Logger implements ApplicationService, EventList
         return this.textureLoader.getTexture(image,filter, spriteWidth, spriteHeight,tileSize);
     }
 
-    public SpriteSheet loadSpriteSheet(String path,int row,int tileSize,int offSet){
-        return new SpriteSheet("src/resources/textures/" + path,row,tileSize, offSet);
+    public SpriteSheet loadSpriteSheet(String path,int row,int tileSize,int xOffSet,int yOffSet){
+        return new SpriteSheet("src/resources/textures/" + path,row,tileSize, xOffSet,yOffSet);
+    }
+    public SpriteSheet loadSpriteSheet(String path,int row,int spriteSize, int widthPosition,int frameQuantity,int xOffSet,int yOffSet){
+        return new SpriteSheet("src/resources/textures/" + path,row,widthPosition,spriteSize,frameQuantity, xOffSet,yOffSet);
     }
 
     public Terrain loadTerrain(Vector2 position, String texturePath, ImageFilter filter) {

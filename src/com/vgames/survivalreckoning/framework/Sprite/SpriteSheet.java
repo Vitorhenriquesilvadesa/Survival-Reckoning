@@ -20,7 +20,20 @@ public class SpriteSheet {
     /**
      * @param row "The number of the line that the image need to be reading"
      * **/
-    public SpriteSheet(String path, int row,int tileSize,int offSet) {
+    public SpriteSheet(String path, int row,int spriteSize,int xOffSet,int yOffSet)
+    {
+        BufferedImage image = createImage(path);
+        createSpriteSheet(image,0,row,spriteSize,xOffSet,yOffSet,image.getWidth()/spriteSize);
+    }
+    public SpriteSheet(String path, int row,int widthPosition,int spriteSize ,int frameQuantity,int xOffSet,int yOffSet) {
+        BufferedImage image = createImage(path);
+        row *= spriteSize + yOffSet;
+        widthPosition *= (spriteSize + xOffSet);
+
+        createSpriteSheet(image,widthPosition,row,spriteSize,xOffSet,yOffSet,frameQuantity);
+    }
+    private BufferedImage createImage(String path)
+    {
         BufferedImage image = null;
         sprites = new ArrayList<>();
         try {
@@ -28,40 +41,40 @@ public class SpriteSheet {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        return image;
+    }
+    private void createSpriteSheet(BufferedImage image,int sheetW, int sheetH,int spriteSize,int xOffSet,int yOffSet,int frameQuantity){
         width = image.getWidth();
         height = image.getHeight();
 
-        int spriteW = 0;
-        int spriteH = row;
+        int spriteW = sheetW;
+        int spriteH = sheetH;
 
-        assert width % tileSize == 0;
-        assert height % tileSize == 0;
+        assert width % spriteSize == 0;
+        assert height % spriteSize == 0;
+
         while(!spriteSheetEnd){
-            if(!isTransparent(image,spriteW + tileSize, spriteH + tileSize, tileSize)){
-                createSprite(spriteW,spriteH,tileSize,image, offSet);
-                spriteW += tileSize;
-                if(spriteW == width){
-                    spriteSheetEnd = true;
-                }
-                if(spriteW  >= width){
+            if(!isTransparent(image,spriteW + spriteSize, spriteH + spriteSize, spriteSize)){
+                createSprite(spriteW, spriteH, spriteSize, image);
+                spriteW += spriteSize + xOffSet;
+                if(spriteW >= width || sprites.size() == frameQuantity) {
                     spriteSheetEnd = true;
                 }
             }else{
                 spriteSheetEnd = true;
             }
         }
-
     }
 
-    private void createSprite(int spriteWidth,int spriteHeight,int tileSize,BufferedImage image,int offSet){
-        sprites.add(new Sprite(Engine.fromService(GraphicsAPI.class).loadTexture(image, ImageFilter.POINT, spriteWidth, spriteHeight, tileSize)));
+    private void createSprite(int spriteWidth,int spriteHeight,int spriteSize,BufferedImage image){
+        sprites.add(new Sprite(Engine.fromService(GraphicsAPI.class).loadTexture(image, ImageFilter.POINT, spriteWidth, spriteHeight, spriteSize)));
     }
     /**
      * Verify if the image is transparent
      * **/
-    public boolean isTransparent(BufferedImage image, int spriteWidth,int spriteHeight,int tileSize){
-        for (int y = spriteHeight - tileSize; y < spriteHeight; y++) {
-            for (int x = spriteWidth - tileSize; x < spriteWidth; x++) {
+    public boolean isTransparent(BufferedImage image, int spriteWidth,int spriteHeight,int spriteSize){
+        for (int y = spriteHeight - spriteSize; y < spriteHeight; y++) {
+            for (int x = spriteWidth - spriteSize; x < spriteWidth; x++) {
                 int pixel = image.getRGB(x, y);
                 if ((pixel >> 24) != 0x00) {
                     return false;
