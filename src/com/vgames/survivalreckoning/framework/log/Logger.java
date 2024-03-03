@@ -18,7 +18,8 @@ import static com.vgames.survivalreckoning.framework.log.LogLevel.*;
 
 public abstract class Logger {
 
-    private static final boolean globalDebugDefinition = true;
+    public static boolean globalDebugDefinition = true;
+    public static boolean generateCriticalFiles = true;
 
     private final String name;
     private final DateFormat dateFormat;
@@ -86,8 +87,10 @@ public abstract class Logger {
     }
 
     protected void printMessage(LogLevel level, String message, String color) {
-        if (level.ordinal() <= this.logLevel.ordinal()) {
-            System.out.println(formatLogMessage(level.name(), message, color));
+        if(globalDebugDefinition) {
+            if (level.ordinal() <= this.logLevel.ordinal()) {
+                System.out.println(formatLogMessage(level.name(), message, color));
+            }
         }
     }
 
@@ -126,7 +129,7 @@ public abstract class Logger {
     protected void critical(String message, RuntimeException exception) {
         printMessage(CRITICAL, message, COLOR_CRITICAL);
 
-        if(this.generateCriticalFile) {
+        if(this.generateCriticalFile && generateCriticalFiles) {
             generateCriticalFile(exception, message);
         }
         throwException(exception);

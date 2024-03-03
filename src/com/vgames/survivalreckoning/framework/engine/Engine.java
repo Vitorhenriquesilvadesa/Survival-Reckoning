@@ -2,6 +2,7 @@ package com.vgames.survivalreckoning.framework.engine;
 
 
 import com.vgames.survivalreckoning.framework.application.Game;
+import com.vgames.survivalreckoning.framework.engine.setting.*;
 import com.vgames.survivalreckoning.framework.service.general.ApplicationService;
 import com.vgames.survivalreckoning.framework.design_patterns.Singleton;
 import com.vgames.survivalreckoning.framework.log.*;
@@ -17,7 +18,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
-@LogInfo(level = LogLevel.INFO, verbose = true)
+@LogInfo(level = LogLevel.INFO)
 @LogAlias("Application")
 @GenerateCriticalFile
 public class Engine extends Logger {
@@ -28,22 +29,50 @@ public class Engine extends Logger {
     private float timeBetweenCalls;
     private long lastUpdateTime;
     private Game game;
+    private WindowSettings windowSettings;
+    private GearSettings gearSettings;
+    private DebugSettings debugSettings;
+    private static String title;
+    private static String rootDirectory;
+    private Class<? extends Game> gameClass;
 
     public void init(Class<? extends Game> gameClass) {
+
+        title = windowSettings.getWindowTitle() == null ? "Gear Window" : windowSettings.getWindowTitle();
+        callsPerSecond = gearSettings.getMaxTicksPerSecond() == null ? 60 : gearSettings.getMaxTicksPerSecond();
+        rootDirectory = gearSettings.getRootDirectory() == null ? "" : gearSettings.getRootDirectory();
+
+        Logger.generateCriticalFiles = debugSettings.isGenerateCriticalFiles() == null || debugSettings.isGenerateCriticalFiles();
+        Logger.globalDebugDefinition = debugSettings.isShowLogs() == null || debugSettings.isShowLogs();
+
+
         successfulInitialization = true;
+
+        boolean gameInitializationFromConfigFile = gearSettings.getGameClass() != null;
+
+        if(gameInitializationFromConfigFile) {
+            this.gameClass = gearSettings.getGameClass();
+        } else {
+            this.gameClass = gameClass;
+        }
+
         initializeServices();
         initializationLog();
         setEventFlags();
 
-        callsPerSecond = 60;
-        timeBetweenCalls = 1f / callsPerSecond;
-        lastUpdateTime = System.nanoTime();
+        GraphicsAPI graphicsAPI = fromService(GraphicsAPI.class);
+
+        graphicsAPI.setViewportSize(windowSettings.getWindowSize().x, windowSettings.getWindowSize().y);
+        graphicsAPI.setFullScreen(windowSettings.isFullScreen());
 
         try {
-            game = gameClass.getDeclaredConstructor().newInstance();
+            game = this.gameClass.getDeclaredConstructor().newInstance();
         } catch (InstantiationException | NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
             critical("", new RuntimeException(e));
         }
+
+        timeBetweenCalls = 1f / callsPerSecond;
+        lastUpdateTime = System.nanoTime();
 
         game.start();
     }
@@ -151,5 +180,21 @@ public class Engine extends Logger {
 
     private void updateGame() {
         game.update();
+    }
+
+    public static String getTitle() {
+        return title;
+    }
+
+    void setWindowSettings(WindowSettings windowSettings) {
+        this.windowSettings = windowSettings;
+    }
+
+    void setGearSettings(GearSettings gearSettings) {
+        this.gearSettings = gearSettings;
+    }
+
+    void setDebugSettings(DebugSettings debugSettings) {
+        this.debugSettings = debugSettings;
     }
 }

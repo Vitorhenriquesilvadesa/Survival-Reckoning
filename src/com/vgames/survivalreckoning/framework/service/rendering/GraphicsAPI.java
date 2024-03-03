@@ -43,6 +43,7 @@ public class GraphicsAPI extends Logger implements ApplicationService, EventList
     private Vector2 viewportSize;
     private Vector2 windowSize;
     private SceneStack sceneStack;
+    private boolean isFullscreen = false;
 
     @Override
     public boolean init() {
@@ -177,5 +178,9 @@ public class GraphicsAPI extends Logger implements ApplicationService, EventList
 
     public void removeObjectFromScene(GameObject parent) {
         this.sceneStack.removeObject(parent);
+    }
+
+    public void setFullScreen(boolean isFullscreen) {
+        this.isFullscreen = isFullscreen;
     }
 }

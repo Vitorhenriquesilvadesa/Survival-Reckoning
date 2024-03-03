@@ -5,7 +5,7 @@ import com.vgames.survivalreckoning.game.SurvivalReckoning;
 
 public class Main {
     public static void main(String[] args) {
-        Application.init(SurvivalReckoning.class);
+        Application.init(SurvivalReckoning.class, "src/resources/config/project.gconfig");
         Application.run();
     }
 }
