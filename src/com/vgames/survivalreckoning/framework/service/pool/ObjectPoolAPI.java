@@ -40,13 +40,24 @@ public class ObjectPoolAPI implements ApplicationService {
             }
         }
 
-        gameObjects.add(gameObject);
+        for(Component component : gameObject.getComponents()) {
+            component.start();
+        }
+
+        attachObject(gameObject);
+
         return gameObject;
     }
 
     public static GameObject instantiate(Transform parent) {
         GameObject gameObject = new GameObject(parent);
+
+        for(Component component : gameObject.getComponents()) {
+            component.start();
+        }
+
         attachObject(gameObject);
+
         return gameObject;
     }
 

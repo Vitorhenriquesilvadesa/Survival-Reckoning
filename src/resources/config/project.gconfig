@@ -1,0 +1,19 @@
+# Settings for window.
+
+window.size = (320, 180);
+window.fullscreen = true;
+window.title = "Survival Reckoning 0.0.1 test";
+
+
+# Settings for Gear.
+
+gear.max_ticks_per_second = 60;
+gear.root_directory = "src/resources";
+gear.game_class = "com.vgames.survivalreckoning.game.SurvivalReckoning";
+
+
+# Settings for Debug.
+
+debug.show_logs = true;
+debug.generate_critical_files = true;
+
