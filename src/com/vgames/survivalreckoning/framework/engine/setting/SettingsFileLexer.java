@@ -20,7 +20,6 @@ public class SettingsFileLexer extends AssetLoader {
     private int start = 0;
     private int current = 0;
     private int line = 1;
-    private int column = 1;
 
     private static Map<String, TokenType> keywords = new HashMap<>();
 
@@ -55,12 +54,10 @@ public class SettingsFileLexer extends AssetLoader {
 
         switch (c) {
             case ' ', '\t': {
-                column++;
                 break;
             }
             case '\n': {
                 line++;
-                column = 0;
                 break;
             }
             case '(': {
@@ -146,7 +143,6 @@ public class SettingsFileLexer extends AssetLoader {
 
     private char advance() {
         if (!isAtEnd()) {
-            column++;
             return fileContent.charAt(current++);
         }
 
@@ -174,8 +170,14 @@ public class SettingsFileLexer extends AssetLoader {
 
     private void string() {
         char c = advance();
-        while (c != '"') {
+        while (c != '"' && c != '\n') {
             c = advance();
+        }
+
+        if(c == '\n') {
+            line++;
+            critical("Error: unterminated string at line" + (line - 1),
+                    new RuntimeException());
         }
 
         String string = trim(fileContent.substring(start, current));
@@ -193,7 +195,7 @@ public class SettingsFileLexer extends AssetLoader {
         while (!isAtEnd() && isNumeric(peek()) || peek() == '.') {
             if (peek() == '.') {
                 if (isFloat) {
-                    critical("Error to parse number in 'gconfig' file at line " + line + " at column " + column,
+                    critical("Error to parse number in 'gconfig' file at line " + (line - 1),
                             new RuntimeException());
                 } else {
                     isFloat = true;
@@ -203,7 +205,7 @@ public class SettingsFileLexer extends AssetLoader {
             advance();
 
             if (isFloat && peek() == '.') {
-                critical("Error to parse number in 'gconfig' file at line " + line + " at column " + column,
+                critical("Error to parse number in 'gconfig' file at line " + (line - 1),
                         new RuntimeException());
             }
         }
@@ -230,6 +232,6 @@ public class SettingsFileLexer extends AssetLoader {
     }
 
     private void makeToken(TokenType type, String lexeme) {
-        this.tokens.add(new Token(type, lexeme, line, column));
+        this.tokens.add(new Token(type, lexeme, line));
     }
 }

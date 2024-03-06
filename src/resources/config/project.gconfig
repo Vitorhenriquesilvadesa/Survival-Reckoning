@@ -16,4 +16,4 @@ gear.game_class = "com.vgames.survivalreckoning.game.SurvivalReckoning";
 
 debug.show_logs = true;
 debug.generate_critical_files = true;
-
+debug.enable_file_tracking = true;
