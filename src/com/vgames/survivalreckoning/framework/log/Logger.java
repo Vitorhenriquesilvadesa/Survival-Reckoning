@@ -20,7 +20,7 @@ public abstract class Logger {
 
     public static boolean globalDebugDefinition = true;
     public static boolean generateCriticalFiles = true;
-
+    public static boolean enableFileTracking = false;
     private final String name;
     private final DateFormat dateFormat;
     private LogLevel logLevel;
@@ -29,7 +29,7 @@ public abstract class Logger {
     private boolean generateCriticalFile;
 
     protected Logger() {
-        if(getClass().isAnnotationPresent(LogAlias.class)) {
+        if (getClass().isAnnotationPresent(LogAlias.class)) {
             String alias = getClass().getDeclaredAnnotation(LogAlias.class).value();
             this.name = alias.isEmpty() ? getClass().getSimpleName() : alias;
         } else {
@@ -50,11 +50,7 @@ public abstract class Logger {
             this.isVerboseException = true;
         }
 
-        if(klass.isAnnotationPresent(GenerateCriticalFile.class)) {
-            this.generateCriticalFile = true;
-        } else {
-            this.generateCriticalFile = false;
-        }
+        this.generateCriticalFile = klass.isAnnotationPresent(GenerateCriticalFile.class);
 
         this.isDebugging = !klass.isAnnotationPresent(NotDebugLog.class) && globalDebugDefinition;
     }
@@ -86,51 +82,56 @@ public abstract class Logger {
         }
     }
 
-    protected void printMessage(LogLevel level, String message, String color) {
-        if(globalDebugDefinition) {
+    protected final void printMessage(LogLevel level, String message, String color) {
+        if (globalDebugDefinition) {
             if (level.ordinal() <= this.logLevel.ordinal()) {
-                System.out.println(formatLogMessage(level.name(), message, color));
+                StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+                String line = stackTrace[3].toString();
+
+                String tracking = " [Caller: " + getClass().getSimpleName() + " - line: " + line + "]";
+                String logMessage = formatLogMessage(level.name(), message, color) + (enableFileTracking ? tracking : "");
+                System.out.println(logMessage);
             }
         }
     }
 
-    protected void info(String message) {
+    protected final void info(Object target) {
         if (isDebugging) {
-            printMessage(INFO, message, COLOR_INFO);
+            printMessage(INFO, target.toString(), COLOR_INFO);
         }
     }
 
-    protected void trace(String message) {
+    protected final void trace(Object target) {
         if (isDebugging) {
-            printMessage(TRACE, message, COLOR_TRACE);
+            printMessage(TRACE, target.toString(), COLOR_TRACE);
         }
     }
 
-    protected void warn(String message) {
+    protected final void warn(Object target) {
         if (isDebugging) {
-            printMessage(WARN, message, COLOR_WARN);
+            printMessage(WARN, target.toString(), COLOR_WARN);
         }
     }
 
-    protected void error(String message) {
-        printMessage(ERROR, message, COLOR_ERROR);
+    protected final void error(Object target) {
+        printMessage(ERROR, target.toString(), COLOR_ERROR);
     }
 
-    protected void critical(String message) {
-        printMessage(CRITICAL, message, COLOR_CRITICAL);
+    protected final void critical(Object target) {
+        printMessage(CRITICAL, target.toString(), COLOR_CRITICAL);
         System.exit(-1);
     }
 
-    protected void error(String message, Throwable throwable) {
-        printMessage(ERROR, message, COLOR_ERROR);
+    protected final void error(Object target, Throwable throwable) {
+        printMessage(ERROR, target.toString(), COLOR_ERROR);
         logException(throwable);
     }
 
-    protected void critical(String message, RuntimeException exception) {
-        printMessage(CRITICAL, message, COLOR_CRITICAL);
+    protected final void critical(Object target, RuntimeException exception) {
+        printMessage(CRITICAL, target.toString(), COLOR_CRITICAL);
 
-        if(this.generateCriticalFile && generateCriticalFiles) {
-            generateCriticalFile(exception, message);
+        if (this.generateCriticalFile && generateCriticalFiles) {
+            generateCriticalFile(exception, target.toString());
         }
         throwException(exception);
     }
@@ -139,7 +140,7 @@ public abstract class Logger {
         throw exception;
     }
 
-    protected void breakLine() {
+    protected final void breakLine() {
         System.out.println();
     }
 
@@ -147,7 +148,7 @@ public abstract class Logger {
         System.err.println(formatExceptionMessage(throwable));
     }
 
-    protected LogLevel getLogLevel() {
+    protected final LogLevel getLogLevel() {
         return this.logLevel;
     }
 

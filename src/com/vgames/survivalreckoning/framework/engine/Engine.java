@@ -44,7 +44,7 @@ public class Engine extends Logger {
 
         Logger.generateCriticalFiles = debugSettings.isGenerateCriticalFiles() == null || debugSettings.isGenerateCriticalFiles();
         Logger.globalDebugDefinition = debugSettings.isShowLogs() == null || debugSettings.isShowLogs();
-
+        Logger.enableFileTracking = debugSettings.isEnableFileTracking() == null || debugSettings.isEnableFileTracking();
 
         successfulInitialization = true;
 

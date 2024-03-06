@@ -1,12 +1,14 @@
 package com.vgames.survivalreckoning.framework.engine.setting;
 
 public class DebugSettings {
+    private boolean enableFileTracking;
     private boolean showLogs;
     private boolean generateCriticalFiles;
 
-    public DebugSettings(boolean showLogs, boolean generateCriticalFiles) {
+    public DebugSettings(boolean showLogs, boolean generateCriticalFiles, boolean enableFileTracking) {
         this.showLogs = showLogs;
         this.generateCriticalFiles = generateCriticalFiles;
+        this.enableFileTracking = enableFileTracking;
     }
 
     public Boolean isShowLogs() {
@@ -15,5 +17,9 @@ public class DebugSettings {
 
     public Boolean isGenerateCriticalFiles() {
         return generateCriticalFiles;
+    }
+
+    public Boolean isEnableFileTracking() {
+        return enableFileTracking;
     }
 }

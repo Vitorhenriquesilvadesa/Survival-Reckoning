@@ -44,11 +44,15 @@ public class SettingRuleFactory {
                 break;
             }
             case DebugGenerateCriticalFiles: {
-                parseRule = new GenerateCriticalFilesRule(parser);
+                parseRule = new DebugGenerateCriticalFilesRule(parser);
                 break;
             }
             case DebugShowLogs: {
-                parseRule = new ShowDebugLogsRule(parser);
+                parseRule = new DebugShowDebugLogsRule(parser);
+                break;
+            }
+            case DebugEnableFileTracking: {
+                parseRule = new DebugEnableFileTrackingRule(parser);
                 break;
             }
             default: {

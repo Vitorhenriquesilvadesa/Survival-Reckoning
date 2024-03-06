@@ -17,6 +17,7 @@ public class SettingsClassBuilder {
 
     private boolean showLogs;
     private boolean generateCriticalFiles;
+    private boolean enableFileTracking;
 
 
     public SettingsClassBuilder() {
@@ -68,6 +69,11 @@ public class SettingsClassBuilder {
         return this;
     }
 
+    public SettingsClassBuilder enableFileTracking(boolean enableFileTracking) {
+        this.enableFileTracking = enableFileTracking;
+        return this;
+    }
+
     public GearSettings buildGearSettings() {
         return new GearSettings(maxTicksPerSecond, useColdAnnotations, rootDirectory, gameClass);
     }
@@ -77,6 +83,6 @@ public class SettingsClassBuilder {
     }
 
     public DebugSettings buildDebugSettings() {
-        return new DebugSettings(showLogs, generateCriticalFiles);
+        return new DebugSettings(showLogs, generateCriticalFiles, enableFileTracking);
     }
 }

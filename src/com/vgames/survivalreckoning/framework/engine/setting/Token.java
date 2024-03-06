@@ -5,13 +5,11 @@ public class Token {
     private final TokenType tokenType;
     private final String lexeme;
     private final int line;
-    private final int column;
 
-    public Token(TokenType tokenType, String lexeme, int line, int column) {
+    public Token(TokenType tokenType, String lexeme, int line) {
         this.tokenType = tokenType;
         this.lexeme = lexeme;
         this.line = line;
-        this.column = column;
     }
 
     public TokenType getTokenType() {
@@ -26,9 +24,6 @@ public class Token {
         return line;
     }
 
-    public int getColumn() {
-        return column;
-    }
 
     @Override
     public String toString() {

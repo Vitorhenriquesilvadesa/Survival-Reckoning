@@ -12,7 +12,7 @@ public class SettingsFileParser {
     private List<Token> tokens;
     private SettingsClassBuilder settingsClassBuilder;
     private int current;
-    private SettingRuleFactory ruleFactory;
+    private final SettingRuleFactory ruleFactory;
 
     public SettingsFileParser() {
         this.ruleFactory = new SettingRuleFactory(this);
@@ -52,6 +52,13 @@ public class SettingsFileParser {
             case TokenType.DEBUG: {
                 debugSetting();
             }
+            default: {
+                if (peek().getTokenType() == TokenType.SEMICOLON || peek().getTokenType() == TokenType.END_OF_FILE) {
+                    break;
+                }
+
+                throw new SettingsFileParseException("Unexpected token '" + peek().getLexeme() + "' at line " + peek().getLine() + ".");
+            }
         }
     }
 
@@ -70,20 +77,26 @@ public class SettingsFileParser {
                 debugGenerateCriticalFiles();
                 break;
             }
+
+            case "enable_file_tracking": {
+                debugEnableFileTracking();
+            }
         }
     }
 
     private void debugGenerateCriticalFiles() {
-
         boolean generateCriticalFiles = ruleFactory.parseWithRule(SettingRule.DebugGenerateCriticalFiles, Boolean.class);
         settingsClassBuilder.generateCriticalFiles(generateCriticalFiles);
-
     }
 
     private void debugShowLogs() {
-
         boolean showLogs = ruleFactory.parseWithRule(SettingRule.DebugShowLogs, Boolean.class);
         settingsClassBuilder.showLogs(showLogs);
+    }
+
+    private void debugEnableFileTracking() {
+        boolean enableFileTracking = ruleFactory.parseWithRule(SettingRule.DebugEnableFileTracking, Boolean.class);
+        settingsClassBuilder.enableFileTracking(enableFileTracking);
     }
 
     private void gearSetting() {
@@ -166,7 +179,6 @@ public class SettingsFileParser {
     }
 
     private void windowTitle() {
-
         String windowTitle = ruleFactory.parseWithRule(SettingRule.WindowTitle, String.class);
         settingsClassBuilder.windowTitle(windowTitle);
     }
@@ -182,7 +194,6 @@ public class SettingsFileParser {
     }
 
     public void consume(TokenType expect, String message) {
-
         if (peek().getTokenType() != expect) {
             Token token = peek();
             throw new SettingsFileParseException(message + " [At line " + token.getLine() + "]");
